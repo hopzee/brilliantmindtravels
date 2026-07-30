@@ -17,6 +17,7 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as StudyAbroadIndexRouteImport } from './routes/study-abroad.index'
+import { Route as StudyAbroadSlugRouteImport } from './routes/study-abroad.$slug'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
 import { Route as AuthenticatedDashboardBlogRouteImport } from './routes/_authenticated/dashboard.blog'
 import { Route as AuthenticatedDashboardMediaRouteImport } from './routes/_authenticated/dashboard.media'
@@ -66,6 +67,11 @@ const ServicesSlugRoute = ServicesSlugRouteImport.update({
 const StudyAbroadIndexRoute = StudyAbroadIndexRouteImport.update({
   id: '/study-abroad/',
   path: '/study-abroad/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StudyAbroadSlugRoute = StudyAbroadSlugRouteImport.update({
+  id: '/study-abroad/$slug',
+  path: '/study-abroad/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedDashboardIndexRoute =
@@ -141,6 +147,7 @@ export interface FileRoutesByFullPath {
   '/rbac': typeof RbacRoute
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/services/$slug': typeof ServicesSlugRoute
+  '/study-abroad/$slug': typeof StudyAbroadSlugRoute
   '/services/': typeof ServicesIndexRoute
   '/study-abroad/': typeof StudyAbroadIndexRoute
   '/dashboard/blog': typeof AuthenticatedDashboardBlogRoute
@@ -160,6 +167,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/rbac': typeof RbacRoute
   '/services/$slug': typeof ServicesSlugRoute
+  '/study-abroad/$slug': typeof StudyAbroadSlugRoute
   '/services': typeof ServicesIndexRoute
   '/study-abroad': typeof StudyAbroadIndexRoute
   '/dashboard/blog': typeof AuthenticatedDashboardBlogRoute
@@ -182,6 +190,7 @@ export interface FileRoutesById {
   '/rbac': typeof RbacRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/services/$slug': typeof ServicesSlugRoute
+  '/study-abroad/$slug': typeof StudyAbroadSlugRoute
   '/services/': typeof ServicesIndexRoute
   '/study-abroad/': typeof StudyAbroadIndexRoute
   '/_authenticated/dashboard/blog': typeof AuthenticatedDashboardBlogRoute
@@ -204,6 +213,7 @@ export interface FileRouteTypes {
     | '/rbac'
     | '/dashboard'
     | '/services/$slug'
+    | '/study-abroad/$slug'
     | '/services/'
     | '/study-abroad/'
     | '/dashboard/blog'
@@ -223,6 +233,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/rbac'
     | '/services/$slug'
+    | '/study-abroad/$slug'
     | '/services'
     | '/study-abroad'
     | '/dashboard/blog'
@@ -244,6 +255,7 @@ export interface FileRouteTypes {
     | '/rbac'
     | '/_authenticated/dashboard'
     | '/services/$slug'
+    | '/study-abroad/$slug'
     | '/services/'
     | '/study-abroad/'
     | '/_authenticated/dashboard/blog'
@@ -265,6 +277,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   RbacRoute: typeof RbacRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
+  StudyAbroadSlugRoute: typeof StudyAbroadSlugRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
   StudyAbroadIndexRoute: typeof StudyAbroadIndexRoute
 }
@@ -325,6 +338,13 @@ declare module '@tanstack/react-router' {
       path: '/study-abroad'
       fullPath: '/study-abroad/'
       preLoaderRoute: typeof StudyAbroadIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/study-abroad/$slug': {
+      id: '/study-abroad/$slug'
+      path: '/study-abroad/$slug'
+      fullPath: '/study-abroad/$slug'
+      preLoaderRoute: typeof StudyAbroadSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/dashboard/': {
@@ -461,6 +481,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   RbacRoute: RbacRoute,
   ServicesSlugRoute: ServicesSlugRoute,
+  StudyAbroadSlugRoute: StudyAbroadSlugRoute,
   ServicesIndexRoute: ServicesIndexRoute,
   StudyAbroadIndexRoute: StudyAbroadIndexRoute,
 }
