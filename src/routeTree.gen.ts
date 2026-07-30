@@ -19,6 +19,7 @@ import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as StudyAbroadIndexRouteImport } from './routes/study-abroad.index'
 import { Route as StudyAbroadSlugRouteImport } from './routes/study-abroad.$slug'
 import { Route as ToursIndexRouteImport } from './routes/tours.index'
+import { Route as ToursSlugRouteImport } from './routes/tours.$slug'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
 import { Route as AuthenticatedDashboardBlogRouteImport } from './routes/_authenticated/dashboard.blog'
 import { Route as AuthenticatedDashboardMediaRouteImport } from './routes/_authenticated/dashboard.media'
@@ -78,6 +79,11 @@ const StudyAbroadSlugRoute = StudyAbroadSlugRouteImport.update({
 const ToursIndexRoute = ToursIndexRouteImport.update({
   id: '/tours/',
   path: '/tours/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToursSlugRoute = ToursSlugRouteImport.update({
+  id: '/tours/$slug',
+  path: '/tours/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedDashboardIndexRoute =
@@ -154,6 +160,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/services/$slug': typeof ServicesSlugRoute
   '/study-abroad/$slug': typeof StudyAbroadSlugRoute
+  '/tours/$slug': typeof ToursSlugRoute
   '/services/': typeof ServicesIndexRoute
   '/study-abroad/': typeof StudyAbroadIndexRoute
   '/tours/': typeof ToursIndexRoute
@@ -175,6 +182,7 @@ export interface FileRoutesByTo {
   '/rbac': typeof RbacRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/study-abroad/$slug': typeof StudyAbroadSlugRoute
+  '/tours/$slug': typeof ToursSlugRoute
   '/services': typeof ServicesIndexRoute
   '/study-abroad': typeof StudyAbroadIndexRoute
   '/tours': typeof ToursIndexRoute
@@ -199,6 +207,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/services/$slug': typeof ServicesSlugRoute
   '/study-abroad/$slug': typeof StudyAbroadSlugRoute
+  '/tours/$slug': typeof ToursSlugRoute
   '/services/': typeof ServicesIndexRoute
   '/study-abroad/': typeof StudyAbroadIndexRoute
   '/tours/': typeof ToursIndexRoute
@@ -223,6 +232,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/services/$slug'
     | '/study-abroad/$slug'
+    | '/tours/$slug'
     | '/services/'
     | '/study-abroad/'
     | '/tours/'
@@ -244,6 +254,7 @@ export interface FileRouteTypes {
     | '/rbac'
     | '/services/$slug'
     | '/study-abroad/$slug'
+    | '/tours/$slug'
     | '/services'
     | '/study-abroad'
     | '/tours'
@@ -267,6 +278,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/services/$slug'
     | '/study-abroad/$slug'
+    | '/tours/$slug'
     | '/services/'
     | '/study-abroad/'
     | '/tours/'
@@ -290,6 +302,7 @@ export interface RootRouteChildren {
   RbacRoute: typeof RbacRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
   StudyAbroadSlugRoute: typeof StudyAbroadSlugRoute
+  ToursSlugRoute: typeof ToursSlugRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
   StudyAbroadIndexRoute: typeof StudyAbroadIndexRoute
   ToursIndexRoute: typeof ToursIndexRoute
@@ -365,6 +378,13 @@ declare module '@tanstack/react-router' {
       path: '/tours'
       fullPath: '/tours/'
       preLoaderRoute: typeof ToursIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tours/$slug': {
+      id: '/tours/$slug'
+      path: '/tours/$slug'
+      fullPath: '/tours/$slug'
+      preLoaderRoute: typeof ToursSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/dashboard/': {
@@ -502,6 +522,7 @@ const rootRouteChildren: RootRouteChildren = {
   RbacRoute: RbacRoute,
   ServicesSlugRoute: ServicesSlugRoute,
   StudyAbroadSlugRoute: StudyAbroadSlugRoute,
+  ToursSlugRoute: ToursSlugRoute,
   ServicesIndexRoute: ServicesIndexRoute,
   StudyAbroadIndexRoute: StudyAbroadIndexRoute,
   ToursIndexRoute: ToursIndexRoute,
