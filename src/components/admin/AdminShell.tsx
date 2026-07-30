@@ -20,7 +20,14 @@ import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 
-export const adminNav = [
+type NavItem = {
+  to: string;
+  label: string;
+  icon: typeof LayoutDashboard;
+  exact?: boolean;
+};
+
+export const adminNav: NavItem[] = [
   { to: "/admin", label: "Overview", icon: LayoutDashboard, exact: true },
   { to: "/admin/services", label: "Services", icon: Wrench },
   { to: "/admin/study-abroad", label: "Study Abroad", icon: GraduationCap },
@@ -32,7 +39,7 @@ export const adminNav = [
   { to: "/admin/media", label: "Media Library", icon: Image },
   { to: "/admin/messages", label: "Messages & Leads", icon: Mailbox },
   { to: "/admin/settings", label: "Website Settings", icon: Settings },
-] as const;
+];
 
 export function AdminShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
@@ -45,7 +52,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div className="min-h-screen bg-[var(--soft)]">
+    <div className="min-h-screen bg-muted/40">
       <aside
         className={cn(
           "fixed inset-y-0 left-0 z-50 flex w-68 flex-col bg-navy-deep text-navy-foreground transition-transform lg:translate-x-0",
