@@ -65,7 +65,6 @@ export function Header() {
               onClick={() => setOpen((v) => !v)}
               className="inline-flex size-10 items-center justify-center rounded-md border border-border text-navy lg:hidden"
             >
-              {open ? <Menu className="size-5" hidden /> : null}
               {open ? <X className="size-5" /> : <Menu className="size-5" />}
             </button>
           </div>
