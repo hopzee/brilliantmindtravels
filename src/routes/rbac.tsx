@@ -13,7 +13,7 @@ import { Logo } from "@/components/site/Logo";
 const title = "Administrator Login | Brilliant Mind Travels & Tours";
 const description = "Secure sign-in for Brilliant Mind Travels & Tours website administrators.";
 
-export const Route = createFileRoute("/auth")({
+export const Route = createFileRoute("/rbac")({
   head: () => ({
     meta: [
       { title },
@@ -42,7 +42,7 @@ function AuthPage() {
 
   useEffect(() => {
     void supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/admin" });
+      if (data.session) navigate({ to: "/dashboard" });
     });
   }, [navigate]);
 
@@ -65,7 +65,7 @@ function AuthPage() {
     if (error) return toast.error(error.message);
     await supabase.rpc("claim_first_admin");
     toast.success("Welcome back");
-    navigate({ to: "/admin" });
+    navigate({ to: "/dashboard" });
   };
 
   const signUp = async (e: React.FormEvent) => {
@@ -76,7 +76,7 @@ function AuthPage() {
     const { data, error } = await supabase.auth.signUp({
       ...values,
       options: {
-        emailRedirectTo: `${window.location.origin}/auth`,
+        emailRedirectTo: `${window.location.origin}/rbac`,
         data: { full_name: fullName.trim().slice(0, 100) },
       },
     });
@@ -87,7 +87,7 @@ function AuthPage() {
       return;
     }
     await supabase.rpc("claim_first_admin");
-    navigate({ to: "/admin" });
+    navigate({ to: "/dashboard" });
   };
 
   return (

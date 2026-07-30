@@ -1,37 +1,73 @@
-import { MessageCircle, PhoneCall } from "lucide-react";
+import { MapPin, PhoneCall, Wallet } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import { site, whatsappLink } from "@/config/site";
+import { enquiryMessage } from "@/lib/cms";
+import { useSettings, WhatsAppButton } from "@/components/public/ui";
 
 export function WhatsAppCta() {
+  const { data: s } = useSettings();
+
   return (
     <section className="relative overflow-hidden bg-navy py-20 text-navy-foreground md:py-24">
-      <div className="absolute -right-24 -top-24 size-80 rounded-full bg-gold/10 blur-3xl" />
-      <div className="container-page relative flex flex-col items-start gap-8 lg:flex-row lg:items-center lg:justify-between">
-        <div className="max-w-2xl">
-          <span className="eyebrow">Start today</span>
-          <h2 className="mt-4 text-3xl leading-tight sm:text-4xl">
-            Ready to begin your journey? Talk to a consultant now.
+      <div className="container-page grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
+        <div>
+          <span className="eyebrow">Ready when you are</span>
+          <h2 className="mt-4 max-w-xl text-3xl leading-tight sm:text-4xl">
+            Speak with a consultant today — no online payment required
           </h2>
-          <p className="mt-4 text-base text-navy-foreground/70">
-            Send us a message on WhatsApp or call the office in {site.address}. No payment online —
-            we agree the plan first, then you pay at the office or by direct arrangement.
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-navy-foreground/75">
+            Every consultation starts with a conversation. Reach us on WhatsApp, call the office, or
+            book an appointment and settle any fees in person at our office.
           </p>
+
+          <div className="mt-9 flex flex-wrap gap-3">
+            <WhatsAppButton
+              whatsapp={s?.whatsapp}
+              message={enquiryMessage(s?.company_name, "services you offer")}
+            />
+            {s?.phone ? (
+              <Button asChild variant="outlineLight" size="lg">
+                <a href={`tel:${s.phone.replace(/\s/g, "")}`}>
+                  <PhoneCall className="size-4" /> {s.phone}
+                </a>
+              </Button>
+            ) : null}
+            <Button asChild variant="ghost" size="lg" className="text-navy-foreground hover:bg-navy-foreground/10">
+              <Link to="/contact">Book a consultation</Link>
+            </Button>
+          </div>
         </div>
-        <div className="flex flex-wrap gap-3">
-          <Button asChild variant="gold" size="xl">
-            <a
-              href={whatsappLink("Hello Brilliant Mind, I'd like to start my travel process.")}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <MessageCircle className="size-4" /> Chat On WhatsApp
-            </a>
-          </Button>
-          <Button asChild variant="outlineLight" size="xl">
-            <a href={`tel:${site.phone.replace(/\s/g, "")}`}>
-              <PhoneCall className="size-4" /> Call the office
-            </a>
-          </Button>
+
+        <div className="rounded-xl border border-navy-foreground/15 bg-navy-deep/60 p-8">
+          <ul className="space-y-6 text-sm">
+            <li className="flex gap-4">
+              <Wallet className="mt-0.5 size-5 shrink-0 text-gold" />
+              <span>
+                <strong className="block font-semibold">Payments in person only</strong>
+                <span className="text-navy-foreground/70">
+                  We never request payment through this website. Fees are confirmed by our team.
+                </span>
+              </span>
+            </li>
+            {s?.address ? (
+              <li className="flex gap-4">
+                <MapPin className="mt-0.5 size-5 shrink-0 text-gold" />
+                <span>
+                  <strong className="block font-semibold">Visit our office</strong>
+                  <span className="text-navy-foreground/70">{s.address}</span>
+                </span>
+              </li>
+            ) : null}
+            {s?.business_hours ? (
+              <li className="flex gap-4">
+                <PhoneCall className="mt-0.5 size-5 shrink-0 text-gold" />
+                <span>
+                  <strong className="block font-semibold">Office hours</strong>
+                  <span className="text-navy-foreground/70">{s.business_hours}</span>
+                </span>
+              </li>
+            ) : null}
+          </ul>
         </div>
       </div>
     </section>

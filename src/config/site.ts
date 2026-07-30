@@ -20,10 +20,12 @@ export function whatsappLink(message: string) {
 
 export const navLinks = [
   { label: "Home", to: "/" },
+  { label: "About", to: "/about" },
   { label: "Services", to: "/services" },
   { label: "Study Abroad", to: "/study-abroad" },
   { label: "Tour Packages", to: "/tours" },
   { label: "Testimonials", to: "/testimonials" },
+  { label: "Reviews", to: "/reviews" },
   { label: "Blog", to: "/blog" },
   { label: "Contact", to: "/contact" },
 ] as const;

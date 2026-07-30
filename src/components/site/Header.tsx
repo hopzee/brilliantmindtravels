@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { Menu, Phone, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Logo } from "./Logo";
-import { navLinks, site, whatsappLink } from "@/config/site";
+import { navLinks, site } from "@/config/site";
 import { cn } from "@/lib/utils";
+import { useSettings } from "@/components/public/ui";
 
 export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const { data: settings } = useSettings();
+  const phone = settings?.phone ?? "";
+  const address = settings?.address ?? "";
+  const promise = settings?.promise ?? "";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -20,12 +26,14 @@ export function Header() {
     <header className="fixed inset-x-0 top-0 z-40">
       <div className="hidden bg-navy-deep text-navy-foreground/80 md:block">
         <div className="container-page flex h-9 items-center justify-between text-xs">
-          <p className="tracking-wide">{site.promise}</p>
+          <p className="tracking-wide">{promise}</p>
           <div className="flex items-center gap-5">
-            <span>{site.address}</span>
-            <a href={`tel:${site.phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-1.5 hover:text-gold">
-              <Phone className="size-3.5" /> {site.phone}
-            </a>
+            <span>{address}</span>
+            {phone ? (
+              <a href={`tel:${phone.replace(/\s/g, "")}`} className="inline-flex items-center gap-1.5 hover:text-gold">
+                <Phone className="size-3.5" /> {phone}
+              </a>
+            ) : null}
           </div>
         </div>
       </div>
@@ -37,27 +45,27 @@ export function Header() {
         )}
       >
         <div className="container-page flex h-18 items-center justify-between gap-4">
-          <a href="/" aria-label={site.name}>
+          <Link to="/" aria-label={settings?.company_name ?? site.name}>
             <Logo />
-          </a>
+          </Link>
 
-          <nav className="hidden items-center gap-7 lg:flex">
+          <nav className="hidden items-center gap-6 lg:flex" aria-label="Main">
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.to}
-                href={link.to}
+                to={link.to}
+                activeOptions={{ exact: link.to === "/" }}
+                activeProps={{ className: "text-navy after:w-full" }}
                 className="relative text-sm font-medium text-foreground/75 transition-colors hover:text-navy after:absolute after:-bottom-1.5 after:left-0 after:h-0.5 after:w-0 after:bg-gold after:transition-all hover:after:w-full"
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
           </nav>
 
           <div className="flex items-center gap-2">
             <Button asChild variant="gold" size="lg" className="hidden sm:inline-flex">
-              <a href={whatsappLink("Hello, I'd like to book a consultation.")} target="_blank" rel="noopener noreferrer">
-                Book Consultation
-              </a>
+              <Link to="/contact">Book Consultation</Link>
             </Button>
             <button
               type="button"
@@ -71,17 +79,17 @@ export function Header() {
         </div>
 
         {open ? (
-          <nav className="border-t border-border bg-background lg:hidden">
+          <nav className="border-t border-border bg-background lg:hidden" aria-label="Mobile">
             <div className="container-page flex flex-col py-2">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.to}
-                  href={link.to}
+                  to={link.to}
                   onClick={() => setOpen(false)}
                   className="border-b border-border/60 py-3 text-sm font-medium text-foreground/80 last:border-0"
                 >
                   {link.label}
-                </a>
+                </Link>
               ))}
             </div>
           </nav>

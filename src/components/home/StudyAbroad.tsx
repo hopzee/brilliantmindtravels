@@ -1,55 +1,66 @@
 import { ArrowRight } from "lucide-react";
-import studyAbroad from "@/assets/study-abroad.jpg";
+import { Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-
-const countries = [
-  { name: "Canada", note: "Post-study work & PR pathways" },
-  { name: "United Kingdom", note: "1-year masters, graduate route" },
-  { name: "Germany", note: "Low tuition public universities" },
-  { name: "United States", note: "Scholarships & research funding" },
-  { name: "Australia", note: "Skilled migration friendly" },
-];
+import { fallbackImages, imageOr, publishedList } from "@/lib/cms";
+import { CardSkeletons, EmptyState, Reveal, SectionHeading } from "@/components/public/ui";
 
 export function StudyAbroad() {
+  const { data, isLoading } = useQuery(
+    publishedList("study_abroad_countries", { orderBy: "sort_order", ascending: true, limit: 8 }),
+  );
+
   return (
     <section className="bg-background py-20 md:py-28">
-      <div className="container-page grid gap-14 lg:grid-cols-[0.95fr_1.05fr] lg:items-center">
-        <div>
-          <span className="eyebrow">Study abroad</span>
-          <h2 className="mt-4 text-3xl leading-tight sm:text-4xl">
-            Study in the world&rsquo;s leading education destinations
-          </h2>
-          <p className="mt-5 text-base leading-relaxed text-muted-foreground">
-            From course selection and admission to visa filing and departure briefing, we handle the
-            details so you can focus on your future.
-          </p>
-
-          <ul className="mt-8 divide-y divide-border border-y border-border">
-            {countries.map((c) => (
-              <li key={c.name} className="flex items-center justify-between gap-4 py-4">
-                <span className="font-[family-name:var(--font-display)] font-semibold text-navy">
-                  {c.name}
-                </span>
-                <span className="text-right text-sm text-muted-foreground">{c.note}</span>
-              </li>
-            ))}
-          </ul>
-
-          <Button asChild variant="outlineNavy" size="xl" className="mt-8">
-            <a href="/study-abroad">
-              Explore destinations <ArrowRight className="size-4" />
-            </a>
+      <div className="container-page">
+        <div className="flex flex-wrap items-end justify-between gap-6">
+          <SectionHeading eyebrow="Featured destinations" title="Study abroad pathways" />
+          <Button asChild variant="outline" size="lg">
+            <Link to="/study-abroad">
+              All destinations <ArrowRight className="size-4" />
+            </Link>
           </Button>
         </div>
 
-        <img
-          src={studyAbroad}
-          alt="International students walking across a university campus"
-          width={1200}
-          height={912}
-          loading="lazy"
-          className="w-full rounded-xl object-cover shadow-[var(--shadow-elegant)]"
-        />
+        <div className="mt-12">
+          {isLoading ? (
+            <CardSkeletons count={4} />
+          ) : !data?.length ? (
+            <EmptyState
+              title="Destinations coming soon"
+              text="Study abroad destinations are being prepared. Speak to a consultant in the meantime."
+            />
+          ) : (
+            <div className="-mx-4 flex snap-x snap-mandatory gap-6 overflow-x-auto px-4 pb-4 lg:mx-0 lg:grid lg:grid-cols-4 lg:overflow-visible lg:px-0">
+              {data.map((c: any, i: number) => (
+                <Reveal key={c.id} delay={i * 60} className="w-72 shrink-0 snap-start lg:w-auto">
+                  <Link
+                    to="/study-abroad/$slug"
+                    params={{ slug: c.slug }}
+                    className="group block h-full overflow-hidden rounded-xl border border-border bg-card transition-all hover:-translate-y-1 hover:shadow-[var(--shadow-elegant)]"
+                  >
+                    <img
+                      src={imageOr(c.featured_image, fallbackImages.study)}
+                      alt={`Study in ${c.title}`}
+                      loading="lazy"
+                      decoding="async"
+                      className="aspect-4/3 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="p-6">
+                      <h3 className="text-lg text-navy">
+                        {c.flag_emoji ? `${c.flag_emoji} ` : ""}
+                        {c.title}
+                      </h3>
+                      <p className="mt-2 line-clamp-2 text-sm text-muted-foreground">
+                        {c.short_description}
+                      </p>
+                    </div>
+                  </Link>
+                </Reveal>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </section>
   );

@@ -28,17 +28,17 @@ type NavItem = {
 };
 
 export const adminNav: NavItem[] = [
-  { to: "/admin", label: "Overview", icon: LayoutDashboard, exact: true },
-  { to: "/admin/services", label: "Services", icon: Wrench },
-  { to: "/admin/study-abroad", label: "Study Abroad", icon: GraduationCap },
-  { to: "/admin/universities", label: "Universities", icon: Building2 },
-  { to: "/admin/tours", label: "Tour Packages", icon: Plane },
-  { to: "/admin/blog", label: "Blog", icon: BookOpen },
-  { to: "/admin/testimonials", label: "Testimonials", icon: Quote },
-  { to: "/admin/reviews", label: "Reviews", icon: Star },
-  { to: "/admin/media", label: "Media Library", icon: Image },
-  { to: "/admin/messages", label: "Messages & Leads", icon: Mailbox },
-  { to: "/admin/settings", label: "Website Settings", icon: Settings },
+  { to: "/dashboard", label: "Overview", icon: LayoutDashboard, exact: true },
+  { to: "/dashboard/services", label: "Services", icon: Wrench },
+  { to: "/dashboard/study-abroad", label: "Study Abroad", icon: GraduationCap },
+  { to: "/dashboard/universities", label: "Universities", icon: Building2 },
+  { to: "/dashboard/tours", label: "Tour Packages", icon: Plane },
+  { to: "/dashboard/blog", label: "Blog", icon: BookOpen },
+  { to: "/dashboard/testimonials", label: "Testimonials", icon: Quote },
+  { to: "/dashboard/reviews", label: "Reviews", icon: Star },
+  { to: "/dashboard/media", label: "Media Library", icon: Image },
+  { to: "/dashboard/messages", label: "Messages & Leads", icon: Mailbox },
+  { to: "/dashboard/settings", label: "Website Settings", icon: Settings },
 ];
 
 export function AdminShell({ children }: { children: ReactNode }) {
@@ -48,7 +48,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
 
   const signOut = async () => {
     await supabase.auth.signOut();
-    navigate({ to: "/auth" });
+    navigate({ to: "/rbac" });
   };
 
   return (

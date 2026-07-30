@@ -13,19 +13,19 @@ import {
 import { cms } from "@/lib/db";
 import { supabase } from "@/integrations/supabase/client";
 
-export const Route = createFileRoute("/_authenticated/admin/")({
+export const Route = createFileRoute("/_authenticated/dashboard/")({
   component: Overview,
 });
 
 const cards = [
-  { table: "services", label: "Services", icon: Wrench, to: "/admin/services" },
-  { table: "study_abroad_countries", label: "Study Abroad Countries", icon: GraduationCap, to: "/admin/study-abroad" },
-  { table: "tour_packages", label: "Tour Packages", icon: Plane, to: "/admin/tours" },
-  { table: "blog_posts", label: "Blog Posts", icon: BookOpen, to: "/admin/blog" },
-  { table: "testimonials", label: "Testimonials", icon: Quote, to: "/admin/testimonials" },
-  { table: "reviews", label: "Reviews", icon: Star, to: "/admin/reviews" },
-  { table: "appointments", label: "Appointments", icon: CalendarClock, to: "/admin/messages" },
-  { table: "contact_messages", label: "Contact Messages", icon: Mailbox, to: "/admin/messages" },
+  { table: "services", label: "Services", icon: Wrench, to: "/dashboard/services" },
+  { table: "study_abroad_countries", label: "Study Abroad Countries", icon: GraduationCap, to: "/dashboard/study-abroad" },
+  { table: "tour_packages", label: "Tour Packages", icon: Plane, to: "/dashboard/tours" },
+  { table: "blog_posts", label: "Blog Posts", icon: BookOpen, to: "/dashboard/blog" },
+  { table: "testimonials", label: "Testimonials", icon: Quote, to: "/dashboard/testimonials" },
+  { table: "reviews", label: "Reviews", icon: Star, to: "/dashboard/reviews" },
+  { table: "appointments", label: "Appointments", icon: CalendarClock, to: "/dashboard/messages" },
+  { table: "contact_messages", label: "Contact Messages", icon: Mailbox, to: "/dashboard/messages" },
 ];
 
 function Overview() {

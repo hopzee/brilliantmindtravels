@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { supabase } from "@/integrations/supabase/client";
 import { deleteMedia, uploadMedia } from "@/lib/media";
 
-export const Route = createFileRoute("/_authenticated/admin/media")({ component: Page });
+export const Route = createFileRoute("/_authenticated/dashboard/media")({ component: Page });
 
 function Page() {
   const qc = useQueryClient();
