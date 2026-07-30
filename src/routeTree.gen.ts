@@ -18,6 +18,7 @@ import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as StudyAbroadIndexRouteImport } from './routes/study-abroad.index'
 import { Route as StudyAbroadSlugRouteImport } from './routes/study-abroad.$slug'
+import { Route as ToursIndexRouteImport } from './routes/tours.index'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
 import { Route as AuthenticatedDashboardBlogRouteImport } from './routes/_authenticated/dashboard.blog'
 import { Route as AuthenticatedDashboardMediaRouteImport } from './routes/_authenticated/dashboard.media'
@@ -72,6 +73,11 @@ const StudyAbroadIndexRoute = StudyAbroadIndexRouteImport.update({
 const StudyAbroadSlugRoute = StudyAbroadSlugRouteImport.update({
   id: '/study-abroad/$slug',
   path: '/study-abroad/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToursIndexRoute = ToursIndexRouteImport.update({
+  id: '/tours/',
+  path: '/tours/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedDashboardIndexRoute =
@@ -150,6 +156,7 @@ export interface FileRoutesByFullPath {
   '/study-abroad/$slug': typeof StudyAbroadSlugRoute
   '/services/': typeof ServicesIndexRoute
   '/study-abroad/': typeof StudyAbroadIndexRoute
+  '/tours/': typeof ToursIndexRoute
   '/dashboard/blog': typeof AuthenticatedDashboardBlogRoute
   '/dashboard/media': typeof AuthenticatedDashboardMediaRoute
   '/dashboard/messages': typeof AuthenticatedDashboardMessagesRoute
@@ -170,6 +177,7 @@ export interface FileRoutesByTo {
   '/study-abroad/$slug': typeof StudyAbroadSlugRoute
   '/services': typeof ServicesIndexRoute
   '/study-abroad': typeof StudyAbroadIndexRoute
+  '/tours': typeof ToursIndexRoute
   '/dashboard/blog': typeof AuthenticatedDashboardBlogRoute
   '/dashboard/media': typeof AuthenticatedDashboardMediaRoute
   '/dashboard/messages': typeof AuthenticatedDashboardMessagesRoute
@@ -193,6 +201,7 @@ export interface FileRoutesById {
   '/study-abroad/$slug': typeof StudyAbroadSlugRoute
   '/services/': typeof ServicesIndexRoute
   '/study-abroad/': typeof StudyAbroadIndexRoute
+  '/tours/': typeof ToursIndexRoute
   '/_authenticated/dashboard/blog': typeof AuthenticatedDashboardBlogRoute
   '/_authenticated/dashboard/media': typeof AuthenticatedDashboardMediaRoute
   '/_authenticated/dashboard/messages': typeof AuthenticatedDashboardMessagesRoute
@@ -216,6 +225,7 @@ export interface FileRouteTypes {
     | '/study-abroad/$slug'
     | '/services/'
     | '/study-abroad/'
+    | '/tours/'
     | '/dashboard/blog'
     | '/dashboard/media'
     | '/dashboard/messages'
@@ -236,6 +246,7 @@ export interface FileRouteTypes {
     | '/study-abroad/$slug'
     | '/services'
     | '/study-abroad'
+    | '/tours'
     | '/dashboard/blog'
     | '/dashboard/media'
     | '/dashboard/messages'
@@ -258,6 +269,7 @@ export interface FileRouteTypes {
     | '/study-abroad/$slug'
     | '/services/'
     | '/study-abroad/'
+    | '/tours/'
     | '/_authenticated/dashboard/blog'
     | '/_authenticated/dashboard/media'
     | '/_authenticated/dashboard/messages'
@@ -280,6 +292,7 @@ export interface RootRouteChildren {
   StudyAbroadSlugRoute: typeof StudyAbroadSlugRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
   StudyAbroadIndexRoute: typeof StudyAbroadIndexRoute
+  ToursIndexRoute: typeof ToursIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -345,6 +358,13 @@ declare module '@tanstack/react-router' {
       path: '/study-abroad/$slug'
       fullPath: '/study-abroad/$slug'
       preLoaderRoute: typeof StudyAbroadSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tours/': {
+      id: '/tours/'
+      path: '/tours'
+      fullPath: '/tours/'
+      preLoaderRoute: typeof ToursIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/dashboard/': {
@@ -484,6 +504,7 @@ const rootRouteChildren: RootRouteChildren = {
   StudyAbroadSlugRoute: StudyAbroadSlugRoute,
   ServicesIndexRoute: ServicesIndexRoute,
   StudyAbroadIndexRoute: StudyAbroadIndexRoute,
+  ToursIndexRoute: ToursIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
