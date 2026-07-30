@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as ContactRouteImport } from './routes/contact'
 import { Route as RbacRouteImport } from './routes/rbac'
 import { Route as ReviewsRouteImport } from './routes/reviews'
 import { Route as TestimonialsRouteImport } from './routes/testimonials'
@@ -48,6 +49,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ContactRoute = ContactRouteImport.update({
+  id: '/contact',
+  path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RbacRoute = RbacRouteImport.update({
@@ -180,6 +186,7 @@ const AuthenticatedDashboardUniversitiesRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/rbac': typeof RbacRoute
   '/reviews': typeof ReviewsRoute
   '/testimonials': typeof TestimonialsRoute
@@ -207,6 +214,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/rbac': typeof RbacRoute
   '/reviews': typeof ReviewsRoute
   '/testimonials': typeof TestimonialsRoute
@@ -235,6 +243,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/about': typeof AboutRoute
+  '/contact': typeof ContactRoute
   '/rbac': typeof RbacRoute
   '/reviews': typeof ReviewsRoute
   '/testimonials': typeof TestimonialsRoute
@@ -264,6 +273,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/contact'
     | '/rbac'
     | '/reviews'
     | '/testimonials'
@@ -291,6 +301,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/contact'
     | '/rbac'
     | '/reviews'
     | '/testimonials'
@@ -318,6 +329,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/about'
+    | '/contact'
     | '/rbac'
     | '/reviews'
     | '/testimonials'
@@ -347,6 +359,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
+  ContactRoute: typeof ContactRoute
   RbacRoute: typeof RbacRoute
   ReviewsRoute: typeof ReviewsRoute
   TestimonialsRoute: typeof TestimonialsRoute
@@ -381,6 +394,13 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/contact': {
+      id: '/contact'
+      path: '/contact'
+      fullPath: '/contact'
+      preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/rbac': {
@@ -599,6 +619,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
+  ContactRoute: ContactRoute,
   RbacRoute: RbacRoute,
   ReviewsRoute: ReviewsRoute,
   TestimonialsRoute: TestimonialsRoute,
