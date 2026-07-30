@@ -14,7 +14,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { cms, publishedList } from "@/lib/cms";
+import { cms } from "@/lib/db";
+import { publishedList } from "@/lib/cms";
 
 const base = {
   full_name: z.string().trim().min(2, "Enter your full name").max(100),
