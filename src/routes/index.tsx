@@ -1,16 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Header } from "@/components/site/Header";
-import { Footer } from "@/components/site/Footer";
-import { WhatsAppFloat } from "@/components/site/WhatsAppFloat";
+import { SiteLayout } from "@/components/public/SiteLayout";
 import { Hero } from "@/components/home/Hero";
 import { About } from "@/components/home/About";
 import { Services } from "@/components/home/Services";
 import { StudyAbroad } from "@/components/home/StudyAbroad";
+import { Tours } from "@/components/home/Tours";
+import { Process } from "@/components/home/Process";
+import { Testimonials } from "@/components/home/Testimonials";
+import { LatestBlog } from "@/components/home/Blog";
+import { Faq } from "@/components/home/Faq";
 import { WhatsAppCta } from "@/components/home/WhatsAppCta";
 
-const title = "Brilliant Mind Travels & Tours | Visa & Study Abroad Consultancy";
+const title = "Brilliant Mind Travels & Tours | Visa, Study Abroad & Tour Consultancy";
 const description =
-  "Trusted travel and immigration consultancy in Ede South, Osun State. Visa assistance, study abroad admissions, tour packages and flight booking guidance.";
+  "Trusted travel and immigration consultancy in Ede South, Osun State. Visa assistance, study abroad admissions, work pathways and curated tour packages.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -19,24 +22,26 @@ export const Route = createFileRoute("/")({
       { name: "description", content: description },
       { property: "og:title", content: title },
       { property: "og:description", content: description },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  component: Index,
+  component: HomePage,
 });
 
-function Index() {
+function HomePage() {
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <main>
-        <Hero />
-        <About />
-        <Services />
-        <StudyAbroad />
-        <WhatsAppCta />
-      </main>
-      <Footer />
-      <WhatsAppFloat />
-    </div>
+    <SiteLayout>
+      <Hero />
+      <About />
+      <Services />
+      <StudyAbroad />
+      <Tours />
+      <Process />
+      <Testimonials />
+      <LatestBlog />
+      <Faq />
+      <WhatsAppCta />
+    </SiteLayout>
   );
 }
