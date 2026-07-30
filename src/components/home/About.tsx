@@ -1,6 +1,8 @@
 import { CheckCircle2, Compass, ShieldCheck, Users } from "lucide-react";
-import consultation from "@/assets/consultation.jpg";
-import { site } from "@/config/site";
+import { Link } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
+import { fallbackImages, imageOr } from "@/lib/cms";
+import { Prose, Reveal, useSettings } from "@/components/public/ui";
 
 const pillars = [
   { icon: ShieldCheck, title: "Integrity first", text: "Honest advice and transparent processes — no false promises." },
@@ -9,46 +11,53 @@ const pillars = [
 ];
 
 export function About() {
+  const { data: s } = useSettings();
+
   return (
     <section className="bg-background py-20 md:py-28">
       <div className="container-page grid items-center gap-14 lg:grid-cols-2">
-        <div className="relative">
+        <Reveal className="relative">
           <img
-            src={consultation}
+            src={imageOr(null, fallbackImages.consultation)}
             alt="Travel consultant reviewing visa documents with a client"
             width={1200}
             height={912}
             loading="lazy"
+            decoding="async"
             className="w-full rounded-xl object-cover shadow-[var(--shadow-elegant)]"
           />
-          <div className="absolute -bottom-6 -right-2 hidden max-w-[15rem] rounded-lg bg-navy p-6 text-navy-foreground shadow-[var(--shadow-elegant)] sm:block">
-            <p className="font-[family-name:var(--font-display)] text-3xl font-bold text-gold">10+</p>
-            <p className="mt-1 text-xs uppercase tracking-[0.16em] text-navy-foreground/70">
-              Years of combined consultancy experience
-            </p>
-          </div>
-        </div>
+          {s?.stat_years_experience ? (
+            <div className="absolute -bottom-6 -right-2 hidden max-w-60 rounded-lg bg-navy p-6 text-navy-foreground shadow-[var(--shadow-elegant)] sm:block">
+              <p className="font-[family-name:var(--font-display)] text-3xl font-bold text-gold">
+                {s.stat_years_experience}
+              </p>
+              <p className="mt-1 text-xs uppercase tracking-[0.16em] text-navy-foreground/70">
+                Years of consultancy experience
+              </p>
+            </div>
+          ) : null}
+        </Reveal>
 
-        <div>
+        <Reveal delay={80}>
           <span className="eyebrow">About the company</span>
           <h2 className="mt-4 text-3xl leading-tight sm:text-4xl">
             A consultancy built on trust, expertise and results
           </h2>
-          <p className="mt-5 text-base leading-relaxed text-muted-foreground">
-            {site.name} is a travel and immigration consultancy based in {site.address}. We guide
-            students, professionals and families through visa applications, admissions abroad and
-            well-planned travel — with clarity at every step.
-          </p>
+          <Prose className="mt-5" text={s?.about_story} />
 
           <div className="mt-8 grid gap-6 sm:grid-cols-2">
-            <div className="rounded-lg surface-soft p-6">
-              <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-navy">Our Vision</h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{site.vision}</p>
-            </div>
-            <div className="rounded-lg surface-soft p-6">
-              <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-navy">Our Mission</h3>
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{site.mission}</p>
-            </div>
+            {s?.vision ? (
+              <div className="rounded-lg surface-soft p-6">
+                <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-navy">Our Vision</h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{s.vision}</p>
+              </div>
+            ) : null}
+            {s?.mission ? (
+              <div className="rounded-lg surface-soft p-6">
+                <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-navy">Our Mission</h3>
+                <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{s.mission}</p>
+              </div>
+            ) : null}
           </div>
 
           <ul className="mt-8 space-y-4">
@@ -65,10 +74,18 @@ export function About() {
             ))}
           </ul>
 
-          <p className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-navy">
-            <CheckCircle2 className="size-4 text-gold" /> {site.promise}
-          </p>
-        </div>
+          {s?.promise ? (
+            <p className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-navy">
+              <CheckCircle2 className="size-4 text-gold" /> {s.promise}
+            </p>
+          ) : null}
+
+          <div className="mt-8">
+            <Button asChild variant="outline" size="lg">
+              <Link to="/about">Learn more about us</Link>
+            </Button>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
