@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ResourceManager, StatusBadge, statusField } from "@/components/admin/ResourceManager";
 import { supabase } from "@/integrations/supabase/client";
 
-export const Route = createFileRoute("/_authenticated/admin/universities")({ component: Page });
+export const Route = createFileRoute("/_authenticated/dashboard/universities")({ component: Page });
 
 function Page() {
   const { data: countries } = useQuery({

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ResourceManager, StatusBadge, statusField } from "@/components/admin/ResourceManager";
 
-export const Route = createFileRoute("/_authenticated/admin/testimonials")({ component: Page });
+export const Route = createFileRoute("/_authenticated/dashboard/testimonials")({ component: Page });
 
 function Page() {
   return (

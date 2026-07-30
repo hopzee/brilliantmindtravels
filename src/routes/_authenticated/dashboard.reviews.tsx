@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 
-export const Route = createFileRoute("/_authenticated/admin/reviews")({ component: Page });
+export const Route = createFileRoute("/_authenticated/dashboard/reviews")({ component: Page });
 
 function Page() {
   const qc = useQueryClient();

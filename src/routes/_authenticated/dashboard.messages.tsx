@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cms } from "@/lib/db";
 
-export const Route = createFileRoute("/_authenticated/admin/messages")({ component: Page });
+export const Route = createFileRoute("/_authenticated/dashboard/messages")({ component: Page });
 
 const tabs = [
   { table: "contact_messages", label: "Contact Messages" },

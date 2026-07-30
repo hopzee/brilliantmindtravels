@@ -11,19 +11,19 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
-import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
-import { Route as AuthenticatedAdminBlogRouteImport } from './routes/_authenticated/admin.blog'
-import { Route as AuthenticatedAdminMediaRouteImport } from './routes/_authenticated/admin.media'
-import { Route as AuthenticatedAdminMessagesRouteImport } from './routes/_authenticated/admin.messages'
-import { Route as AuthenticatedAdminReviewsRouteImport } from './routes/_authenticated/admin.reviews'
-import { Route as AuthenticatedAdminServicesRouteImport } from './routes/_authenticated/admin.services'
-import { Route as AuthenticatedAdminSettingsRouteImport } from './routes/_authenticated/admin.settings'
-import { Route as AuthenticatedAdminStudyAbroadRouteImport } from './routes/_authenticated/admin.study-abroad'
-import { Route as AuthenticatedAdminTestimonialsRouteImport } from './routes/_authenticated/admin.testimonials'
-import { Route as AuthenticatedAdminToursRouteImport } from './routes/_authenticated/admin.tours'
-import { Route as AuthenticatedAdminUniversitiesRouteImport } from './routes/_authenticated/admin.universities'
+import { Route as RbacRouteImport } from './routes/rbac'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
+import { Route as AuthenticatedDashboardBlogRouteImport } from './routes/_authenticated/dashboard.blog'
+import { Route as AuthenticatedDashboardMediaRouteImport } from './routes/_authenticated/dashboard.media'
+import { Route as AuthenticatedDashboardMessagesRouteImport } from './routes/_authenticated/dashboard.messages'
+import { Route as AuthenticatedDashboardReviewsRouteImport } from './routes/_authenticated/dashboard.reviews'
+import { Route as AuthenticatedDashboardServicesRouteImport } from './routes/_authenticated/dashboard.services'
+import { Route as AuthenticatedDashboardSettingsRouteImport } from './routes/_authenticated/dashboard.settings'
+import { Route as AuthenticatedDashboardStudyAbroadRouteImport } from './routes/_authenticated/dashboard.study-abroad'
+import { Route as AuthenticatedDashboardTestimonialsRouteImport } from './routes/_authenticated/dashboard.testimonials'
+import { Route as AuthenticatedDashboardToursRouteImport } from './routes/_authenticated/dashboard.tours'
+import { Route as AuthenticatedDashboardUniversitiesRouteImport } from './routes/_authenticated/dashboard.universities'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -34,183 +34,187 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
+const RbacRoute = RbacRouteImport.update({
+  id: '/rbac',
+  path: '/rbac',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AuthenticatedAdminRoute,
-} as any)
-const AuthenticatedAdminBlogRoute = AuthenticatedAdminBlogRouteImport.update({
-  id: '/blog',
-  path: '/blog',
-  getParentRoute: () => AuthenticatedAdminRoute,
-} as any)
-const AuthenticatedAdminMediaRoute = AuthenticatedAdminMediaRouteImport.update({
-  id: '/media',
-  path: '/media',
-  getParentRoute: () => AuthenticatedAdminRoute,
-} as any)
-const AuthenticatedAdminMessagesRoute =
-  AuthenticatedAdminMessagesRouteImport.update({
+const AuthenticatedDashboardIndexRoute =
+  AuthenticatedDashboardIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardBlogRoute =
+  AuthenticatedDashboardBlogRouteImport.update({
+    id: '/blog',
+    path: '/blog',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardMediaRoute =
+  AuthenticatedDashboardMediaRouteImport.update({
+    id: '/media',
+    path: '/media',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardMessagesRoute =
+  AuthenticatedDashboardMessagesRouteImport.update({
     id: '/messages',
     path: '/messages',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
-const AuthenticatedAdminReviewsRoute =
-  AuthenticatedAdminReviewsRouteImport.update({
+const AuthenticatedDashboardReviewsRoute =
+  AuthenticatedDashboardReviewsRouteImport.update({
     id: '/reviews',
     path: '/reviews',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
-const AuthenticatedAdminServicesRoute =
-  AuthenticatedAdminServicesRouteImport.update({
+const AuthenticatedDashboardServicesRoute =
+  AuthenticatedDashboardServicesRouteImport.update({
     id: '/services',
     path: '/services',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
-const AuthenticatedAdminSettingsRoute =
-  AuthenticatedAdminSettingsRouteImport.update({
+const AuthenticatedDashboardSettingsRoute =
+  AuthenticatedDashboardSettingsRouteImport.update({
     id: '/settings',
     path: '/settings',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
-const AuthenticatedAdminStudyAbroadRoute =
-  AuthenticatedAdminStudyAbroadRouteImport.update({
+const AuthenticatedDashboardStudyAbroadRoute =
+  AuthenticatedDashboardStudyAbroadRouteImport.update({
     id: '/study-abroad',
     path: '/study-abroad',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
-const AuthenticatedAdminTestimonialsRoute =
-  AuthenticatedAdminTestimonialsRouteImport.update({
+const AuthenticatedDashboardTestimonialsRoute =
+  AuthenticatedDashboardTestimonialsRouteImport.update({
     id: '/testimonials',
     path: '/testimonials',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
-const AuthenticatedAdminToursRoute = AuthenticatedAdminToursRouteImport.update({
-  id: '/tours',
-  path: '/tours',
-  getParentRoute: () => AuthenticatedAdminRoute,
-} as any)
-const AuthenticatedAdminUniversitiesRoute =
-  AuthenticatedAdminUniversitiesRouteImport.update({
+const AuthenticatedDashboardToursRoute =
+  AuthenticatedDashboardToursRouteImport.update({
+    id: '/tours',
+    path: '/tours',
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any)
+const AuthenticatedDashboardUniversitiesRoute =
+  AuthenticatedDashboardUniversitiesRouteImport.update({
     id: '/universities',
     path: '/universities',
-    getParentRoute: () => AuthenticatedAdminRoute,
+    getParentRoute: () => AuthenticatedDashboardRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
-  '/admin': typeof AuthenticatedAdminRouteWithChildren
-  '/admin/blog': typeof AuthenticatedAdminBlogRoute
-  '/admin/media': typeof AuthenticatedAdminMediaRoute
-  '/admin/messages': typeof AuthenticatedAdminMessagesRoute
-  '/admin/reviews': typeof AuthenticatedAdminReviewsRoute
-  '/admin/services': typeof AuthenticatedAdminServicesRoute
-  '/admin/settings': typeof AuthenticatedAdminSettingsRoute
-  '/admin/study-abroad': typeof AuthenticatedAdminStudyAbroadRoute
-  '/admin/testimonials': typeof AuthenticatedAdminTestimonialsRoute
-  '/admin/tours': typeof AuthenticatedAdminToursRoute
-  '/admin/universities': typeof AuthenticatedAdminUniversitiesRoute
-  '/admin/': typeof AuthenticatedAdminIndexRoute
+  '/rbac': typeof RbacRoute
+  '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/dashboard/blog': typeof AuthenticatedDashboardBlogRoute
+  '/dashboard/media': typeof AuthenticatedDashboardMediaRoute
+  '/dashboard/messages': typeof AuthenticatedDashboardMessagesRoute
+  '/dashboard/reviews': typeof AuthenticatedDashboardReviewsRoute
+  '/dashboard/services': typeof AuthenticatedDashboardServicesRoute
+  '/dashboard/settings': typeof AuthenticatedDashboardSettingsRoute
+  '/dashboard/study-abroad': typeof AuthenticatedDashboardStudyAbroadRoute
+  '/dashboard/testimonials': typeof AuthenticatedDashboardTestimonialsRoute
+  '/dashboard/tours': typeof AuthenticatedDashboardToursRoute
+  '/dashboard/universities': typeof AuthenticatedDashboardUniversitiesRoute
+  '/dashboard/': typeof AuthenticatedDashboardIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
-  '/admin/blog': typeof AuthenticatedAdminBlogRoute
-  '/admin/media': typeof AuthenticatedAdminMediaRoute
-  '/admin/messages': typeof AuthenticatedAdminMessagesRoute
-  '/admin/reviews': typeof AuthenticatedAdminReviewsRoute
-  '/admin/services': typeof AuthenticatedAdminServicesRoute
-  '/admin/settings': typeof AuthenticatedAdminSettingsRoute
-  '/admin/study-abroad': typeof AuthenticatedAdminStudyAbroadRoute
-  '/admin/testimonials': typeof AuthenticatedAdminTestimonialsRoute
-  '/admin/tours': typeof AuthenticatedAdminToursRoute
-  '/admin/universities': typeof AuthenticatedAdminUniversitiesRoute
-  '/admin': typeof AuthenticatedAdminIndexRoute
+  '/rbac': typeof RbacRoute
+  '/dashboard/blog': typeof AuthenticatedDashboardBlogRoute
+  '/dashboard/media': typeof AuthenticatedDashboardMediaRoute
+  '/dashboard/messages': typeof AuthenticatedDashboardMessagesRoute
+  '/dashboard/reviews': typeof AuthenticatedDashboardReviewsRoute
+  '/dashboard/services': typeof AuthenticatedDashboardServicesRoute
+  '/dashboard/settings': typeof AuthenticatedDashboardSettingsRoute
+  '/dashboard/study-abroad': typeof AuthenticatedDashboardStudyAbroadRoute
+  '/dashboard/testimonials': typeof AuthenticatedDashboardTestimonialsRoute
+  '/dashboard/tours': typeof AuthenticatedDashboardToursRoute
+  '/dashboard/universities': typeof AuthenticatedDashboardUniversitiesRoute
+  '/dashboard': typeof AuthenticatedDashboardIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
-  '/auth': typeof AuthRoute
-  '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
-  '/_authenticated/admin/blog': typeof AuthenticatedAdminBlogRoute
-  '/_authenticated/admin/media': typeof AuthenticatedAdminMediaRoute
-  '/_authenticated/admin/messages': typeof AuthenticatedAdminMessagesRoute
-  '/_authenticated/admin/reviews': typeof AuthenticatedAdminReviewsRoute
-  '/_authenticated/admin/services': typeof AuthenticatedAdminServicesRoute
-  '/_authenticated/admin/settings': typeof AuthenticatedAdminSettingsRoute
-  '/_authenticated/admin/study-abroad': typeof AuthenticatedAdminStudyAbroadRoute
-  '/_authenticated/admin/testimonials': typeof AuthenticatedAdminTestimonialsRoute
-  '/_authenticated/admin/tours': typeof AuthenticatedAdminToursRoute
-  '/_authenticated/admin/universities': typeof AuthenticatedAdminUniversitiesRoute
-  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
+  '/rbac': typeof RbacRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/_authenticated/dashboard/blog': typeof AuthenticatedDashboardBlogRoute
+  '/_authenticated/dashboard/media': typeof AuthenticatedDashboardMediaRoute
+  '/_authenticated/dashboard/messages': typeof AuthenticatedDashboardMessagesRoute
+  '/_authenticated/dashboard/reviews': typeof AuthenticatedDashboardReviewsRoute
+  '/_authenticated/dashboard/services': typeof AuthenticatedDashboardServicesRoute
+  '/_authenticated/dashboard/settings': typeof AuthenticatedDashboardSettingsRoute
+  '/_authenticated/dashboard/study-abroad': typeof AuthenticatedDashboardStudyAbroadRoute
+  '/_authenticated/dashboard/testimonials': typeof AuthenticatedDashboardTestimonialsRoute
+  '/_authenticated/dashboard/tours': typeof AuthenticatedDashboardToursRoute
+  '/_authenticated/dashboard/universities': typeof AuthenticatedDashboardUniversitiesRoute
+  '/_authenticated/dashboard/': typeof AuthenticatedDashboardIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/auth'
-    | '/admin'
-    | '/admin/blog'
-    | '/admin/media'
-    | '/admin/messages'
-    | '/admin/reviews'
-    | '/admin/services'
-    | '/admin/settings'
-    | '/admin/study-abroad'
-    | '/admin/testimonials'
-    | '/admin/tours'
-    | '/admin/universities'
-    | '/admin/'
+    | '/rbac'
+    | '/dashboard'
+    | '/dashboard/blog'
+    | '/dashboard/media'
+    | '/dashboard/messages'
+    | '/dashboard/reviews'
+    | '/dashboard/services'
+    | '/dashboard/settings'
+    | '/dashboard/study-abroad'
+    | '/dashboard/testimonials'
+    | '/dashboard/tours'
+    | '/dashboard/universities'
+    | '/dashboard/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/auth'
-    | '/admin/blog'
-    | '/admin/media'
-    | '/admin/messages'
-    | '/admin/reviews'
-    | '/admin/services'
-    | '/admin/settings'
-    | '/admin/study-abroad'
-    | '/admin/testimonials'
-    | '/admin/tours'
-    | '/admin/universities'
-    | '/admin'
+    | '/rbac'
+    | '/dashboard/blog'
+    | '/dashboard/media'
+    | '/dashboard/messages'
+    | '/dashboard/reviews'
+    | '/dashboard/services'
+    | '/dashboard/settings'
+    | '/dashboard/study-abroad'
+    | '/dashboard/testimonials'
+    | '/dashboard/tours'
+    | '/dashboard/universities'
+    | '/dashboard'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
-    | '/auth'
-    | '/_authenticated/admin'
-    | '/_authenticated/admin/blog'
-    | '/_authenticated/admin/media'
-    | '/_authenticated/admin/messages'
-    | '/_authenticated/admin/reviews'
-    | '/_authenticated/admin/services'
-    | '/_authenticated/admin/settings'
-    | '/_authenticated/admin/study-abroad'
-    | '/_authenticated/admin/testimonials'
-    | '/_authenticated/admin/tours'
-    | '/_authenticated/admin/universities'
-    | '/_authenticated/admin/'
+    | '/rbac'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/dashboard/blog'
+    | '/_authenticated/dashboard/media'
+    | '/_authenticated/dashboard/messages'
+    | '/_authenticated/dashboard/reviews'
+    | '/_authenticated/dashboard/services'
+    | '/_authenticated/dashboard/settings'
+    | '/_authenticated/dashboard/study-abroad'
+    | '/_authenticated/dashboard/testimonials'
+    | '/_authenticated/dashboard/tours'
+    | '/_authenticated/dashboard/universities'
+    | '/_authenticated/dashboard/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
-  AuthRoute: typeof AuthRoute
+  RbacRoute: typeof RbacRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -229,137 +233,143 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
+    '/rbac': {
+      id: '/rbac'
+      path: '/rbac'
+      fullPath: '/rbac'
+      preLoaderRoute: typeof RbacRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/admin': {
-      id: '/_authenticated/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/admin/': {
-      id: '/_authenticated/admin/'
+    '/_authenticated/dashboard/': {
+      id: '/_authenticated/dashboard/'
       path: '/'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/dashboard/'
+      preLoaderRoute: typeof AuthenticatedDashboardIndexRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
     }
-    '/_authenticated/admin/blog': {
-      id: '/_authenticated/admin/blog'
+    '/_authenticated/dashboard/blog': {
+      id: '/_authenticated/dashboard/blog'
       path: '/blog'
-      fullPath: '/admin/blog'
-      preLoaderRoute: typeof AuthenticatedAdminBlogRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/dashboard/blog'
+      preLoaderRoute: typeof AuthenticatedDashboardBlogRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
     }
-    '/_authenticated/admin/media': {
-      id: '/_authenticated/admin/media'
+    '/_authenticated/dashboard/media': {
+      id: '/_authenticated/dashboard/media'
       path: '/media'
-      fullPath: '/admin/media'
-      preLoaderRoute: typeof AuthenticatedAdminMediaRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/dashboard/media'
+      preLoaderRoute: typeof AuthenticatedDashboardMediaRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
     }
-    '/_authenticated/admin/messages': {
-      id: '/_authenticated/admin/messages'
+    '/_authenticated/dashboard/messages': {
+      id: '/_authenticated/dashboard/messages'
       path: '/messages'
-      fullPath: '/admin/messages'
-      preLoaderRoute: typeof AuthenticatedAdminMessagesRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/dashboard/messages'
+      preLoaderRoute: typeof AuthenticatedDashboardMessagesRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
     }
-    '/_authenticated/admin/reviews': {
-      id: '/_authenticated/admin/reviews'
+    '/_authenticated/dashboard/reviews': {
+      id: '/_authenticated/dashboard/reviews'
       path: '/reviews'
-      fullPath: '/admin/reviews'
-      preLoaderRoute: typeof AuthenticatedAdminReviewsRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/dashboard/reviews'
+      preLoaderRoute: typeof AuthenticatedDashboardReviewsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
     }
-    '/_authenticated/admin/services': {
-      id: '/_authenticated/admin/services'
+    '/_authenticated/dashboard/services': {
+      id: '/_authenticated/dashboard/services'
       path: '/services'
-      fullPath: '/admin/services'
-      preLoaderRoute: typeof AuthenticatedAdminServicesRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/dashboard/services'
+      preLoaderRoute: typeof AuthenticatedDashboardServicesRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
     }
-    '/_authenticated/admin/settings': {
-      id: '/_authenticated/admin/settings'
+    '/_authenticated/dashboard/settings': {
+      id: '/_authenticated/dashboard/settings'
       path: '/settings'
-      fullPath: '/admin/settings'
-      preLoaderRoute: typeof AuthenticatedAdminSettingsRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/dashboard/settings'
+      preLoaderRoute: typeof AuthenticatedDashboardSettingsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
     }
-    '/_authenticated/admin/study-abroad': {
-      id: '/_authenticated/admin/study-abroad'
+    '/_authenticated/dashboard/study-abroad': {
+      id: '/_authenticated/dashboard/study-abroad'
       path: '/study-abroad'
-      fullPath: '/admin/study-abroad'
-      preLoaderRoute: typeof AuthenticatedAdminStudyAbroadRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/dashboard/study-abroad'
+      preLoaderRoute: typeof AuthenticatedDashboardStudyAbroadRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
     }
-    '/_authenticated/admin/testimonials': {
-      id: '/_authenticated/admin/testimonials'
+    '/_authenticated/dashboard/testimonials': {
+      id: '/_authenticated/dashboard/testimonials'
       path: '/testimonials'
-      fullPath: '/admin/testimonials'
-      preLoaderRoute: typeof AuthenticatedAdminTestimonialsRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/dashboard/testimonials'
+      preLoaderRoute: typeof AuthenticatedDashboardTestimonialsRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
     }
-    '/_authenticated/admin/tours': {
-      id: '/_authenticated/admin/tours'
+    '/_authenticated/dashboard/tours': {
+      id: '/_authenticated/dashboard/tours'
       path: '/tours'
-      fullPath: '/admin/tours'
-      preLoaderRoute: typeof AuthenticatedAdminToursRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/dashboard/tours'
+      preLoaderRoute: typeof AuthenticatedDashboardToursRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
     }
-    '/_authenticated/admin/universities': {
-      id: '/_authenticated/admin/universities'
+    '/_authenticated/dashboard/universities': {
+      id: '/_authenticated/dashboard/universities'
       path: '/universities'
-      fullPath: '/admin/universities'
-      preLoaderRoute: typeof AuthenticatedAdminUniversitiesRouteImport
-      parentRoute: typeof AuthenticatedAdminRoute
+      fullPath: '/dashboard/universities'
+      preLoaderRoute: typeof AuthenticatedDashboardUniversitiesRouteImport
+      parentRoute: typeof AuthenticatedDashboardRoute
     }
   }
 }
 
-interface AuthenticatedAdminRouteChildren {
-  AuthenticatedAdminBlogRoute: typeof AuthenticatedAdminBlogRoute
-  AuthenticatedAdminMediaRoute: typeof AuthenticatedAdminMediaRoute
-  AuthenticatedAdminMessagesRoute: typeof AuthenticatedAdminMessagesRoute
-  AuthenticatedAdminReviewsRoute: typeof AuthenticatedAdminReviewsRoute
-  AuthenticatedAdminServicesRoute: typeof AuthenticatedAdminServicesRoute
-  AuthenticatedAdminSettingsRoute: typeof AuthenticatedAdminSettingsRoute
-  AuthenticatedAdminStudyAbroadRoute: typeof AuthenticatedAdminStudyAbroadRoute
-  AuthenticatedAdminTestimonialsRoute: typeof AuthenticatedAdminTestimonialsRoute
-  AuthenticatedAdminToursRoute: typeof AuthenticatedAdminToursRoute
-  AuthenticatedAdminUniversitiesRoute: typeof AuthenticatedAdminUniversitiesRoute
-  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+interface AuthenticatedDashboardRouteChildren {
+  AuthenticatedDashboardBlogRoute: typeof AuthenticatedDashboardBlogRoute
+  AuthenticatedDashboardMediaRoute: typeof AuthenticatedDashboardMediaRoute
+  AuthenticatedDashboardMessagesRoute: typeof AuthenticatedDashboardMessagesRoute
+  AuthenticatedDashboardReviewsRoute: typeof AuthenticatedDashboardReviewsRoute
+  AuthenticatedDashboardServicesRoute: typeof AuthenticatedDashboardServicesRoute
+  AuthenticatedDashboardSettingsRoute: typeof AuthenticatedDashboardSettingsRoute
+  AuthenticatedDashboardStudyAbroadRoute: typeof AuthenticatedDashboardStudyAbroadRoute
+  AuthenticatedDashboardTestimonialsRoute: typeof AuthenticatedDashboardTestimonialsRoute
+  AuthenticatedDashboardToursRoute: typeof AuthenticatedDashboardToursRoute
+  AuthenticatedDashboardUniversitiesRoute: typeof AuthenticatedDashboardUniversitiesRoute
+  AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute
 }
 
-const AuthenticatedAdminRouteChildren: AuthenticatedAdminRouteChildren = {
-  AuthenticatedAdminBlogRoute: AuthenticatedAdminBlogRoute,
-  AuthenticatedAdminMediaRoute: AuthenticatedAdminMediaRoute,
-  AuthenticatedAdminMessagesRoute: AuthenticatedAdminMessagesRoute,
-  AuthenticatedAdminReviewsRoute: AuthenticatedAdminReviewsRoute,
-  AuthenticatedAdminServicesRoute: AuthenticatedAdminServicesRoute,
-  AuthenticatedAdminSettingsRoute: AuthenticatedAdminSettingsRoute,
-  AuthenticatedAdminStudyAbroadRoute: AuthenticatedAdminStudyAbroadRoute,
-  AuthenticatedAdminTestimonialsRoute: AuthenticatedAdminTestimonialsRoute,
-  AuthenticatedAdminToursRoute: AuthenticatedAdminToursRoute,
-  AuthenticatedAdminUniversitiesRoute: AuthenticatedAdminUniversitiesRoute,
-  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
-}
+const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
+  {
+    AuthenticatedDashboardBlogRoute: AuthenticatedDashboardBlogRoute,
+    AuthenticatedDashboardMediaRoute: AuthenticatedDashboardMediaRoute,
+    AuthenticatedDashboardMessagesRoute: AuthenticatedDashboardMessagesRoute,
+    AuthenticatedDashboardReviewsRoute: AuthenticatedDashboardReviewsRoute,
+    AuthenticatedDashboardServicesRoute: AuthenticatedDashboardServicesRoute,
+    AuthenticatedDashboardSettingsRoute: AuthenticatedDashboardSettingsRoute,
+    AuthenticatedDashboardStudyAbroadRoute:
+      AuthenticatedDashboardStudyAbroadRoute,
+    AuthenticatedDashboardTestimonialsRoute:
+      AuthenticatedDashboardTestimonialsRoute,
+    AuthenticatedDashboardToursRoute: AuthenticatedDashboardToursRoute,
+    AuthenticatedDashboardUniversitiesRoute:
+      AuthenticatedDashboardUniversitiesRoute,
+    AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
+  }
 
-const AuthenticatedAdminRouteWithChildren =
-  AuthenticatedAdminRoute._addFileChildren(AuthenticatedAdminRouteChildren)
+const AuthenticatedDashboardRouteWithChildren =
+  AuthenticatedDashboardRoute._addFileChildren(
+    AuthenticatedDashboardRouteChildren,
+  )
 
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedAdminRoute: typeof AuthenticatedAdminRouteWithChildren
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedAdminRoute: AuthenticatedAdminRouteWithChildren,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
 }
 
 const AuthenticatedRouteRouteWithChildren =
@@ -368,7 +378,7 @@ const AuthenticatedRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
-  AuthRoute: AuthRoute,
+  RbacRoute: RbacRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

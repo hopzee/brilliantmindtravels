@@ -11,7 +11,7 @@ import { MediaField } from "@/components/admin/MediaField";
 import { supabase } from "@/integrations/supabase/client";
 import { cms } from "@/lib/db";
 
-export const Route = createFileRoute("/_authenticated/admin/settings")({ component: Page });
+export const Route = createFileRoute("/_authenticated/dashboard/settings")({ component: Page });
 
 type Group = { title: string; fields: { name: string; label: string; type?: "text" | "textarea" | "image" }[] };
 
