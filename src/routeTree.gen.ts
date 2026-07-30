@@ -15,6 +15,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as RbacRouteImport } from './routes/rbac'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as StudyAbroadIndexRouteImport } from './routes/study-abroad.index'
@@ -60,6 +61,11 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
 const BlogIndexRoute = BlogIndexRouteImport.update({
   id: '/blog/',
   path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesIndexRoute = ServicesIndexRouteImport.update({
@@ -164,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/rbac': typeof RbacRoute
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/blog/$slug': typeof BlogSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/study-abroad/$slug': typeof StudyAbroadSlugRoute
   '/tours/$slug': typeof ToursSlugRoute
@@ -187,6 +194,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/rbac': typeof RbacRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/study-abroad/$slug': typeof StudyAbroadSlugRoute
   '/tours/$slug': typeof ToursSlugRoute
@@ -213,6 +221,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/rbac': typeof RbacRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/blog/$slug': typeof BlogSlugRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/study-abroad/$slug': typeof StudyAbroadSlugRoute
   '/tours/$slug': typeof ToursSlugRoute
@@ -239,6 +248,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/rbac'
     | '/dashboard'
+    | '/blog/$slug'
     | '/services/$slug'
     | '/study-abroad/$slug'
     | '/tours/$slug'
@@ -262,6 +272,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/rbac'
+    | '/blog/$slug'
     | '/services/$slug'
     | '/study-abroad/$slug'
     | '/tours/$slug'
@@ -287,6 +298,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/rbac'
     | '/_authenticated/dashboard'
+    | '/blog/$slug'
     | '/services/$slug'
     | '/study-abroad/$slug'
     | '/tours/$slug'
@@ -312,6 +324,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   RbacRoute: typeof RbacRoute
+  BlogSlugRoute: typeof BlogSlugRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
   StudyAbroadSlugRoute: typeof StudyAbroadSlugRoute
   ToursSlugRoute: typeof ToursSlugRoute
@@ -363,6 +376,13 @@ declare module '@tanstack/react-router' {
       path: '/blog'
       fullPath: '/blog/'
       preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services/': {
@@ -540,6 +560,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   RbacRoute: RbacRoute,
+  BlogSlugRoute: BlogSlugRoute,
   ServicesSlugRoute: ServicesSlugRoute,
   StudyAbroadSlugRoute: StudyAbroadSlugRoute,
   ToursSlugRoute: ToursSlugRoute,
