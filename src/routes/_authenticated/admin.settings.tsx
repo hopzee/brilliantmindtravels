@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { MediaField } from "@/components/admin/MediaField";
 import { supabase } from "@/integrations/supabase/client";
+import { cms } from "@/lib/db";
 
 export const Route = createFileRoute("/_authenticated/admin/settings")({ component: Page });
 
@@ -99,7 +100,7 @@ function Page() {
       void id;
       void created_at;
       void updated_at;
-      const { error } = await supabase.from("website_settings").update(rest).eq("id", data.id);
+      const { error } = await cms.from("website_settings").update(rest).eq("id", data.id);
       if (error) throw error;
     },
     onSuccess: () => {
