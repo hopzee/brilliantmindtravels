@@ -5,8 +5,9 @@ export const site = {
   promise: "We don't just process visas — we open doors to your global future.",
   address: "Ede South, Osun State, Nigeria",
   email: "info@brilliantmindtravels.com",
-  phone: "+234 800 000 0000",
-  whatsapp: "2348000000000",
+  // Fallbacks only — the live values are managed in Website Settings (CMS).
+  phone: "+234 816 590 0571",
+  whatsapp: "2348165900571",
   vision:
     "To be a trusted global travel and education consultancy, connecting people to life-changing international opportunities through excellence, integrity, and personalized guidance.",
   mission:
