@@ -1,4 +1,4 @@
-import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft } from "lucide-react";
 import { SiteLayout } from "@/components/public/SiteLayout";
@@ -44,7 +44,8 @@ export const Route = createFileRoute("/services/$slug")({
 function ServiceDetail() {
   const { slug } = Route.useParams();
   const { data: s } = useSettings();
-  const { data: item, isLoading } = useQuery(publishedItem("services", slug));
+  const { data, isLoading } = useQuery(publishedItem("services", slug));
+  const item = data as any;
 
   if (isLoading) return <DetailSkeleton />;
   if (!item) return <NotAvailable />;
