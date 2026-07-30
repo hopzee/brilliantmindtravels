@@ -16,6 +16,7 @@ import { Route as RbacRouteImport } from './routes/rbac'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
+import { Route as StudyAbroadIndexRouteImport } from './routes/study-abroad.index'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
 import { Route as AuthenticatedDashboardBlogRouteImport } from './routes/_authenticated/dashboard.blog'
 import { Route as AuthenticatedDashboardMediaRouteImport } from './routes/_authenticated/dashboard.media'
@@ -60,6 +61,11 @@ const ServicesIndexRoute = ServicesIndexRouteImport.update({
 const ServicesSlugRoute = ServicesSlugRouteImport.update({
   id: '/services/$slug',
   path: '/services/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StudyAbroadIndexRoute = StudyAbroadIndexRouteImport.update({
+  id: '/study-abroad/',
+  path: '/study-abroad/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedDashboardIndexRoute =
@@ -136,6 +142,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/services/$slug': typeof ServicesSlugRoute
   '/services/': typeof ServicesIndexRoute
+  '/study-abroad/': typeof StudyAbroadIndexRoute
   '/dashboard/blog': typeof AuthenticatedDashboardBlogRoute
   '/dashboard/media': typeof AuthenticatedDashboardMediaRoute
   '/dashboard/messages': typeof AuthenticatedDashboardMessagesRoute
@@ -154,6 +161,7 @@ export interface FileRoutesByTo {
   '/rbac': typeof RbacRoute
   '/services/$slug': typeof ServicesSlugRoute
   '/services': typeof ServicesIndexRoute
+  '/study-abroad': typeof StudyAbroadIndexRoute
   '/dashboard/blog': typeof AuthenticatedDashboardBlogRoute
   '/dashboard/media': typeof AuthenticatedDashboardMediaRoute
   '/dashboard/messages': typeof AuthenticatedDashboardMessagesRoute
@@ -175,6 +183,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
   '/services/$slug': typeof ServicesSlugRoute
   '/services/': typeof ServicesIndexRoute
+  '/study-abroad/': typeof StudyAbroadIndexRoute
   '/_authenticated/dashboard/blog': typeof AuthenticatedDashboardBlogRoute
   '/_authenticated/dashboard/media': typeof AuthenticatedDashboardMediaRoute
   '/_authenticated/dashboard/messages': typeof AuthenticatedDashboardMessagesRoute
@@ -196,6 +205,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/services/$slug'
     | '/services/'
+    | '/study-abroad/'
     | '/dashboard/blog'
     | '/dashboard/media'
     | '/dashboard/messages'
@@ -214,6 +224,7 @@ export interface FileRouteTypes {
     | '/rbac'
     | '/services/$slug'
     | '/services'
+    | '/study-abroad'
     | '/dashboard/blog'
     | '/dashboard/media'
     | '/dashboard/messages'
@@ -234,6 +245,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/services/$slug'
     | '/services/'
+    | '/study-abroad/'
     | '/_authenticated/dashboard/blog'
     | '/_authenticated/dashboard/media'
     | '/_authenticated/dashboard/messages'
@@ -254,6 +266,7 @@ export interface RootRouteChildren {
   RbacRoute: typeof RbacRoute
   ServicesSlugRoute: typeof ServicesSlugRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
+  StudyAbroadIndexRoute: typeof StudyAbroadIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -305,6 +318,13 @@ declare module '@tanstack/react-router' {
       path: '/services/$slug'
       fullPath: '/services/$slug'
       preLoaderRoute: typeof ServicesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/study-abroad/': {
+      id: '/study-abroad/'
+      path: '/study-abroad'
+      fullPath: '/study-abroad/'
+      preLoaderRoute: typeof StudyAbroadIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/dashboard/': {
@@ -442,6 +462,7 @@ const rootRouteChildren: RootRouteChildren = {
   RbacRoute: RbacRoute,
   ServicesSlugRoute: ServicesSlugRoute,
   ServicesIndexRoute: ServicesIndexRoute,
+  StudyAbroadIndexRoute: StudyAbroadIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
