@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as RbacRouteImport } from './routes/rbac'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as AuthenticatedDashboardIndexRouteImport } from './routes/_authenticated/dashboard.index'
 import { Route as AuthenticatedDashboardBlogRouteImport } from './routes/_authenticated/dashboard.blog'
 import { Route as AuthenticatedDashboardMediaRouteImport } from './routes/_authenticated/dashboard.media'
@@ -49,6 +50,11 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const ServicesIndexRoute = ServicesIndexRouteImport.update({
+  id: '/services/',
+  path: '/services/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedDashboardIndexRoute =
   AuthenticatedDashboardIndexRouteImport.update({
@@ -122,6 +128,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/rbac': typeof RbacRoute
   '/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/services/': typeof ServicesIndexRoute
   '/dashboard/blog': typeof AuthenticatedDashboardBlogRoute
   '/dashboard/media': typeof AuthenticatedDashboardMediaRoute
   '/dashboard/messages': typeof AuthenticatedDashboardMessagesRoute
@@ -138,6 +145,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/rbac': typeof RbacRoute
+  '/services': typeof ServicesIndexRoute
   '/dashboard/blog': typeof AuthenticatedDashboardBlogRoute
   '/dashboard/media': typeof AuthenticatedDashboardMediaRoute
   '/dashboard/messages': typeof AuthenticatedDashboardMessagesRoute
@@ -157,6 +165,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/rbac': typeof RbacRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
+  '/services/': typeof ServicesIndexRoute
   '/_authenticated/dashboard/blog': typeof AuthenticatedDashboardBlogRoute
   '/_authenticated/dashboard/media': typeof AuthenticatedDashboardMediaRoute
   '/_authenticated/dashboard/messages': typeof AuthenticatedDashboardMessagesRoute
@@ -176,6 +185,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/rbac'
     | '/dashboard'
+    | '/services/'
     | '/dashboard/blog'
     | '/dashboard/media'
     | '/dashboard/messages'
@@ -192,6 +202,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/rbac'
+    | '/services'
     | '/dashboard/blog'
     | '/dashboard/media'
     | '/dashboard/messages'
@@ -210,6 +221,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/rbac'
     | '/_authenticated/dashboard'
+    | '/services/'
     | '/_authenticated/dashboard/blog'
     | '/_authenticated/dashboard/media'
     | '/_authenticated/dashboard/messages'
@@ -228,6 +240,7 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   RbacRoute: typeof RbacRoute
+  ServicesIndexRoute: typeof ServicesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -266,6 +279,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/services/': {
+      id: '/services/'
+      path: '/services'
+      fullPath: '/services/'
+      preLoaderRoute: typeof ServicesIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/dashboard/': {
       id: '/_authenticated/dashboard/'
@@ -400,6 +420,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   RbacRoute: RbacRoute,
+  ServicesIndexRoute: ServicesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
