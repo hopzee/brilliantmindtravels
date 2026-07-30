@@ -14,6 +14,7 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as RbacRouteImport } from './routes/rbac'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as ServicesIndexRouteImport } from './routes/services.index'
 import { Route as ServicesSlugRouteImport } from './routes/services.$slug'
 import { Route as StudyAbroadIndexRouteImport } from './routes/study-abroad.index'
@@ -55,6 +56,11 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesIndexRoute = ServicesIndexRouteImport.update({
   id: '/services/',
@@ -161,6 +167,7 @@ export interface FileRoutesByFullPath {
   '/services/$slug': typeof ServicesSlugRoute
   '/study-abroad/$slug': typeof StudyAbroadSlugRoute
   '/tours/$slug': typeof ToursSlugRoute
+  '/blog/': typeof BlogIndexRoute
   '/services/': typeof ServicesIndexRoute
   '/study-abroad/': typeof StudyAbroadIndexRoute
   '/tours/': typeof ToursIndexRoute
@@ -183,6 +190,7 @@ export interface FileRoutesByTo {
   '/services/$slug': typeof ServicesSlugRoute
   '/study-abroad/$slug': typeof StudyAbroadSlugRoute
   '/tours/$slug': typeof ToursSlugRoute
+  '/blog': typeof BlogIndexRoute
   '/services': typeof ServicesIndexRoute
   '/study-abroad': typeof StudyAbroadIndexRoute
   '/tours': typeof ToursIndexRoute
@@ -208,6 +216,7 @@ export interface FileRoutesById {
   '/services/$slug': typeof ServicesSlugRoute
   '/study-abroad/$slug': typeof StudyAbroadSlugRoute
   '/tours/$slug': typeof ToursSlugRoute
+  '/blog/': typeof BlogIndexRoute
   '/services/': typeof ServicesIndexRoute
   '/study-abroad/': typeof StudyAbroadIndexRoute
   '/tours/': typeof ToursIndexRoute
@@ -233,6 +242,7 @@ export interface FileRouteTypes {
     | '/services/$slug'
     | '/study-abroad/$slug'
     | '/tours/$slug'
+    | '/blog/'
     | '/services/'
     | '/study-abroad/'
     | '/tours/'
@@ -255,6 +265,7 @@ export interface FileRouteTypes {
     | '/services/$slug'
     | '/study-abroad/$slug'
     | '/tours/$slug'
+    | '/blog'
     | '/services'
     | '/study-abroad'
     | '/tours'
@@ -279,6 +290,7 @@ export interface FileRouteTypes {
     | '/services/$slug'
     | '/study-abroad/$slug'
     | '/tours/$slug'
+    | '/blog/'
     | '/services/'
     | '/study-abroad/'
     | '/tours/'
@@ -303,6 +315,7 @@ export interface RootRouteChildren {
   ServicesSlugRoute: typeof ServicesSlugRoute
   StudyAbroadSlugRoute: typeof StudyAbroadSlugRoute
   ToursSlugRoute: typeof ToursSlugRoute
+  BlogIndexRoute: typeof BlogIndexRoute
   ServicesIndexRoute: typeof ServicesIndexRoute
   StudyAbroadIndexRoute: typeof StudyAbroadIndexRoute
   ToursIndexRoute: typeof ToursIndexRoute
@@ -344,6 +357,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/services/': {
       id: '/services/'
@@ -523,6 +543,7 @@ const rootRouteChildren: RootRouteChildren = {
   ServicesSlugRoute: ServicesSlugRoute,
   StudyAbroadSlugRoute: StudyAbroadSlugRoute,
   ToursSlugRoute: ToursSlugRoute,
+  BlogIndexRoute: BlogIndexRoute,
   ServicesIndexRoute: ServicesIndexRoute,
   StudyAbroadIndexRoute: StudyAbroadIndexRoute,
   ToursIndexRoute: ToursIndexRoute,
