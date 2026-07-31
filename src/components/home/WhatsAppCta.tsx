@@ -13,11 +13,11 @@ export function WhatsAppCta() {
         <div>
           <span className="eyebrow">Ready when you are</span>
           <h2 className="mt-4 max-w-xl text-3xl leading-tight sm:text-4xl">
-            Speak with a consultant today — no online payment required
+            Speak with a consultant today, no website checkout required
           </h2>
           <p className="mt-5 max-w-xl text-base leading-relaxed text-navy-foreground/75">
             Every consultation starts with a conversation. Reach us on WhatsApp, call the office, or
-            book an appointment and settle any fees in person at our office.
+            book an appointment. Fees are agreed directly with the CEO once your case is discussed.
           </p>
 
           <div className="mt-9 flex flex-wrap gap-3">
@@ -43,9 +43,11 @@ export function WhatsAppCta() {
             <li className="flex gap-4">
               <Wallet className="mt-0.5 size-5 shrink-0 text-gold" />
               <span>
-                <strong className="block font-semibold">Payments in person only</strong>
+                <strong className="block font-semibold">Payment after discussion</strong>
                 <span className="text-navy-foreground/70">
-                  We never request payment through this website. Fees are confirmed by our team.
+                  Nothing is charged through this website. Fees are settled directly with the CEO
+                  once a deal is sealed, and eligible applicants may qualify for our pay after your
+                  visa is out arrangement, with eligibility decided personally by the CEO.
                 </span>
               </span>
             </li>

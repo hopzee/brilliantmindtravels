@@ -32,7 +32,7 @@ function ContactPage() {
       <PageHero
         eyebrow="Contact"
         title="Let's plan your next move"
-        intro="Choose a general inquiry or book a consultation — we respond quickly on every channel."
+        intro="Choose a general inquiry or book a consultation. We respond quickly on every channel."
       />
 
       <section className="bg-background py-20">
@@ -93,7 +93,7 @@ function ContactPage() {
                 />
               </div>
               <p className="mt-4 text-xs text-muted-foreground">
-                We never collect payments online — fees are settled with our team directly.
+                No checkout runs on this website. Fees are agreed directly with the CEO after your case is discussed, and eligible applicants may qualify for the pay after your visa is out arrangement.
               </p>
             </div>
 
