@@ -1007,6 +1007,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      increment_download: { Args: { _id: string }; Returns: undefined }
       is_admin: { Args: never; Returns: boolean }
     }
     Enums: {
