@@ -114,3 +114,38 @@ export function universitiesForCountry(countryId: string) {
     staleTime: 60_000,
   });
 }
+/** Ordered, published list for the small CMS collections (why choose us, team, FAQs, downloads, promotions). */
+export function orderedPublished<T = Record<string, any>>(table: string, extra: Record<string, unknown> = {}) {
+  return queryOptions({
+    queryKey: ["cms-ordered", table, extra],
+    queryFn: async () => {
+      let q = cms.from(table).select("*").eq("status", "published");
+      for (const [key, value] of Object.entries(extra)) q = q.eq(key, value);
+      const { data, error } = await q
+        .order("sort_order", { ascending: true })
+        .order("created_at", { ascending: true });
+      if (error) throw error;
+      return (data ?? []) as T[];
+    },
+    staleTime: 60_000,
+  });
+}
+
+export const whyChooseUsQuery = orderedPublished("why_choose_us");
+export const teamQuery = orderedPublished("team_members");
+export const faqsQuery = orderedPublished("faqs");
+export const downloadsQuery = orderedPublished("downloads");
+
+export function promotionsQuery(placement?: string) {
+  return orderedPublished("promotions", placement ? { placement } : {});
+}
+
+/** Testimonials ordered for the public grid, newest manual order first. */
+export const orderedTestimonialsQuery = orderedPublished("testimonials");
+
+export function formatBytes(bytes?: number | null) {
+  if (!bytes || bytes <= 0) return null;
+  const units = ["B", "KB", "MB", "GB"];
+  const i = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+  return `${(bytes / 1024 ** i).toFixed(i === 0 ? 0 : 1)} ${units[i]}`;
+}
