@@ -3,6 +3,8 @@ import { SiteLayout } from "@/components/public/SiteLayout";
 import { PageHero, Prose, Reveal, SectionHeading, useSettings } from "@/components/public/ui";
 import { AnimatedStats } from "@/components/home/Stats";
 import { Process } from "@/components/home/Process";
+import { Leadership } from "@/components/about/Leadership";
+import { Team } from "@/components/about/Team";
 import { WhatsAppCta } from "@/components/home/WhatsAppCta";
 import { fallbackImages, imageOr } from "@/lib/cms";
 
@@ -78,6 +80,8 @@ function AboutPage() {
         </div>
       </section>
 
+      <Leadership />
+      <Team />
       <Process />
       <WhatsAppCta />
     </SiteLayout>
