@@ -1,36 +1,35 @@
+import { useQuery } from "@tanstack/react-query";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { faqsQuery } from "@/lib/cms";
 import { Reveal, SectionHeading, useSettings } from "@/components/public/ui";
 
-const faqs = [
-  {
-    q: "Do you guarantee visa approval?",
-    a: "No honest consultancy can guarantee an embassy decision. What we guarantee is a complete, accurate and well-presented application that gives you the strongest possible chance.",
-  },
-  {
-    q: "Can I pay online?",
-    a: "We do not collect payments online. All consultations and service fees are arranged directly with our team by phone, WhatsApp or at our office.",
-  },
-  {
-    q: "How long does the process take?",
-    a: "Timelines depend on the destination and visa category. During your consultation we give you a realistic timeline based on current embassy processing times.",
-  },
-  {
-    q: "Do you help with school admissions as well as visas?",
-    a: "Yes. We handle university selection, admission processing, scholarship guidance, student visa filing and pre-departure support end to end.",
-  },
-  {
-    q: "Can you help if a previous application was refused?",
-    a: "Absolutely. We review the refusal reasons, correct the weaknesses in your file and advise on the best timing for a fresh application.",
-  },
-];
+export type FaqItem = { id: string; question: string; answer: string; category?: string | null };
 
-export function Faq() {
+export function FaqAccordion({ items, idPrefix = "faq" }: { items: FaqItem[]; idPrefix?: string }) {
+  return (
+    <Accordion type="single" collapsible className="w-full">
+      {items.map((f, i) => (
+        <AccordionItem key={f.id} value={`${idPrefix}-${i}`}>
+          <AccordionTrigger className="text-left text-base text-navy">{f.question}</AccordionTrigger>
+          <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
+            {f.answer}
+          </AccordionContent>
+        </AccordionItem>
+      ))}
+    </Accordion>
+  );
+}
+
+export function Faq({ limit = 6 }: { limit?: number }) {
   const { data: s } = useSettings();
+  const { data } = useQuery(faqsQuery);
+  const items = (data ?? []).slice(0, limit) as FaqItem[];
+  if (!items.length) return null;
 
   return (
     <section className="bg-background py-20 md:py-28">
@@ -39,20 +38,11 @@ export function Faq() {
           <SectionHeading
             eyebrow="Questions"
             title="Frequently asked questions"
-            intro={s?.business_hours ? `Office hours — ${s.business_hours}` : null}
+            intro={s?.business_hours ? `Office hours: ${s.business_hours}` : null}
           />
         </div>
         <Reveal>
-          <Accordion type="single" collapsible className="w-full">
-            {faqs.map((f, i) => (
-              <AccordionItem key={f.q} value={`item-${i}`}>
-                <AccordionTrigger className="text-left text-base text-navy">{f.q}</AccordionTrigger>
-                <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
-                  {f.a}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+          <FaqAccordion items={items} />
         </Reveal>
       </div>
     </section>

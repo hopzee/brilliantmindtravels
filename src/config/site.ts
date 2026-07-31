@@ -2,7 +2,7 @@ export const site = {
   name: "Brilliant Mind Travels & Tours",
   shortName: "Brilliant Mind",
   tagline: "...your dream. our expertise. global opportunities",
-  promise: "We don't just process visas — we open doors to your global future.",
+  promise: "We don't just process visas. We open doors to your global future.",
   address: "Ede South, Osun State, Nigeria",
   email: "info@brilliantmindtravels.com",
   // Fallbacks only — the live values are managed in Website Settings (CMS).
@@ -28,4 +28,10 @@ export const navLinks = [
   { label: "Reviews", to: "/reviews" },
   { label: "Blog", to: "/blog" },
   { label: "Contact", to: "/contact" },
+] as const;
+
+/** Extra links surfaced in the footer (bottom header) only. */
+export const footerLinks = [
+  { label: "FAQ", to: "/faq" },
+  { label: "Download Centre", to: "/downloads" },
 ] as const;

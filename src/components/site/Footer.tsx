@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { Logo } from "./Logo";
-import { navLinks } from "@/config/site";
+import { footerLinks, navLinks } from "@/config/site";
 import { publishedList } from "@/lib/cms";
 import { useSettings } from "@/components/public/ui";
 
@@ -46,7 +46,7 @@ export function Footer() {
         <div>
           <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-gold">Company</h3>
           <ul className="mt-5 space-y-3 text-sm text-navy-foreground/70">
-            {navLinks.map((l) => (
+            {[...navLinks, ...footerLinks].map((l) => (
               <li key={l.to}>
                 <Link to={l.to} className="transition-colors hover:text-gold">
                   {l.label}

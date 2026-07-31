@@ -3,6 +3,8 @@ import { SiteLayout } from "@/components/public/SiteLayout";
 import { Hero } from "@/components/home/Hero";
 import { About } from "@/components/home/About";
 import { Services } from "@/components/home/Services";
+import { WhyChooseUs } from "@/components/home/WhyChooseUs";
+import { Promotions } from "@/components/home/Promotions";
 import { StudyAbroad } from "@/components/home/StudyAbroad";
 import { Tours } from "@/components/home/Tours";
 import { Process } from "@/components/home/Process";
@@ -35,6 +37,8 @@ function HomePage() {
       <Hero />
       <About />
       <Services />
+      <WhyChooseUs />
+      <Promotions />
       <StudyAbroad />
       <Tours />
       <Process />

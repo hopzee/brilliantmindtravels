@@ -49,10 +49,10 @@ function ReviewsPage() {
     setBusy(true);
     const { error } = await cms
       .from("reviews")
-      .insert({ ...parsed.data, email: parsed.data.email || null, is_approved: false });
+      .insert({ ...parsed.data, email: parsed.data.email || null });
     setBusy(false);
     if (error) return toast.error("We couldn't submit your review. Please try again.");
-    toast.success("Thank you — your review is pending approval.");
+    toast.success("Thank you. Your review is now live on the site.");
     setDone(true);
   };
 
@@ -84,7 +84,7 @@ function ReviewsPage() {
             <h2 className="text-lg text-navy">Leave a review</h2>
             {done ? (
               <p className="mt-4 text-sm text-muted-foreground">
-                Thank you — your review will appear once our team approves it.
+                Thank you. Your review is published immediately unless our automatic checks flag it for review.
               </p>
             ) : (
               <form onSubmit={submit} className="mt-5 space-y-5">
