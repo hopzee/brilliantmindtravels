@@ -1,11 +1,17 @@
 import { CheckCircle2, Compass, ShieldCheck, Users } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import { fallbackImages, imageOr } from "@/lib/cms";
 import { Prose, Reveal, useSettings } from "@/components/public/ui";
 import { useEffect, useState } from "react";
 
+import consultation from "@/assets/consultation.jpg";
 import homeTeam1 from "@/assets/home-team-1.jpg";
+import homeTeam2 from "@/assets/home-team-2.jpg";
+import homeTeam3 from "@/assets/home-team-3.jpg";
+import homeTeam4 from "@/assets/home-team-4.jpg";
+import homeTeam5 from "@/assets/home-team-5.jpg";
+import homeTeam6 from "@/assets/home-team-6.jpg";
+import homeTeam7 from "@/assets/home-team-7.jpg";
 
 const pillars = [
   {
@@ -25,28 +31,75 @@ const pillars = [
   },
 ];
 
+const homeImages = [
+  consultation,
+  homeTeam1,
+  homeTeam2,
+  homeTeam3,
+  homeTeam4,
+  homeTeam5,
+  homeTeam6,
+  homeTeam7,
+];
+
+const IMAGE_KEY = "brilliant-mind-home-image";
+
 export function About() {
   const { data: s } = useSettings();
-  const [showSecondImage, setShowSecondImage] = useState(false);
 
+  const [currentImage, setCurrentImage] = useState(0);
+  const [imageReady, setImageReady] = useState(false);
+
+  // Load the last saved image when the page opens
   useEffect(() => {
-    const timer = window.setTimeout(() => {
-      setShowSecondImage(true);
+    try {
+      const saved = Number(localStorage.getItem(IMAGE_KEY));
+
+      if (
+        Number.isInteger(saved) &&
+        saved >= 0 &&
+        saved < homeImages.length
+      ) {
+        setCurrentImage(saved);
+      }
+    } catch {
+      // Ignore localStorage errors
+    }
+
+    setImageReady(true);
+  }, []);
+
+  // Save the current image
+  useEffect(() => {
+    if (!imageReady) return;
+
+    try {
+      localStorage.setItem(IMAGE_KEY, String(currentImage));
+    } catch {
+      // Ignore localStorage errors
+    }
+  }, [currentImage, imageReady]);
+
+  // Change image every 5 seconds
+  useEffect(() => {
+    if (!imageReady) return;
+
+    const timer = window.setInterval(() => {
+      setCurrentImage((current) => {
+        return (current + 1) % homeImages.length;
+      });
     }, 5000);
 
-    return () => window.clearTimeout(timer);
-  }, []);
+    return () => window.clearInterval(timer);
+  }, [imageReady]);
 
   return (
     <section className="bg-background py-20 md:py-28">
       <div className="container-page grid items-center gap-14 lg:grid-cols-2">
+
         <Reveal className="relative">
           <img
-            src={
-              showSecondImage
-                ? homeTeam1
-                : imageOr(null, fallbackImages.consultation)
-            }
+            src={homeImages[currentImage]}
             alt="Brilliant Mind Travels and Tours"
             width={1200}
             height={912}
@@ -60,6 +113,7 @@ export function About() {
               <p className="font-[family-name:var(--font-display)] text-3xl font-bold text-gold">
                 {s.stat_years_experience}
               </p>
+
               <p className="mt-1 text-xs uppercase tracking-[0.16em] text-navy-foreground/70">
                 Years of consultancy experience
               </p>
@@ -82,6 +136,7 @@ export function About() {
                 <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-navy">
                   Our Vision
                 </h3>
+
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                   {s.vision}
                 </p>
@@ -93,6 +148,7 @@ export function About() {
                 <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-navy">
                   Our Mission
                 </h3>
+
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                   {s.mission}
                 </p>
@@ -109,7 +165,10 @@ export function About() {
 
                 <div>
                   <p className="font-semibold text-navy">{p.title}</p>
-                  <p className="text-sm text-muted-foreground">{p.text}</p>
+
+                  <p className="text-sm text-muted-foreground">
+                    {p.text}
+                  </p>
                 </div>
               </li>
             ))}
@@ -128,6 +187,7 @@ export function About() {
             </Button>
           </div>
         </Reveal>
+
       </div>
     </section>
   );
