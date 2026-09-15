@@ -1,5 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ResourceManager, StatusBadge, statusField } from "@/components/admin/ResourceManager";
+import {
+  ResourceManager,
+  StatusBadge,
+  statusField,
+} from "@/components/admin/ResourceManager";
 
 export const Route = createFileRoute("/_authenticated/dashboard/promotions")({
   component: Page,
@@ -13,18 +17,45 @@ function Page() {
       description="Manage campaign flyers, offers and promotional content."
       columns={[
         { key: "title", label: "Campaign" },
-        { key: "country", label: "Country" },
-        { key: "start_date", label: "Start date" },
-        { key: "end_date", label: "End date" },
-        { key: "status", label: "Status", render: (r) => <StatusBadge status={r.status} /> },
+        { key: "subtitle", label: "Subtitle" },
+        { key: "placement", label: "Placement" },
+        {
+          key: "status",
+          label: "Status",
+          render: (r) => <StatusBadge status={r.status} />,
+        },
       ]}
       fields={[
         { name: "title", label: "Campaign title", required: true },
-        { name: "country", label: "Country / destination" },
-        { name: "description", label: "Description", type: "textarea" },
-        { name: "image", label: "Campaign image", type: "image" },
-        { name: "start_date", label: "Start date", type: "date" },
-        { name: "end_date", label: "End date", type: "date" },
+        { name: "subtitle", label: "Subtitle" },
+        {
+          name: "description",
+          label: "Description",
+          type: "textarea",
+        },
+        {
+          name: "feature_image",
+          label: "Featured image",
+          type: "image",
+        },
+        {
+          name: "gallery_images",
+          label: "Gallery images",
+          type: "image",
+        },
+        {
+          name: "link_url",
+          label: "Campaign link",
+        },
+        {
+          name: "placement",
+          label: "Placement",
+        },
+        {
+          name: "sort_order",
+          label: "Sort order",
+          type: "number",
+        },
         statusField,
       ]}
     />
