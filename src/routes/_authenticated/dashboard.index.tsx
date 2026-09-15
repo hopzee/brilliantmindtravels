@@ -24,8 +24,8 @@ const cards = [
   { table: "tour_packages", label: "Tour Packages", icon: Plane, to: "/dashboard/tours" },
   { table: "blog_posts", label: "Blog Posts", icon: BookOpen, to: "/dashboard/blog" },
   { table: "testimonials", label: "Testimonials", icon: Quote, to: "/dashboard/testimonials" },
-  { table: "reviews", label: "Reviews", icon: Star, to: "/dashboard/reviews" },
   { table: "promotions", label: "Campaigns & Promotions", icon: Megaphone, to: "/dashboard/promotions" },
+  { table: "reviews", label: "Reviews", icon: Star, to: "/dashboard/reviews" },
   { table: "appointments", label: "Appointments", icon: CalendarClock, to: "/dashboard/messages" },
   { table: "contact_messages", label: "Contact Messages", icon: Mailbox, to: "/dashboard/messages" },
 ];
