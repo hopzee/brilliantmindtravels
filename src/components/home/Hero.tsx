@@ -19,7 +19,16 @@ export function Hero() {
   const { data: s } = useSettings();
   const image = imageOr(s?.hero_image_url, fallbackImages.hero);
 
-  const images = [consultation, homeTeam1, homeTeam2, homeTeam3];
+  const images = [
+  consultation,
+  homeTeam1,
+  homeTeam2,
+  homeTeam3,
+  homeTeam4,
+  homeTeam5,
+  homeTeam6,
+  homeTeam7,
+];
   const [currentImage, setCurrentImage] = useState(0);
 
   useEffect(() => {
