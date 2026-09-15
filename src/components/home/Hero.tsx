@@ -4,40 +4,10 @@ import { Button } from "@/components/ui/button";
 import { enquiryMessage, fallbackImages, imageOr } from "@/lib/cms";
 import { useSettings, WhatsAppButton } from "@/components/public/ui";
 import { AnimatedStats } from "./Stats";
-import { useEffect, useState } from "react";
-
-import consultation from "@/assets/consultation.jpg";
-import homeTeam1 from "@/assets/home-team-1.jpg";
-import homeTeam2 from "@/assets/home-team-2.jpg";
-import homeTeam3 from "@/assets/home-team-3.jpg";
-import homeTeam4 from "@/assets/home-team-4.jpg";
-import homeTeam5 from "@/assets/home-team-5.jpg";
-import homeTeam6 from "@/assets/home-team-6.jpg";
-import homeTeam7 from "@/assets/home-team-7.jpg";
 
 export function Hero() {
   const { data: s } = useSettings();
   const image = imageOr(s?.hero_image_url, fallbackImages.hero);
-
-  const images = [
-  consultation,
-  homeTeam1,
-  homeTeam2,
-  homeTeam3,
-  homeTeam4,
-  homeTeam5,
-  homeTeam6,
-  homeTeam7,
-];
-  const [currentImage, setCurrentImage] = useState(0);
-
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      setCurrentImage((current) => (current + 1) % images.length);
-    }, 5000);
-
-    return () => window.clearInterval(timer);
-  }, [images.length]);
 
   return (
     <section className="relative isolate overflow-hidden bg-navy-deep pt-32 pb-20 text-navy-foreground md:pt-44 md:pb-28">
@@ -52,19 +22,12 @@ export function Hero() {
           playsInline
         />
       ) : (
-        <>
-          {images.map((src, index) => (
-            <img
-              key={src}
-              src={src}
-              alt=""
-              aria-hidden="true"
-              className={`absolute inset-0 -z-10 size-full object-cover object-center opacity-45 transition-opacity duration-1000 ${
-                index === currentImage ? "opacity-45" : "opacity-0"
-              }`}
-            />
-          ))}
-        </>
+        <img
+          src={image}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 -z-10 size-full object-cover object-center opacity-45"
+        />
       )}
 
       <div className="absolute inset-0 -z-10 bg-[linear-gradient(100deg,var(--navy-deep)_18%,color-mix(in_oklab,var(--navy-deep)_72%,transparent)_58%,transparent_100%)]" />
