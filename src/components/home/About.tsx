@@ -1,18 +1,11 @@
 import { CheckCircle2, Compass, ShieldCheck, Users } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
-import { fallbackImages, imageOr } from "@/lib/cms";
 import { Prose, Reveal, useSettings } from "@/components/public/ui";
 import { useEffect, useState } from "react";
 
 import consultation from "@/assets/consultation.jpg";
 import homeTeam1 from "@/assets/home-team-1.jpg";
-import homeTeam2 from "@/assets/home-team-2.jpg";
-import homeTeam3 from "@/assets/home-team-3.jpg";
-import homeTeam4 from "@/assets/home-team-4.jpg";
-import homeTeam5 from "@/assets/home-team-5.jpg";
-import homeTeam6 from "@/assets/home-team-6.jpg";
-import homeTeam7 from "@/assets/home-team-7.jpg";
 
 const pillars = [
   { icon: ShieldCheck, title: "Integrity first", text: "Honest advice and transparent processes — no false promises." },
@@ -20,16 +13,7 @@ const pillars = [
   { icon: Compass, title: "Global reach", text: "Study, work and travel pathways across five continents." },
 ];
 
-const homeImages = [
-  consultation,
-  homeTeam1,
-  homeTeam2,
-  homeTeam3,
-  homeTeam4,
-  homeTeam5,
-  homeTeam6,
-  homeTeam7,
-];
+const homeImages = [consultation, homeTeam1];
 
 export function About() {
   const { data: s } = useSettings();
@@ -54,7 +38,7 @@ export function About() {
             height={912}
             loading="lazy"
             decoding="async"
-            className="w-full rounded-xl object-cover shadow-[var(--shadow-elegant)] transition-opacity duration-700"
+            className="w-full rounded-xl object-cover shadow-[var(--shadow-elegant)]"
           />
 
           {s?.stat_years_experience ? (
@@ -108,7 +92,6 @@ export function About() {
                 <span className="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-md bg-navy/5 text-navy">
                   <p.icon className="size-4.5" />
                 </span>
-
                 <div>
                   <p className="font-semibold text-navy">{p.title}</p>
                   <p className="text-sm text-muted-foreground">{p.text}</p>
