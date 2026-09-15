@@ -1,11 +1,11 @@
-import logo from "@/assets/logo.png.asset.json";
+import logo from "@/assets/brilliant-mind-logo.png";
 import { site } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { useSettings } from "@/components/public/ui";
 
 export function Logo({ light = false, className }: { light?: boolean; className?: string }) {
   const { data: settings } = useSettings();
-  const src = settings?.logo_url || logo.url;
+  const src = settings?.logo_url || logo;
   const name = settings?.company_name || site.name;
   const [first, ...rest] = name.split(" ");
   return (
