@@ -1,39 +1,37 @@
 import { CheckCircle2, Compass, ShieldCheck, Users } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
+import { fallbackImages, imageOr } from "@/lib/cms";
 import { Prose, Reveal, useSettings } from "@/components/public/ui";
-import { useEffect, useState } from "react";
-
-import consultation from "@/assets/consultation.jpg";
-import homeTeam1 from "@/assets/home-team-1.jpg";
 
 const pillars = [
-  { icon: ShieldCheck, title: "Integrity first", text: "Honest advice and transparent processes — no false promises." },
-  { icon: Users, title: "Personalised guidance", text: "A dedicated consultant walks with you from file to flight." },
-  { icon: Compass, title: "Global reach", text: "Study, work and travel pathways across five continents." },
+  {
+    icon: ShieldCheck,
+    title: "Integrity first",
+    text: "Honest advice and transparent processes — no false promises.",
+  },
+  {
+    icon: Users,
+    title: "Personalised guidance",
+    text: "A dedicated consultant walks with you from file to flight.",
+  },
+  {
+    icon: Compass,
+    title: "Global reach",
+    text: "Study, work and travel pathways across five continents.",
+  },
 ];
-
-const homeImages = [consultation, homeTeam1];
 
 export function About() {
   const { data: s } = useSettings();
-  const [currentImage, setCurrentImage] = useState(0);
-
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      setCurrentImage((current) => (current + 1) % homeImages.length);
-    }, 5000);
-
-    return () => window.clearInterval(timer);
-  }, []);
 
   return (
     <section className="bg-background py-20 md:py-28">
       <div className="container-page grid items-center gap-14 lg:grid-cols-2">
         <Reveal className="relative">
           <img
-            src={homeImages[currentImage]}
-            alt="Brilliant Mind Travels and Tours"
+            src={imageOr(null, fallbackImages.consultation)}
+            alt="Travel consultant reviewing visa documents with a client"
             width={1200}
             height={912}
             loading="lazy"
@@ -46,6 +44,7 @@ export function About() {
               <p className="font-[family-name:var(--font-display)] text-3xl font-bold text-gold">
                 {s.stat_years_experience}
               </p>
+
               <p className="mt-1 text-xs uppercase tracking-[0.16em] text-navy-foreground/70">
                 Years of consultancy experience
               </p>
@@ -68,6 +67,7 @@ export function About() {
                 <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-navy">
                   Our Vision
                 </h3>
+
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                   {s.vision}
                 </p>
@@ -79,6 +79,7 @@ export function About() {
                 <h3 className="text-sm font-semibold uppercase tracking-[0.16em] text-navy">
                   Our Mission
                 </h3>
+
                 <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
                   {s.mission}
                 </p>
@@ -92,9 +93,12 @@ export function About() {
                 <span className="mt-0.5 inline-flex size-9 shrink-0 items-center justify-center rounded-md bg-navy/5 text-navy">
                   <p.icon className="size-4.5" />
                 </span>
+
                 <div>
                   <p className="font-semibold text-navy">{p.title}</p>
-                  <p className="text-sm text-muted-foreground">{p.text}</p>
+                  <p className="text-sm text-muted-foreground">
+                    {p.text}
+                  </p>
                 </div>
               </li>
             ))}
@@ -102,7 +106,8 @@ export function About() {
 
           {s?.promise ? (
             <p className="mt-8 inline-flex items-center gap-2 text-sm font-medium text-navy">
-              <CheckCircle2 className="size-4 text-gold" /> {s.promise}
+              <CheckCircle2 className="size-4 text-gold" />
+              {s.promise}
             </p>
           ) : null}
 
