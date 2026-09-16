@@ -17,12 +17,16 @@ export function WhatsAppCta() {
             Speak with a consultant today
           </h2>
 
-          <div className="mt-5 max-w-xl overflow-hidden">
-            <p className="consultation-message text-base leading-relaxed text-navy-foreground/75">
-              Every consultation starts with a conversation. Reach us on
-              WhatsApp, call the office, or book an appointment. Fees are
-              agreed directly with the CEO once your case is discussed.
-            </p>
+          <div className="mt-5 max-w-full overflow-hidden">
+            <div className="consultation-message text-sm leading-6 text-navy-foreground/75 sm:text-base">
+              <span className="block whitespace-nowrap">
+                Every consultation starts with a conversation. Reach us on WhatsApp, call the office, or book
+              </span>
+
+              <span className="block whitespace-nowrap">
+                an appointment. Fees are agreed directly with the CEO once your case is discussed.
+              </span>
+            </div>
           </div>
 
           <div className="mt-9 flex flex-wrap gap-3">
@@ -36,9 +40,7 @@ export function WhatsAppCta() {
 
             {s?.phone ? (
               <Button asChild variant="outlineLight" size="lg">
-                <a
-                  href={`tel:${s.phone.replace(/\s/g, "")}`}
-                >
+                <a href={`tel:${s.phone.replace(/\s/g, "")}`}>
                   <PhoneCall className="size-4" />
                   {s.phone}
                 </a>
@@ -69,11 +71,10 @@ export function WhatsAppCta() {
                 </strong>
 
                 <span className="text-navy-foreground/70">
-                  Nothing is charged through this website. Fees are
-                  settled directly with the CEO once a deal is sealed,
-                  and eligible applicants may qualify for our pay after
-                  your visa is out arrangement, with eligibility decided
-                  personally by the CEO.
+                  Nothing is charged through this website. Fees are settled
+                  directly with the CEO once a deal is sealed, and eligible
+                  applicants may qualify for our pay after your visa is out
+                  arrangement, with eligibility decided personally by the CEO.
                 </span>
               </span>
             </li>
@@ -115,6 +116,7 @@ export function WhatsAppCta() {
 
       <style>{`
         .consultation-message {
+          width: max-content;
           animation: consultationMove 6s ease-in-out infinite;
           will-change: transform;
         }
