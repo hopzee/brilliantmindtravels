@@ -96,6 +96,56 @@ function Page() {
           type: "gallery",
           help: "Add additional photos for events, activities, tours or other blog posts.",
         },
+
+        {
+          name: "tiktok_url",
+          label: "TikTok Link",
+          placeholder: "https://www.tiktok.com/@username/video/...",
+          help: "Add a TikTok video or profile link.",
+        },
+        {
+          name: "facebook_url",
+          label: "Facebook Link",
+          placeholder: "https://www.facebook.com/...",
+          help: "Add a Facebook post, page or video link.",
+        },
+        {
+          name: "youtube_url",
+          label: "YouTube Link",
+          placeholder: "https://www.youtube.com/watch?v=...",
+          help: "Add a YouTube video or channel link.",
+        },
+        {
+          name: "whatsapp_url",
+          label: "WhatsApp Link",
+          placeholder: "https://wa.me/234...",
+          help: "Add a WhatsApp chat or WhatsApp channel link.",
+        },
+        {
+          name: "instagram_url",
+          label: "Instagram Link",
+          placeholder: "https://www.instagram.com/...",
+          help: "Add an Instagram post, reel or profile link.",
+        },
+        {
+          name: "twitter_url",
+          label: "X / Twitter Link",
+          placeholder: "https://x.com/...",
+          help: "Add an X (formerly Twitter) post or profile link.",
+        },
+        {
+          name: "threads_url",
+          label: "Threads Link",
+          placeholder: "https://www.threads.net/...",
+          help: "Add a Threads post or profile link.",
+        },
+        {
+          name: "image_url",
+          label: "Image Link",
+          placeholder: "https://example.com/image.jpg",
+          help: "Add an external image URL if the image is hosted elsewhere.",
+        },
+
         {
           name: "published_at",
           label: "Publish date",
