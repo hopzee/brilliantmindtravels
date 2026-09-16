@@ -1,15 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/public/SiteLayout";
 import { Hero } from "@/components/home/Hero";
-import { About } from "@/components/home/About";
 import { Services } from "@/components/home/Services";
-import { WhyChooseUs } from "@/components/home/WhyChooseUs";
 import { Promotions } from "@/components/home/Promotions";
-import { StudyAbroad } from "@/components/home/StudyAbroad";
-import { Tours } from "@/components/home/Tours";
-import { Process } from "@/components/home/Process";
 import { Testimonials } from "@/components/home/Testimonials";
-import { LatestBlog } from "@/components/home/Blog";
 import { Faq } from "@/components/home/Faq";
 import { WhatsAppCta } from "@/components/home/WhatsAppCta";
 
@@ -35,15 +29,9 @@ function HomePage() {
   return (
     <SiteLayout>
       <Hero />
-      <About />
       <Services />
-      <WhyChooseUs />
       <Promotions />
-      <StudyAbroad />
-      <Tours />
-      <Process />
       <Testimonials />
-      <LatestBlog />
       <Faq />
       <WhatsAppCta />
     </SiteLayout>
