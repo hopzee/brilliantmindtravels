@@ -190,13 +190,19 @@
 
 @media (min-width: 768px) {
   .container-page {
-    padding-inline: 2rem;
+    padding-inline: 2.5rem;
   }
 }
 
 @media (min-width: 1280px) {
   .container-page {
-    padding-inline: 3rem;
+    padding-inline: 4.5rem;
+  }
+}
+
+@media (min-width: 1536px) {
+  .container-page {
+    padding-inline: 6rem;
   }
 }
 
