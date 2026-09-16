@@ -31,34 +31,38 @@ export function Header() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-40">
-      <div className="hidden bg-navy-deep text-navy-foreground/80 md:block">
-        <div className="mx-auto flex h-9 w-full max-w-[80rem] items-center px-6 lg:px-8 xl:px-10">
-          <div className="flex min-w-0 flex-1 items-center">
-            <p className="truncate text-xs tracking-wide">
-              {promise}
-            </p>
-          </div>
+      {/* Top information bar */}
+      <div className="bg-navy-deep text-navy-foreground/80">
+        <div className="mx-auto flex w-full max-w-[80rem] flex-wrap items-stretch gap-2 px-5 py-2 sm:px-6 lg:px-8 xl:px-10">
+          {promise ? (
+            <div className="flex min-w-0 flex-1 items-center rounded-md border border-navy-foreground/10 bg-navy-foreground/[0.03] px-3 py-2">
+              <p className="text-xs leading-relaxed tracking-wide">
+                {promise}
+              </p>
+            </div>
+          ) : null}
 
-          <div className="ml-10 flex shrink-0 items-center gap-6 border-l border-navy-foreground/15 pl-6">
-            {address ? (
-              <span className="max-w-[280px] truncate text-xs">
+          {address ? (
+            <div className="flex min-w-0 max-w-full items-center rounded-md border border-navy-foreground/10 bg-navy-foreground/[0.03] px-3 py-2 md:max-w-[360px]">
+              <span className="text-xs leading-relaxed">
                 {address}
               </span>
-            ) : null}
+            </div>
+          ) : null}
 
-            {phone ? (
-              <a
-                href={`tel:${phone.replace(/\s/g, "")}`}
-                className="inline-flex shrink-0 items-center gap-1.5 text-xs transition-colors hover:text-gold"
-              >
-                <Phone className="size-3.5" />
-                {phone}
-              </a>
-            ) : null}
-          </div>
+          {phone ? (
+            <a
+              href={`tel:${phone.replace(/\s/g, "")}`}
+              className="flex shrink-0 items-center gap-1.5 rounded-md border border-navy-foreground/10 bg-navy-foreground/[0.03] px-3 py-2 text-xs transition-colors hover:border-gold/40 hover:text-gold"
+            >
+              <Phone className="size-3.5 shrink-0" />
+              <span>{phone}</span>
+            </a>
+          ) : null}
         </div>
       </div>
 
+      {/* Main navigation */}
       <div
         className={cn(
           "transition-all duration-300",
