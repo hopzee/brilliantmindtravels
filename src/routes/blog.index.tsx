@@ -1,13 +1,32 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { SiteLayout } from "@/components/public/SiteLayout";
-import { CardSkeletons, EmptyState, PageHero, Reveal } from "@/components/public/ui";
+import {
+  CardSkeletons,
+  EmptyState,
+  PageHero,
+  Reveal,
+} from "@/components/public/ui";
 import { BlogCard } from "@/components/home/Blog";
 import { publishedList } from "@/lib/cms";
+import { Button } from "@/components/ui/button";
 
-const title = "Blog & Travel Insights | Brilliant Mind Travels & Tours";
+const title = "Blog & Travel Updates | Brilliant Mind Travels & Tours";
 const description =
-  "Visa tips, study abroad guides, scholarship updates and travel advice from Brilliant Mind Travels & Tours.";
+  "Travel updates, visa information, study abroad opportunities, work opportunities, scholarships, offers and useful travel tips from Brilliant Mind Travels & Tours.";
+
+const categories = [
+  { value: "all", label: "All" },
+  { value: "visa-travel", label: "Visa & Travel" },
+  { value: "study-abroad", label: "Study Abroad" },
+  { value: "work-opportunities", label: "Work Opportunities" },
+  { value: "scholarships", label: "Scholarships" },
+  { value: "offers-promotions", label: "Offers & Promotions" },
+  { value: "events-activities", label: "Events & Activities" },
+  { value: "travel-tips", label: "Travel Tips" },
+  { value: "company-news", label: "Company News" },
+];
 
 export const Route = createFileRoute("/blog/")({
   head: () => ({
@@ -24,21 +43,73 @@ export const Route = createFileRoute("/blog/")({
 });
 
 function BlogPage() {
-  const { data, isLoading } = useQuery(publishedList("blog_posts", { orderBy: "published_at" }));
+  const [activeCategory, setActiveCategory] = useState("all");
+
+  const { data, isLoading } = useQuery(
+    publishedList("blog_posts", {
+      orderBy: "published_at",
+    }),
+  );
+
+  const filteredPosts = useMemo(() => {
+    if (!data) return [];
+
+    if (activeCategory === "all") {
+      return data;
+    }
+
+    return data.filter(
+      (post: any) => post.category === activeCategory,
+    );
+  }, [data, activeCategory]);
+
   return (
     <SiteLayout>
-      <PageHero eyebrow="Insights" title="Travel & migration blog" intro="Practical guidance from our consultants." />
-      <section className="bg-background py-20">
+      <PageHero
+        eyebrow="Insights & Updates"
+        title="Travel, visa & opportunity updates"
+        intro="Useful information, opportunities, events and travel updates from Brilliant Mind Travel & Tours."
+      />
+
+      <section className="bg-background py-16 md:py-20">
         <div className="container-page">
+          <div className="mb-10 overflow-x-auto">
+            <div className="flex min-w-max gap-2 pb-2">
+              {categories.map((category) => (
+                <Button
+                  key={category.value}
+                  type="button"
+                  variant={
+                    activeCategory === category.value
+                      ? "gold"
+                      : "outlineNavy"
+                  }
+                  onClick={() => setActiveCategory(category.value)}
+                  className="whitespace-nowrap"
+                >
+                  {category.label}
+                </Button>
+              ))}
+            </div>
+          </div>
+
           {isLoading ? (
             <CardSkeletons />
           ) : !data?.length ? (
-            <EmptyState title="Articles coming soon" text="New articles are being published shortly." />
+            <EmptyState
+              title="Articles coming soon"
+              text="Travel updates, opportunities and useful information will be published here."
+            />
+          ) : !filteredPosts.length ? (
+            <EmptyState
+              title="No posts in this category yet"
+              text="Check another category or come back later for new updates."
+            />
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {data.map((p: any, i: number) => (
-                <Reveal key={p.id} delay={i * 60}>
-                  <BlogCard post={p} />
+              {filteredPosts.map((post: any, i: number) => (
+                <Reveal key={post.id} delay={i * 60}>
+                  <BlogCard post={post} />
                 </Reveal>
               ))}
             </div>
