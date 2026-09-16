@@ -31,7 +31,7 @@ function getTikTokEmbedUrl(url?: string | null) {
 
   if (!match) return null;
 
-  return `https://www.tiktok.com/player/v1/${match[1]}?description=1&music_info=1`;
+  return `https://www.tiktok.com/player/v1/${match[1]}?controls=1&description=1&music_info=1`;
 }
 
 function getYouTubeEmbedUrl(url?: string | null) {
@@ -41,7 +41,9 @@ function getYouTubeEmbedUrl(url?: string | null) {
     const parsed = new URL(url);
 
     if (parsed.hostname.includes("youtu.be")) {
-      const videoId = parsed.pathname.replace("/", "").split("/")[0];
+      const videoId = parsed.pathname
+        .replace("/", "")
+        .split("/")[0];
 
       return videoId
         ? `https://www.youtube.com/embed/${videoId}`
@@ -55,7 +57,9 @@ function getYouTubeEmbedUrl(url?: string | null) {
         return `https://www.youtube.com/embed/${videoId}`;
       }
 
-      const pathParts = parsed.pathname.split("/").filter(Boolean);
+      const pathParts = parsed.pathname
+        .split("/")
+        .filter(Boolean);
 
       if (pathParts[0] === "shorts" && pathParts[1]) {
         return `https://www.youtube.com/embed/${pathParts[1]}`;
@@ -72,6 +76,115 @@ function getYouTubeEmbedUrl(url?: string | null) {
   return null;
 }
 
+function getSocialPreview(
+  post: any,
+): {
+  type: "tiktok" | "youtube" | "facebook" | "instagram" | "x" | "threads" | "whatsapp" | "image" | null;
+  url?: string;
+} {
+  if (post.tiktok_url) {
+    return {
+      type: "tiktok",
+      url: post.tiktok_url,
+    };
+  }
+
+  if (post.youtube_url) {
+    return {
+      type: "youtube",
+      url: post.youtube_url,
+    };
+  }
+
+  if (post.facebook_url) {
+    return {
+      type: "facebook",
+      url: post.facebook_url,
+    };
+  }
+
+  if (post.instagram_url) {
+    return {
+      type: "instagram",
+      url: post.instagram_url,
+    };
+  }
+
+  if (post.twitter_url) {
+    return {
+      type: "x",
+      url: post.twitter_url,
+    };
+  }
+
+  if (post.threads_url) {
+    return {
+      type: "threads",
+      url: post.threads_url,
+    };
+  }
+
+  if (post.whatsapp_url) {
+    return {
+      type: "whatsapp",
+      url: post.whatsapp_url,
+    };
+  }
+
+  if (post.image_url) {
+    return {
+      type: "image",
+      url: post.image_url,
+    };
+  }
+
+  return {
+    type: null,
+  };
+}
+
+function getSocialLabel(
+  type:
+    | "tiktok"
+    | "youtube"
+    | "facebook"
+    | "instagram"
+    | "x"
+    | "threads"
+    | "whatsapp"
+    | "image"
+    | null,
+) {
+  switch (type) {
+    case "tiktok":
+      return "TikTok video";
+
+    case "youtube":
+      return "YouTube video";
+
+    case "facebook":
+      return "Facebook post";
+
+    case "instagram":
+      return "Instagram post";
+
+    case "x":
+      return "X post";
+
+    case "threads":
+      return "Threads post";
+
+    case "whatsapp":
+      return "WhatsApp";
+
+    case "image":
+      return "Image";
+
+    default:
+      return "Social media";
+  }
+}
+
 function formatCategory(value?: string | null) {
   if (!value) return null;
 
@@ -85,12 +198,24 @@ function formatCategory(value?: string | null) {
 }
 
 export function BlogCard({ post }: { post: any }) {
-  const date = formatDate(post.published_at ?? post.created_at);
+  const date = formatDate(
+    post.published_at ?? post.created_at,
+  );
 
-  const tikTokEmbed = getTikTokEmbedUrl(post.tiktok_url);
-  const youTubeEmbed = getYouTubeEmbedUrl(post.youtube_url);
+  const tikTokEmbed = getTikTokEmbedUrl(
+    post.tiktok_url,
+  );
+
+  const youTubeEmbed = getYouTubeEmbedUrl(
+    post.youtube_url,
+  );
+
+  const social = getSocialPreview(post);
 
   const category = formatCategory(post.category);
+
+  const hasDirectEmbed =
+    Boolean(tikTokEmbed) || Boolean(youTubeEmbed);
 
   return (
     <article className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card transition-all hover:-translate-y-1 hover:shadow-[var(--shadow-elegant)]">
@@ -119,6 +244,41 @@ export function BlogCard({ post }: { post: any }) {
             />
           </div>
         </div>
+      ) : social.type === "image" &&
+        social.url ? (
+        <Link
+          to="/blog/$slug"
+          params={{ slug: post.slug }}
+          aria-label={`Read ${post.title}`}
+        >
+          <img
+            src={social.url}
+            alt={post.title}
+            loading="lazy"
+            decoding="async"
+            className="aspect-16/10 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        </Link>
+      ) : social.type ? (
+        <a
+          href={social.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Open ${getSocialLabel(social.type)}`}
+          className="flex aspect-video items-center justify-center bg-muted px-6 text-center transition-colors hover:bg-muted/70"
+        >
+          <div>
+            <Play className="mx-auto size-10 text-gold" />
+
+            <p className="mt-3 text-sm font-semibold text-navy">
+              {getSocialLabel(social.type)}
+            </p>
+
+            <p className="mt-1 text-xs text-muted-foreground">
+              Open this post on {getSocialLabel(social.type)}
+            </p>
+          </div>
+        </a>
       ) : (
         <Link
           to="/blog/$slug"
@@ -172,10 +332,15 @@ export function BlogCard({ post }: { post: any }) {
             params={{ slug: post.slug }}
             className="inline-flex items-center gap-2 text-sm font-semibold text-navy hover:text-gold"
           >
-            {tikTokEmbed || youTubeEmbed ? (
+            {hasDirectEmbed ? (
               <>
                 <Play className="size-4" />
                 Open full post
+              </>
+            ) : social.type ? (
+              <>
+                View post
+                <ArrowRight className="size-4" />
               </>
             ) : (
               <>
@@ -226,7 +391,10 @@ export function LatestBlog() {
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {data.map((p: any, i: number) => (
-                <Reveal key={p.id} delay={i * 60}>
+                <Reveal
+                  key={p.id}
+                  delay={i * 60}
+                >
                   <BlogCard post={p} />
                 </Reveal>
               ))}
