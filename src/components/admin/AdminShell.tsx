@@ -1,8 +1,6 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
 import {
-  BookOpen,
   Building2,
-  GraduationCap,
   Globe2,
   Image,
   LayoutDashboard,
@@ -29,18 +27,36 @@ type NavItem = {
 };
 
 export const adminNav: NavItem[] = [
-  { to: "/dashboard", label: "Overview", icon: LayoutDashboard, exact: true },
-  { to: "/dashboard/services", label: "Services", icon: Wrench },
-  { to: "/dashboard/country-services", label: "Country Services", icon: Globe2 },
-  { to: "/dashboard/study-abroad", label: "Study Abroad", icon: GraduationCap },
-  { to: "/dashboard/universities", label: "Universities", icon: Building2 },
-  { to: "/dashboard/tours", label: "Tour Packages", icon: Plane },
-  { to: "/dashboard/blog", label: "Blog", icon: BookOpen },
-  { to: "/dashboard/testimonials", label: "Testimonials", icon: Quote },
-  { to: "/dashboard/reviews", label: "Reviews", icon: Star },
-  { to: "/dashboard/media", label: "Media Library", icon: Image },
-  { to: "/dashboard/messages", label: "Messages & Leads", icon: Mailbox },
-  { to: "/dashboard/settings", label: "Website Settings", icon: Settings },
+  { to: "/rbac/admin", label: "Overview", icon: LayoutDashboard, exact: true },
+  { to: "/rbac/admin/services", label: "Services", icon: Wrench },
+  {
+    to: "/rbac/admin/country-services",
+    label: "Country Services",
+    icon: Globe2,
+  },
+  {
+    to: "/rbac/admin/universities",
+    label: "Universities",
+    icon: Building2,
+  },
+  { to: "/rbac/admin/tours", label: "Tour Packages", icon: Plane },
+  {
+    to: "/rbac/admin/testimonials",
+    label: "Testimonials",
+    icon: Quote,
+  },
+  { to: "/rbac/admin/reviews", label: "Reviews", icon: Star },
+  { to: "/rbac/admin/media", label: "Media Library", icon: Image },
+  {
+    to: "/rbac/admin/messages",
+    label: "Messages & Leads",
+    icon: Mailbox,
+  },
+  {
+    to: "/rbac/admin/settings",
+    label: "Website Settings",
+    icon: Settings,
+  },
 ];
 
 export function AdminShell({ children }: { children: ReactNode }) {
@@ -65,6 +81,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
           <span className="font-[family-name:var(--font-display)] text-sm font-bold uppercase tracking-[0.16em] text-gold">
             Brilliant Mind
           </span>
+
           <button
             className="lg:hidden"
             onClick={() => setOpen(false)}
@@ -104,7 +121,8 @@ export function AdminShell({ children }: { children: ReactNode }) {
             onClick={signOut}
             className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-navy-foreground/70 transition-colors hover:bg-navy-foreground/10 hover:text-navy-foreground"
           >
-            <LogOut className="size-4" /> Sign out
+            <LogOut className="size-4" />
+            Sign out
           </button>
         </div>
       </aside>
