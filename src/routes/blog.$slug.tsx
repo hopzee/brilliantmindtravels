@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useEffect } from "react";
 import {
   Facebook,
   Image as ImageIcon,
@@ -37,6 +38,16 @@ export const Route = createFileRoute("/blog/$slug")({
   },
   component: PostDetail,
 });
+
+function getTikTokEmbedUrl(url?: string | null) {
+  if (!url) return null;
+
+  const match = url.match(/\/video\/(\d+)/);
+
+  if (!match) return null;
+
+  return `https://www.tiktok.com/player/v1/${match[1]}?description=1&music_info=1`;
+}
 
 function getYouTubeEmbedUrl(url?: string | null) {
   if (!url) return null;
@@ -76,6 +87,74 @@ function getYouTubeEmbedUrl(url?: string | null) {
   return null;
 }
 
+function getFacebookEmbedUrl(url?: string | null) {
+  if (!url) return null;
+
+  try {
+    const parsed = new URL(url);
+
+    if (
+      !parsed.hostname.includes("facebook.com") &&
+      !parsed.hostname.includes("fb.watch")
+    ) {
+      return null;
+    }
+
+    return `https://www.facebook.com/plugins/post.php?href=${encodeURIComponent(
+      url,
+    )}&show_text=true&width=500`;
+  } catch {
+    return null;
+  }
+}
+
+function isInstagramUrl(url?: string | null) {
+  if (!url) return false;
+
+  try {
+    const parsed = new URL(url);
+    return (
+      parsed.hostname.includes("instagram.com") &&
+      (parsed.pathname.includes("/p/") ||
+        parsed.pathname.includes("/reel/") ||
+        parsed.pathname.includes("/tv/"))
+    );
+  } catch {
+    return false;
+  }
+}
+
+function isXPostUrl(url?: string | null) {
+  if (!url) return false;
+
+  try {
+    const parsed = new URL(url);
+
+    return (
+      (parsed.hostname.includes("x.com") ||
+        parsed.hostname.includes("twitter.com")) &&
+      parsed.pathname.includes("/status/")
+    );
+  } catch {
+    return false;
+  }
+}
+
+function isThreadsPostUrl(url?: string | null) {
+  if (!url) return false;
+
+  try {
+    const parsed = new URL(url);
+
+    return (
+      parsed.hostname.includes("threads.net") &&
+      parsed.pathname.length > 1
+    );
+  } catch {
+    return false;
+  }
+}
+
 function PostDetail() {
   const { slug } = Route.useParams();
 
@@ -92,30 +171,83 @@ function PostDetail() {
 
   const post = data as any;
 
-  const tikTokUrl = post?.tiktok_url
-    ? `/tiktok-embed?url=${encodeURIComponent(post.tiktok_url)}`
-    : null;
+  useEffect(() => {
+    if (!post) return;
 
-  const { data: tikTokData } = useQuery({
-    queryKey: ["tiktok-embed", post?.tiktok_url],
-    queryFn: async () => {
-      if (!tikTokUrl) return null;
-
-      const response = await fetch(tikTokUrl);
-
-      if (!response.ok) {
-        return null;
+    const loadScript = (
+      src: string,
+      id: string,
+    ) => {
+      if (document.getElementById(id)) {
+        return;
       }
 
-      return response.json() as Promise<{
-        videoId?: string;
-        embedUrl?: string;
-      }>;
-    },
-    enabled: Boolean(tikTokUrl),
-  });
+      const script = document.createElement("script");
+      script.id = id;
+      script.src = src;
+      script.async = true;
+      script.defer = true;
 
-  const youTubeEmbed = getYouTubeEmbedUrl(post?.youtube_url);
+      document.body.appendChild(script);
+    };
+
+    if (post.instagram_url && isInstagramUrl(post.instagram_url)) {
+      loadScript(
+        "https://www.instagram.com/embed.js",
+        "instagram-embed-script",
+      );
+    }
+
+    if (post.twitter_url && isXPostUrl(post.twitter_url)) {
+      loadScript(
+        "https://platform.twitter.com/widgets.js",
+        "twitter-widgets-script",
+      );
+    }
+
+    if (post.threads_url && isThreadsPostUrl(post.threads_url)) {
+      loadScript(
+        "https://www.threads.net/embed.js",
+        "threads-embed-script",
+      );
+    }
+  }, [
+    post?.instagram_url,
+    post?.twitter_url,
+    post?.threads_url,
+  ]);
+
+  useEffect(() => {
+    if (!post) return;
+
+    const timer = window.setTimeout(() => {
+      const twitterWindow = window as typeof window & {
+        twttr?: {
+          widgets?: {
+            load?: () => void;
+          };
+        };
+      };
+
+      twitterWindow.twttr?.widgets?.load?.();
+
+      const instagramWindow = window as typeof window & {
+        instgrm?: {
+          Embeds?: {
+            process?: () => void;
+          };
+        };
+      };
+
+      instagramWindow.instgrm?.Embeds?.process?.();
+    }, 500);
+
+    return () => window.clearTimeout(timer);
+  }, [
+    post?.instagram_url,
+    post?.twitter_url,
+    post?.threads_url,
+  ]);
 
   if (isLoading) return <DetailSkeleton />;
   if (!post) return <NotAvailable />;
@@ -124,6 +256,25 @@ function PostDetail() {
     recentPosts?.filter((item: any) => item.slug !== post.slug) ?? [];
 
   const galleryImages = post["gallery-images"] ?? [];
+
+  const tikTokEmbed = getTikTokEmbedUrl(post.tiktok_url);
+  const youTubeEmbed = getYouTubeEmbedUrl(post.youtube_url);
+  const facebookEmbed = getFacebookEmbedUrl(post.facebook_url);
+
+  const instagramEmbed =
+    post.instagram_url && isInstagramUrl(post.instagram_url)
+      ? post.instagram_url
+      : null;
+
+  const xPost =
+    post.twitter_url && isXPostUrl(post.twitter_url)
+      ? post.twitter_url
+      : null;
+
+  const threadsPost =
+    post.threads_url && isThreadsPostUrl(post.threads_url)
+      ? post.threads_url
+      : null;
 
   const socialLinks = [
     {
@@ -228,36 +379,121 @@ function PostDetail() {
 
             <Prose className="mt-8" text={post.content} />
 
-            {tikTokData?.embedUrl ? (
-              <div className="mt-12 flex justify-center">
-                <div className="w-full max-w-[605px] overflow-hidden rounded-xl border border-border bg-black">
-                  <div className="aspect-[9/16] w-full">
+            {tikTokEmbed ? (
+              <MediaSection title="TikTok">
+                <div className="overflow-hidden rounded-xl border border-border bg-black">
+                  <div className="aspect-[9/16] max-h-[720px] w-full">
                     <iframe
-                      src={tikTokData.embedUrl}
+                      src={tikTokEmbed}
                       title={`TikTok video: ${post.title}`}
                       className="h-full w-full"
                       allow="fullscreen"
-                      scrolling="no"
                       loading="lazy"
                     />
                   </div>
                 </div>
-              </div>
+              </MediaSection>
             ) : null}
 
             {youTubeEmbed ? (
-              <div className="mt-12 overflow-hidden rounded-xl border border-border bg-black">
-                <div className="aspect-video w-full">
+              <MediaSection title="YouTube">
+                <div className="overflow-hidden rounded-xl border border-border bg-black">
+                  <div className="aspect-video w-full">
+                    <iframe
+                      src={youTubeEmbed}
+                      title={`YouTube video: ${post.title}`}
+                      className="h-full w-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowFullScreen
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+              </MediaSection>
+            ) : null}
+
+            {facebookEmbed ? (
+              <MediaSection title="Facebook">
+                <div className="overflow-hidden rounded-xl border border-border bg-card">
                   <iframe
-                    src={youTubeEmbed}
-                    title={`YouTube video: ${post.title}`}
-                    className="h-full w-full"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowFullScreen
+                    src={facebookEmbed}
+                    title={`Facebook post: ${post.title}`}
+                    className="h-[600px] w-full"
                     loading="lazy"
+                    scrolling="no"
                   />
                 </div>
-              </div>
+              </MediaSection>
+            ) : null}
+
+            {instagramEmbed ? (
+              <MediaSection title="Instagram">
+                <div className="flex justify-center overflow-hidden rounded-xl border border-border bg-card p-2">
+                  <blockquote
+                    className="instagram-media"
+                    data-instgrm-permalink={instagramEmbed}
+                    data-instgrm-version="14"
+                    style={{
+                      background: "#FFF",
+                      border: 0,
+                      borderRadius: "3px",
+                      boxShadow:
+                        "0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15)",
+                      margin: "1px",
+                      maxWidth: "540px",
+                      minWidth: "326px",
+                      padding: 0,
+                      width: "calc(100% - 2px)",
+                    }}
+                  />
+                </div>
+              </MediaSection>
+            ) : null}
+
+            {xPost ? (
+              <MediaSection title="X">
+                <div className="rounded-xl border border-border bg-card p-4">
+                  <blockquote className="twitter-tweet">
+                    <a href={xPost}>
+                      View this post on X
+                    </a>
+                  </blockquote>
+                </div>
+              </MediaSection>
+            ) : null}
+
+            {threadsPost ? (
+              <MediaSection title="Threads">
+                <div className="rounded-xl border border-border bg-card p-4">
+                  <blockquote
+                    className="text-sm text-muted-foreground"
+                    data-threads-permalink={threadsPost}
+                  >
+                    <a
+                      href={threadsPost}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-semibold text-navy hover:underline"
+                    >
+                      View this post on Threads
+                    </a>
+                  </blockquote>
+                </div>
+              </MediaSection>
+            ) : null}
+
+            {post.image_url ? (
+              <MediaSection title="Image">
+                <div className="overflow-hidden rounded-xl border border-border bg-card">
+                  <img
+                    src={post.image_url}
+                    alt={post.title}
+                    loading="lazy"
+                    decoding="async"
+                    className="h-auto max-h-[720px] w-full object-contain"
+                  />
+                </div>
+              </MediaSection>
             ) : null}
 
             {galleryImages.length ? (
@@ -353,6 +589,21 @@ function PostDetail() {
         </div>
       </article>
     </SiteLayout>
+  );
+}
+
+function MediaSection({
+  title,
+  children,
+}: {
+  title: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="mt-12">
+      <p className="eyebrow text-gold">{title}</p>
+      <div className="mt-4">{children}</div>
+    </section>
   );
 }
 
