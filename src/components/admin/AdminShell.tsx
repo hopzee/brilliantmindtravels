@@ -3,6 +3,7 @@ import {
   BookOpen,
   Building2,
   GraduationCap,
+  Globe2,
   Image,
   LayoutDashboard,
   LogOut,
@@ -30,6 +31,7 @@ type NavItem = {
 export const adminNav: NavItem[] = [
   { to: "/dashboard", label: "Overview", icon: LayoutDashboard, exact: true },
   { to: "/dashboard/services", label: "Services", icon: Wrench },
+  { to: "/dashboard/country-services", label: "Country Services", icon: Globe2 },
   { to: "/dashboard/study-abroad", label: "Study Abroad", icon: GraduationCap },
   { to: "/dashboard/universities", label: "Universities", icon: Building2 },
   { to: "/dashboard/tours", label: "Tour Packages", icon: Plane },
@@ -63,13 +65,21 @@ export function AdminShell({ children }: { children: ReactNode }) {
           <span className="font-[family-name:var(--font-display)] text-sm font-bold uppercase tracking-[0.16em] text-gold">
             Brilliant Mind
           </span>
-          <button className="lg:hidden" onClick={() => setOpen(false)} aria-label="Close menu">
+          <button
+            className="lg:hidden"
+            onClick={() => setOpen(false)}
+            aria-label="Close menu"
+          >
             <X className="size-5" />
           </button>
         </div>
+
         <nav className="flex-1 space-y-1 overflow-y-auto px-3 pb-6">
           {adminNav.map((item) => {
-            const active = item.exact ? pathname === item.to : pathname.startsWith(item.to);
+            const active = item.exact
+              ? pathname === item.to
+              : pathname.startsWith(item.to);
+
             return (
               <Link
                 key={item.to}
@@ -88,6 +98,7 @@ export function AdminShell({ children }: { children: ReactNode }) {
             );
           })}
         </nav>
+
         <div className="border-t border-navy-foreground/10 p-3">
           <button
             onClick={signOut}
@@ -99,19 +110,38 @@ export function AdminShell({ children }: { children: ReactNode }) {
       </aside>
 
       {open && (
-        <div className="fixed inset-0 z-40 bg-black/40 lg:hidden" onClick={() => setOpen(false)} />
+        <div
+          className="fixed inset-0 z-40 bg-black/40 lg:hidden"
+          onClick={() => setOpen(false)}
+        />
       )}
 
       <div className="lg:pl-68">
         <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-border bg-background/95 px-4 backdrop-blur md:px-8">
-          <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setOpen(true)} aria-label="Open menu">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="lg:hidden"
+            onClick={() => setOpen(true)}
+            aria-label="Open menu"
+          >
             <Menu className="size-5" />
           </Button>
-          <span className="text-sm font-semibold text-navy">Content Management</span>
-          <a href="/" target="_blank" rel="noreferrer" className="ml-auto text-xs font-medium text-muted-foreground hover:text-navy">
+
+          <span className="text-sm font-semibold text-navy">
+            Content Management
+          </span>
+
+          <a
+            href="/"
+            target="_blank"
+            rel="noreferrer"
+            className="ml-auto text-xs font-medium text-muted-foreground hover:text-navy"
+          >
             View website ↗
           </a>
         </header>
+
         <main className="p-4 md:p-8">{children}</main>
       </div>
     </div>
