@@ -38,16 +38,6 @@ export const Route = createFileRoute("/blog/$slug")({
   component: PostDetail,
 });
 
-function getTikTokEmbedUrl(url?: string | null) {
-  if (!url) return null;
-
-  const match = url.match(/\/video\/(\d+)/);
-
-  if (!match) return null;
-
-  return `https://www.tiktok.com/player/v1/${match[1]}?description=1&music_info=1`;
-}
-
 function getYouTubeEmbedUrl(url?: string | null) {
   if (!url) return null;
 
@@ -102,6 +92,31 @@ function PostDetail() {
 
   const post = data as any;
 
+  const tikTokUrl = post?.tiktok_url
+    ? `/tiktok-embed?url=${encodeURIComponent(post.tiktok_url)}`
+    : null;
+
+  const { data: tikTokData } = useQuery({
+    queryKey: ["tiktok-embed", post?.tiktok_url],
+    queryFn: async () => {
+      if (!tikTokUrl) return null;
+
+      const response = await fetch(tikTokUrl);
+
+      if (!response.ok) {
+        return null;
+      }
+
+      return response.json() as Promise<{
+        videoId?: string;
+        embedUrl?: string;
+      }>;
+    },
+    enabled: Boolean(tikTokUrl),
+  });
+
+  const youTubeEmbed = getYouTubeEmbedUrl(post?.youtube_url);
+
   if (isLoading) return <DetailSkeleton />;
   if (!post) return <NotAvailable />;
 
@@ -109,9 +124,6 @@ function PostDetail() {
     recentPosts?.filter((item: any) => item.slug !== post.slug) ?? [];
 
   const galleryImages = post["gallery-images"] ?? [];
-
-  const tikTokEmbed = getTikTokEmbedUrl(post.tiktok_url);
-  const youTubeEmbed = getYouTubeEmbedUrl(post.youtube_url);
 
   const socialLinks = [
     {
@@ -216,16 +228,19 @@ function PostDetail() {
 
             <Prose className="mt-8" text={post.content} />
 
-            {tikTokEmbed ? (
-              <div className="mt-12 overflow-hidden rounded-xl border border-border bg-black">
-                <div className="aspect-[9/16] max-h-[720px] w-full">
-                  <iframe
-                    src={tikTokEmbed}
-                    title={`TikTok video: ${post.title}`}
-                    className="h-full w-full"
-                    allow="fullscreen"
-                    loading="lazy"
-                  />
+            {tikTokData?.embedUrl ? (
+              <div className="mt-12 flex justify-center">
+                <div className="w-full max-w-[605px] overflow-hidden rounded-xl border border-border bg-black">
+                  <div className="aspect-[9/16] w-full">
+                    <iframe
+                      src={tikTokData.embedUrl}
+                      title={`TikTok video: ${post.title}`}
+                      className="h-full w-full"
+                      allow="fullscreen"
+                      scrolling="no"
+                      loading="lazy"
+                    />
+                  </div>
                 </div>
               </div>
             ) : null}
