@@ -7,11 +7,13 @@ import {
   LogOut,
   Mailbox,
   Menu,
+  Megaphone,
   Plane,
   Quote,
   Settings,
   Star,
   Wrench,
+  BookOpen,
   X,
 } from "lucide-react";
 import { useState, type ReactNode } from "react";
@@ -27,8 +29,17 @@ type NavItem = {
 };
 
 export const adminNav: NavItem[] = [
-  { to: "/rbac/admin", label: "Overview", icon: LayoutDashboard, exact: true },
-  { to: "/rbac/admin/services", label: "Services", icon: Wrench },
+  {
+    to: "/rbac/admin",
+    label: "Overview",
+    icon: LayoutDashboard,
+    exact: true,
+  },
+  {
+    to: "/rbac/admin/services",
+    label: "Services",
+    icon: Wrench,
+  },
   {
     to: "/rbac/admin/country-services",
     label: "Country Services",
@@ -39,14 +50,36 @@ export const adminNav: NavItem[] = [
     label: "Universities",
     icon: Building2,
   },
-  { to: "/rbac/admin/tours", label: "Tour Packages", icon: Plane },
+  {
+    to: "/rbac/admin/tours",
+    label: "Tour Packages",
+    icon: Plane,
+  },
+  {
+    to: "/rbac/admin/blog",
+    label: "Blog Posts",
+    icon: BookOpen,
+  },
   {
     to: "/rbac/admin/testimonials",
     label: "Testimonials",
     icon: Quote,
   },
-  { to: "/rbac/admin/reviews", label: "Reviews", icon: Star },
-  { to: "/rbac/admin/media", label: "Media Library", icon: Image },
+  {
+    to: "/rbac/admin/reviews",
+    label: "Reviews",
+    icon: Star,
+  },
+  {
+    to: "/rbac/admin/promotions",
+    label: "Campaigns & Promotions",
+    icon: Megaphone,
+  },
+  {
+    to: "/rbac/admin/media",
+    label: "Media Library",
+    icon: Image,
+  },
   {
     to: "/rbac/admin/messages",
     label: "Messages & Leads",
