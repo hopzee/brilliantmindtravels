@@ -19,15 +19,9 @@ export function WhatsAppCta() {
 
           <div className="mt-5 max-w-xl overflow-hidden">
             <p className="consultation-message text-base leading-relaxed text-navy-foreground/75">
-              <span className="block">
-                Every consultation starts with a conversation. Reach us on
-                WhatsApp, call the office,
-              </span>
-
-              <span className="block">
-                or book an appointment. Fees are agreed directly with the CEO
-                once your case is discussed.
-              </span>
+              Every consultation starts with a conversation. Reach us on
+              WhatsApp, call the office, or book an appointment. Fees are
+              agreed directly with the CEO once your case is discussed.
             </p>
           </div>
 
@@ -75,11 +69,11 @@ export function WhatsAppCta() {
                 </strong>
 
                 <span className="text-navy-foreground/70">
-                  Nothing is charged through this website. Fees
-                  are settled directly with the CEO once a deal is
-                  sealed, and eligible applicants may qualify for
-                  our pay after your visa is out arrangement, with
-                  eligibility decided personally by the CEO.
+                  Nothing is charged through this website. Fees are
+                  settled directly with the CEO once a deal is sealed,
+                  and eligible applicants may qualify for our pay after
+                  your visa is out arrangement, with eligibility decided
+                  personally by the CEO.
                 </span>
               </span>
             </li>
@@ -121,28 +115,29 @@ export function WhatsAppCta() {
 
       <style>{`
         .consultation-message {
-          animation: consultationFade 5s ease-in-out infinite;
+          animation: consultationMove 6s ease-in-out infinite;
+          will-change: transform;
         }
 
-        @keyframes consultationFade {
+        @keyframes consultationMove {
           0% {
-            opacity: 0.35;
-            transform: translateY(8px);
+            transform: translate(0, 0);
           }
 
-          20% {
-            opacity: 1;
-            transform: translateY(0);
+          25% {
+            transform: translate(8px, -5px);
+          }
+
+          50% {
+            transform: translate(-8px, 5px);
           }
 
           75% {
-            opacity: 1;
-            transform: translateY(0);
+            transform: translate(6px, 3px);
           }
 
           100% {
-            opacity: 0.35;
-            transform: translateY(-8px);
+            transform: translate(0, 0);
           }
         }
       `}</style>
