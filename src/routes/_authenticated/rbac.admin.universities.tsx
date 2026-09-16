@@ -1,9 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { ResourceManager, StatusBadge, statusField } from "@/components/admin/ResourceManager";
+import {
+  ResourceManager,
+  StatusBadge,
+  statusField,
+} from "@/components/admin/ResourceManager";
 import { supabase } from "@/integrations/supabase/client";
 
-export const Route = createFileRoute("/_authenticated/dashboard/universities")({ component: Page });
+export const Route = createFileRoute(
+  "/_authenticated/rbac/admin/universities",
+)({
+  component: Page,
+});
 
 function Page() {
   const { data: countries } = useQuery({
@@ -13,7 +21,9 @@ function Page() {
         .from("study_abroad_countries")
         .select("id, title")
         .order("title");
+
       if (error) throw error;
+
       return data ?? [];
     },
   });
@@ -27,7 +37,11 @@ function Page() {
       columns={[
         { key: "title", label: "University" },
         { key: "city", label: "City" },
-        { key: "status", label: "Status", render: (r) => <StatusBadge status={r.status} /> },
+        {
+          key: "status",
+          label: "Status",
+          render: (r) => <StatusBadge status={r.status} />,
+        },
       ]}
       fields={[
         { name: "title", label: "University name", required: true },
@@ -36,12 +50,23 @@ function Page() {
           name: "country_id",
           label: "Country",
           type: "select",
-          options: (countries ?? []).map((c) => ({ value: c.id, label: c.title })),
+          options: (countries ?? []).map((c) => ({
+            value: c.id,
+            label: c.title,
+          })),
         },
         { name: "city", label: "City" },
         { name: "website_url", label: "Website URL" },
-        { name: "description", label: "Description", type: "richtext" },
-        { name: "featured_image", label: "Image", type: "image" },
+        {
+          name: "description",
+          label: "Description",
+          type: "richtext",
+        },
+        {
+          name: "featured_image",
+          label: "Image",
+          type: "image",
+        },
         statusField,
       ]}
     />
