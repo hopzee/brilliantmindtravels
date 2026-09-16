@@ -33,32 +33,32 @@ export function Header() {
     <header className="fixed inset-x-0 top-0 z-40">
       {/* Top information bar */}
       <div className="bg-navy-deep text-navy-foreground/80">
-        <div className="mx-auto flex w-full max-w-[80rem] flex-wrap items-stretch gap-2 px-5 py-2 sm:px-6 lg:px-8 xl:px-10">
+        <div className="mx-auto flex w-full max-w-[80rem] flex-wrap items-center justify-between gap-x-8 gap-y-1 px-5 py-2 sm:px-6 lg:px-8 xl:px-10">
           {promise ? (
-            <div className="flex min-w-0 flex-1 items-center rounded-md border border-navy-foreground/10 bg-navy-foreground/[0.03] px-3 py-2">
-              <p className="text-xs leading-relaxed tracking-wide">
+            <div className="min-w-0 flex-1">
+              <p className="text-xs leading-5 tracking-wide">
                 {promise}
               </p>
             </div>
           ) : null}
 
-          {address ? (
-            <div className="flex min-w-0 max-w-full items-center rounded-md border border-navy-foreground/10 bg-navy-foreground/[0.03] px-3 py-2 md:max-w-[360px]">
-              <span className="text-xs leading-relaxed">
+          <div className="flex shrink-0 flex-wrap items-center justify-end gap-x-6 gap-y-1">
+            {address ? (
+              <div className="max-w-[230px] text-xs leading-4">
                 {address}
-              </span>
-            </div>
-          ) : null}
+              </div>
+            ) : null}
 
-          {phone ? (
-            <a
-              href={`tel:${phone.replace(/\s/g, "")}`}
-              className="flex shrink-0 items-center gap-1.5 rounded-md border border-navy-foreground/10 bg-navy-foreground/[0.03] px-3 py-2 text-xs transition-colors hover:border-gold/40 hover:text-gold"
-            >
-              <Phone className="size-3.5 shrink-0" />
-              <span>{phone}</span>
-            </a>
-          ) : null}
+            {phone ? (
+              <a
+                href={`tel:${phone.replace(/\s/g, "")}`}
+                className="inline-flex shrink-0 items-center gap-1.5 text-xs transition-colors hover:text-gold"
+              >
+                <Phone className="size-3.5" />
+                {phone}
+              </a>
+            ) : null}
+          </div>
         </div>
       </div>
 
