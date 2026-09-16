@@ -38,6 +38,54 @@ export const Route = createFileRoute("/blog/$slug")({
   component: PostDetail,
 });
 
+function getTikTokEmbedUrl(url?: string | null) {
+  if (!url) return null;
+
+  const match = url.match(/\/video\/(\d+)/);
+
+  if (!match) return null;
+
+  return `https://www.tiktok.com/player/v1/${match[1]}?description=1&music_info=1`;
+}
+
+function getYouTubeEmbedUrl(url?: string | null) {
+  if (!url) return null;
+
+  try {
+    const parsed = new URL(url);
+
+    if (parsed.hostname.includes("youtu.be")) {
+      const videoId = parsed.pathname.replace("/", "").split("/")[0];
+
+      return videoId
+        ? `https://www.youtube.com/embed/${videoId}`
+        : null;
+    }
+
+    if (parsed.hostname.includes("youtube.com")) {
+      const videoId = parsed.searchParams.get("v");
+
+      if (videoId) {
+        return `https://www.youtube.com/embed/${videoId}`;
+      }
+
+      const pathParts = parsed.pathname.split("/").filter(Boolean);
+
+      if (pathParts[0] === "shorts" && pathParts[1]) {
+        return `https://www.youtube.com/embed/${pathParts[1]}`;
+      }
+
+      if (pathParts[0] === "embed" && pathParts[1]) {
+        return `https://www.youtube.com/embed/${pathParts[1]}`;
+      }
+    }
+  } catch {
+    return null;
+  }
+
+  return null;
+}
+
 function PostDetail() {
   const { slug } = Route.useParams();
 
@@ -61,6 +109,9 @@ function PostDetail() {
     recentPosts?.filter((item: any) => item.slug !== post.slug) ?? [];
 
   const galleryImages = post["gallery-images"] ?? [];
+
+  const tikTokEmbed = getTikTokEmbedUrl(post.tiktok_url);
+  const youTubeEmbed = getYouTubeEmbedUrl(post.youtube_url);
 
   const socialLinks = [
     {
@@ -164,6 +215,35 @@ function PostDetail() {
             </div>
 
             <Prose className="mt-8" text={post.content} />
+
+            {tikTokEmbed ? (
+              <div className="mt-12 overflow-hidden rounded-xl border border-border bg-black">
+                <div className="aspect-[9/16] max-h-[720px] w-full">
+                  <iframe
+                    src={tikTokEmbed}
+                    title={`TikTok video: ${post.title}`}
+                    className="h-full w-full"
+                    allow="fullscreen"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            ) : null}
+
+            {youTubeEmbed ? (
+              <div className="mt-12 overflow-hidden rounded-xl border border-border bg-black">
+                <div className="aspect-video w-full">
+                  <iframe
+                    src={youTubeEmbed}
+                    title={`YouTube video: ${post.title}`}
+                    className="h-full w-full"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            ) : null}
 
             {galleryImages.length ? (
               <div className="mt-12">
