@@ -9,12 +9,23 @@ export const Route = createFileRoute("/_authenticated/rbac/admin/blog")({
   component: Page,
 });
 
+const blogCategories = [
+  { value: "visa-travel", label: "Visa & Travel" },
+  { value: "study-abroad", label: "Study Abroad" },
+  { value: "work-opportunities", label: "Work Opportunities" },
+  { value: "scholarships", label: "Scholarships" },
+  { value: "offers-promotions", label: "Offers & Promotions" },
+  { value: "events-activities", label: "Events & Activities" },
+  { value: "travel-tips", label: "Travel Tips" },
+  { value: "company-news", label: "Company News" },
+];
+
 function Page() {
   return (
     <ResourceManager
       table="blog_posts"
       title="Blog Posts"
-      description="Articles, guides and travel news."
+      description="Publish travel updates, opportunities, offers, events and useful information."
       slugFrom="title"
       columns={[
         { key: "title", label: "Title" },
@@ -27,19 +38,64 @@ function Page() {
         },
       ]}
       fields={[
-        { name: "title", label: "Title", required: true },
-        { name: "slug", label: "Slug" },
-        { name: "category", label: "Category" },
-        { name: "author_name", label: "Author" },
-        { name: "excerpt", label: "Excerpt", type: "textarea" },
-        { name: "content", label: "Content", type: "richtext" },
-        { name: "tags", label: "Tags", type: "tags" },
+        {
+          name: "title",
+          label: "Title",
+          required: true,
+          placeholder: "Enter the article or update title",
+        },
+        {
+          name: "slug",
+          label: "Slug",
+          help: "Leave empty to generate automatically from the title.",
+        },
+        {
+          name: "category",
+          label: "Category",
+          type: "select",
+          options: blogCategories,
+          required: true,
+        },
+        {
+          name: "author_name",
+          label: "Author",
+          placeholder: "Brilliant Mind Travel & Tours",
+        },
+        {
+          name: "excerpt",
+          label: "Short description",
+          type: "textarea",
+          placeholder:
+            "A short introduction that will appear on the Blog listing.",
+          required: true,
+        },
+        {
+          name: "content",
+          label: "Content",
+          type: "richtext",
+          placeholder:
+            "Write the full article, update, opportunity or event report here.",
+          required: true,
+        },
+        {
+          name: "tags",
+          label: "Tags",
+          type: "tags",
+          placeholder: "Germany, visa, travel",
+          help: "Separate each tag with a comma.",
+        },
         {
           name: "featured_image",
           label: "Featured image",
           type: "image",
+          help: "This image will appear on the Blog card.",
         },
-        { name: "published_at", label: "Publish date", type: "date" },
+        {
+          name: "published_at",
+          label: "Publish date",
+          type: "date",
+          help: "Choose the date the post should appear as published.",
+        },
         statusField,
       ]}
     />
