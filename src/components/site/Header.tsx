@@ -32,20 +32,24 @@ export function Header() {
   return (
     <header className="fixed inset-x-0 top-0 z-40">
       <div className="hidden bg-navy-deep text-navy-foreground/80 md:block">
-        <div className="mx-auto flex h-9 w-full max-w-[80rem] items-center justify-between px-6 text-xs lg:px-8 xl:px-10">
-          <p className="max-w-[50%] truncate tracking-wide">
-            {promise}
-          </p>
+        <div className="mx-auto flex h-9 w-full max-w-[80rem] items-center px-6 lg:px-8 xl:px-10">
+          <div className="flex min-w-0 flex-1 items-center">
+            <p className="truncate text-xs tracking-wide">
+              {promise}
+            </p>
+          </div>
 
-          <div className="flex items-center gap-5">
-            <span className="max-w-[280px] truncate">
-              {address}
-            </span>
+          <div className="ml-10 flex shrink-0 items-center gap-6 border-l border-navy-foreground/15 pl-6">
+            {address ? (
+              <span className="max-w-[280px] truncate text-xs">
+                {address}
+              </span>
+            ) : null}
 
             {phone ? (
               <a
                 href={`tel:${phone.replace(/\s/g, "")}`}
-                className="inline-flex shrink-0 items-center gap-1.5 transition-colors hover:text-gold"
+                className="inline-flex shrink-0 items-center gap-1.5 text-xs transition-colors hover:text-gold"
               >
                 <Phone className="size-3.5" />
                 {phone}
