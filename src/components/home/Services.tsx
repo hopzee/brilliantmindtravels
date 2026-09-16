@@ -70,12 +70,12 @@ export function Services() {
           title="Professional services for every stage of your journey"
         />
 
+        {/* Travel Services */}
         <div className="mt-12">
           <div className="mb-6">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold">
               Travel Services
             </p>
-
             <h2 className="mt-2 text-2xl font-semibold text-navy md:text-3xl">
               Travel arrangements made easier
             </h2>
@@ -106,6 +106,7 @@ export function Services() {
           </div>
         </div>
 
+        {/* Countries We Support */}
         <div className="mt-20 md:mt-24">
           <div className="mb-6">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-gold">
