@@ -10,7 +10,9 @@ import { cms } from "@/lib/db";
 import { uploadMedia, deleteMedia } from "@/lib/media";
 import { supabase } from "@/integrations/supabase/client";
 
-export const Route = createFileRoute("/_authenticated/dashboard/testimonials")({
+export const Route = createFileRoute(
+  "/_authenticated/rbac/admin/testimonials",
+)({
   component: Page,
 });
 
@@ -124,7 +126,11 @@ function Page() {
           } skipped.`,
         );
       } else {
-        toast.success(`${uploadedCount} media file${uploadedCount === 1 ? "" : "s"} uploaded.`);
+        toast.success(
+          `${uploadedCount} media file${
+            uploadedCount === 1 ? "" : "s"
+          } uploaded.`,
+        );
       }
 
       await queryClient.invalidateQueries({
