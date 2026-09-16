@@ -5,7 +5,7 @@ import {
   statusField,
 } from "@/components/admin/ResourceManager";
 
-export const Route = createFileRoute("/_authenticated/dashboard/promotions")({
+export const Route = createFileRoute("/_authenticated/rbac/admin/promotions")({
   component: Page,
 });
 
@@ -26,8 +26,15 @@ function Page() {
         },
       ]}
       fields={[
-        { name: "title", label: "Campaign title", required: true },
-        { name: "subtitle", label: "Subtitle" },
+        {
+          name: "title",
+          label: "Campaign title",
+          required: true,
+        },
+        {
+          name: "subtitle",
+          label: "Subtitle",
+        },
         {
           name: "description",
           label: "Description",
