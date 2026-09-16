@@ -1,5 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import {
+  Facebook,
+  Image as ImageIcon,
+  Instagram,
+  MessageCircle,
+  Play,
+  Twitter,
+} from "lucide-react";
 import { SiteLayout } from "@/components/public/SiteLayout";
 import {
   Gallery,
@@ -52,6 +60,73 @@ function PostDetail() {
   const relatedPosts =
     recentPosts?.filter((item: any) => item.slug !== post.slug) ?? [];
 
+  const galleryImages = post["gallery-images"] ?? [];
+
+  const socialLinks = [
+    {
+      name: "TikTok",
+      url: post.tiktok_url,
+      label: "Watch on TikTok",
+      className:
+        "border-border bg-card text-navy hover:border-navy hover:bg-navy hover:text-white",
+    },
+    {
+      name: "Facebook",
+      url: post.facebook_url,
+      label: "View on Facebook",
+      icon: Facebook,
+      className:
+        "border-border bg-card text-navy hover:border-navy hover:bg-navy hover:text-white",
+    },
+    {
+      name: "YouTube",
+      url: post.youtube_url,
+      label: "Watch on YouTube",
+      icon: Play,
+      className:
+        "border-border bg-card text-navy hover:border-navy hover:bg-navy hover:text-white",
+    },
+    {
+      name: "WhatsApp",
+      url: post.whatsapp_url,
+      label: "Chat on WhatsApp",
+      icon: MessageCircle,
+      className:
+        "border-border bg-card text-navy hover:border-navy hover:bg-navy hover:text-white",
+    },
+    {
+      name: "Instagram",
+      url: post.instagram_url,
+      label: "View on Instagram",
+      icon: Instagram,
+      className:
+        "border-border bg-card text-navy hover:border-navy hover:bg-navy hover:text-white",
+    },
+    {
+      name: "X",
+      url: post.twitter_url,
+      label: "View on X",
+      icon: Twitter,
+      className:
+        "border-border bg-card text-navy hover:border-navy hover:bg-navy hover:text-white",
+    },
+    {
+      name: "Threads",
+      url: post.threads_url,
+      label: "View on Threads",
+      className:
+        "border-border bg-card text-navy hover:border-navy hover:bg-navy hover:text-white",
+    },
+    {
+      name: "Image",
+      url: post.image_url,
+      label: "Open image",
+      icon: ImageIcon,
+      className:
+        "border-border bg-card text-navy hover:border-navy hover:bg-navy hover:text-white",
+    },
+  ].filter((item) => item.url);
+
   return (
     <SiteLayout>
       <PageHero
@@ -90,12 +165,48 @@ function PostDetail() {
 
             <Prose className="mt-8" text={post.content} />
 
-            {post.gallery_images?.length ? (
+            {galleryImages.length ? (
               <div className="mt-12">
                 <Gallery
-                  images={post.gallery_images}
+                  images={galleryImages}
                   alt={post.title}
                 />
+              </div>
+            ) : null}
+
+            {socialLinks.length > 0 ? (
+              <div className="mt-12 border-t border-border pt-8">
+                <p className="eyebrow text-gold">Related Links</p>
+
+                <h2 className="mt-2 text-2xl text-navy">
+                  Follow or view this update
+                </h2>
+
+                <div className="mt-6 flex flex-wrap gap-3">
+                  {socialLinks.map((item) => {
+                    const Icon = item.icon;
+
+                    return (
+                      <a
+                        key={item.name}
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className={`inline-flex items-center gap-2 rounded-lg border px-4 py-3 text-sm font-semibold transition-colors ${item.className}`}
+                      >
+                        {Icon ? (
+                          <Icon className="size-4" />
+                        ) : (
+                          <span className="text-sm font-bold">
+                            {item.name === "TikTok" ? "♪" : "@"}
+                          </span>
+                        )}
+
+                        {item.label}
+                      </a>
+                    );
+                  })}
+                </div>
               </div>
             ) : null}
 
