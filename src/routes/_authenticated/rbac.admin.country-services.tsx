@@ -1,7 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ResourceManager, StatusBadge, statusField } from "@/components/admin/ResourceManager";
+import {
+  ResourceManager,
+  StatusBadge,
+  statusField,
+} from "@/components/admin/ResourceManager";
 
-export const Route = createFileRoute("/_authenticated/dashboard/country-services")({
+export const Route = createFileRoute(
+  "/_authenticated/rbac/admin/country-services",
+)({
   component: Page,
 });
 
