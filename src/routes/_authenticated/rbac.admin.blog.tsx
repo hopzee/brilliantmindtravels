@@ -88,7 +88,13 @@ function Page() {
           name: "featured_image",
           label: "Featured image",
           type: "image",
-          help: "This image will appear on the Blog card.",
+          help: "This is the main image shown on the Blog card.",
+        },
+        {
+          name: "gallery-images",
+          label: "Gallery images",
+          type: "gallery",
+          help: "Add additional photos for events, activities, tours or other blog posts.",
         },
         {
           name: "published_at",
