@@ -23,6 +23,15 @@ type TestimonialMedia = {
   created_by: string | null;
 };
 
+async function getFileHash(file: File) {
+  const buffer = await file.arrayBuffer();
+  const hashBuffer = await crypto.subtle.digest("SHA-256", buffer);
+
+  return Array.from(new Uint8Array(hashBuffer))
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
+}
+
 function Page() {
   const queryClient = useQueryClient();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -50,6 +59,17 @@ function Page() {
       const { data: userRes } = await supabase.auth.getUser();
       const createdBy = userRes.user?.id ?? null;
 
+      const existingNames = new Set(
+        (data ?? []).map((item) => {
+          const url = item.video_url || item.featured_image || "";
+          return getFileNameFromUrl(url);
+        }),
+      );
+
+      const batchHashes = new Set<string>();
+      let uploadedCount = 0;
+      let duplicateCount = 0;
+
       for (const file of Array.from(files)) {
         const isVideo = file.type.startsWith("video/");
         const isImage = file.type.startsWith("image/");
@@ -59,14 +79,27 @@ function Page() {
           continue;
         }
 
-        const { url, path } = await uploadMedia(
-          file,
-          "testimonials",
-        );
+        const hash = await getFileHash(file);
+
+        if (batchHashes.has(hash)) {
+          duplicateCount++;
+          continue;
+        }
+
+        batchHashes.add(hash);
+
+        const fileName = file.name.toLowerCase().trim();
+
+        if (existingNames.has(fileName)) {
+          duplicateCount++;
+          continue;
+        }
+
+        const { url, path } = await uploadMedia(file, "testimonials");
 
         const payload = {
           title: file.name,
-          slug: `${crypto.randomUUID()}`,
+          slug: crypto.randomUUID(),
           featured_image: isImage ? url : null,
           video_url: isVideo ? url : null,
           status: "published",
@@ -80,9 +113,20 @@ function Page() {
           await deleteMedia(path);
           throw error;
         }
+
+        uploadedCount++;
       }
 
-      toast.success("Testimonial media uploaded successfully.");
+      if (duplicateCount > 0) {
+        toast.success(
+          `${uploadedCount} uploaded, ${duplicateCount} duplicate${
+            duplicateCount === 1 ? "" : "s"
+          } skipped.`,
+        );
+      } else {
+        toast.success(`${uploadedCount} media file${uploadedCount === 1 ? "" : "s"} uploaded.`);
+      }
+
       await queryClient.invalidateQueries({
         queryKey: ["testimonial-media"],
       });
@@ -118,9 +162,11 @@ function Page() {
     },
     onSuccess: async () => {
       toast.success("Status updated.");
+
       await queryClient.invalidateQueries({
         queryKey: ["testimonial-media"],
       });
+
       await queryClient.invalidateQueries({
         queryKey: ["cms", "testimonials"],
       });
@@ -130,10 +176,8 @@ function Page() {
 
   const remove = useMutation({
     mutationFn: async (item: TestimonialMedia) => {
-      const path =
-        item.featured_image || item.video_url
-          ? getStoragePath(item.featured_image || item.video_url || "")
-          : null;
+      const url = item.video_url || item.featured_image || "";
+      const path = getStoragePath(url);
 
       if (path) {
         await deleteMedia(path);
@@ -148,9 +192,11 @@ function Page() {
     },
     onSuccess: async () => {
       toast.success("Media deleted.");
+
       await queryClient.invalidateQueries({
         queryKey: ["testimonial-media"],
       });
+
       await queryClient.invalidateQueries({
         queryKey: ["cms", "testimonials"],
       });
@@ -163,8 +209,10 @@ function Page() {
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-2xl text-navy">Testimonials</h1>
+
           <p className="mt-1 text-sm text-muted-foreground">
             Upload client photos and video testimonials in bulk.
+            Duplicate files are automatically skipped.
           </p>
         </div>
 
@@ -188,7 +236,8 @@ function Page() {
             ) : (
               <Upload className="size-4" />
             )}
-            {uploading ? "Uploading..." : "Upload Photos / Videos"}
+
+            {uploading ? "Checking / Uploading..." : "Upload Photos / Videos"}
           </Button>
         </div>
       </div>
@@ -264,6 +313,7 @@ function Page() {
                             }
                             disabled={toggleStatus.isPending}
                           />
+
                           <span>
                             {item.status === "published"
                               ? "Published"
@@ -304,6 +354,16 @@ function Page() {
   );
 }
 
+function getFileNameFromUrl(url: string) {
+  try {
+    const parsed = new URL(url);
+    const pathname = decodeURIComponent(parsed.pathname);
+    return pathname.split("/").pop()?.toLowerCase().trim() ?? "";
+  } catch {
+    return "";
+  }
+}
+
 function getStoragePath(url: string) {
   try {
     const parsed = new URL(url);
@@ -312,7 +372,9 @@ function getStoragePath(url: string) {
 
     if (index === -1) return null;
 
-    return decodeURIComponent(parsed.pathname.slice(index + marker.length));
+    return decodeURIComponent(
+      parsed.pathname.slice(index + marker.length),
+    );
   } catch {
     return null;
   }
