@@ -88,18 +88,31 @@ export function ResourceManager({
   const { data, isLoading } = useQuery({
     queryKey: [table],
     queryFn: async () => {
-      const { data, error } = await cms.from(table).select("*").order(orderBy, { ascending: false });
+      const { data, error } = await cms
+        .from(table)
+        .select("*")
+        .order(orderBy, { ascending: false });
+
       if (error) throw error;
+
       return (data ?? []) as Row[];
     },
   });
 
   const emptyForm = useMemo(() => {
     const base: Row = { ...defaults };
+
     for (const f of fields) {
       if (base[f.name] !== undefined) continue;
-      base[f.name] = f.type === "gallery" || f.type === "tags" ? [] : f.type === "switch" ? false : "";
+
+      base[f.name] =
+        f.type === "gallery" || f.type === "tags"
+          ? []
+          : f.type === "switch"
+            ? false
+            : "";
     }
+
     return base;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [fields]);
@@ -112,8 +125,13 @@ export function ResourceManager({
 
   const startEdit = (row: Row) => {
     setEditing(row);
+
     const next: Row = { ...emptyForm };
-    for (const key of Object.keys(next)) next[key] = row[key] ?? next[key];
+
+    for (const key of Object.keys(next)) {
+      next[key] = row[key] ?? next[key];
+    }
+
     setForm(next);
     setOpen(true);
   };
@@ -121,54 +139,89 @@ export function ResourceManager({
   const save = useMutation({
     mutationFn: async (values: Row) => {
       const payload: Row = { ...values };
-      if (slugFrom && !payload.slug) payload.slug = slugify(String(payload[slugFrom] ?? ""));
-      if (payload.slug) payload.slug = slugify(String(payload.slug));
-      for (const f of fields) {
-        if (f.type === "number") payload[f.name] = payload[f.name] === "" ? null : Number(payload[f.name]);
+
+      if (slugFrom && !payload.slug) {
+        payload.slug = slugify(String(payload[slugFrom] ?? ""));
       }
+
+      if (payload.slug) {
+        payload.slug = slugify(String(payload.slug));
+      }
+
+      for (const f of fields) {
+        if (f.type === "number") {
+          payload[f.name] =
+            payload[f.name] === "" ? null : Number(payload[f.name]);
+        }
+      }
+
       if (editing) {
-        const { error } = await cms.from(table).update(payload).eq("id", editing.id);
+        const { error } = await cms
+          .from(table)
+          .update(payload)
+          .eq("id", editing.id);
+
         if (error) throw error;
       } else {
         const { data: userRes } = await supabase.auth.getUser();
-        if ("created_by" in emptyForm || true) payload.created_by = userRes.user?.id ?? null;
+
+        payload.created_by = userRes.user?.id ?? null;
+
         const { error } = await cms.from(table).insert(payload);
+
         if (error) throw error;
       }
     },
+
     onSuccess: () => {
       toast.success(editing ? "Changes saved" : "Created successfully");
       setOpen(false);
+
       void qc.invalidateQueries({ queryKey: [table] });
       void qc.invalidateQueries({ queryKey: ["admin-stats"] });
     },
+
     onError: (e: Error) => toast.error(e.message),
   });
 
   const remove = useMutation({
     mutationFn: async (id: string) => {
       const { error } = await cms.from(table).delete().eq("id", id);
+
       if (error) throw error;
     },
+
     onSuccess: () => {
       toast.success("Deleted");
+
       void qc.invalidateQueries({ queryKey: [table] });
       void qc.invalidateQueries({ queryKey: ["admin-stats"] });
     },
+
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const set = (name: string, value: unknown) => setForm((f) => ({ ...f, [name]: value }));
+  const set = (name: string, value: unknown) => {
+    setForm((f) => ({
+      ...f,
+      [name]: value,
+    }));
+  };
 
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <h1 className="text-2xl text-navy">{title}</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{description}</p>
+
+          <p className="mt-1 text-sm text-muted-foreground">
+            {description}
+          </p>
         </div>
+
         <Button variant="gold" onClick={startCreate}>
-          <Plus className="size-4" /> New
+          <Plus className="size-4" />
+          New
         </Button>
       </div>
 
@@ -177,45 +230,76 @@ export function ResourceManager({
           <thead className="bg-muted/60 text-left">
             <tr>
               {columns.map((c) => (
-                <th key={c.key} className="whitespace-nowrap px-4 py-3 font-semibold text-navy">
+                <th
+                  key={c.key}
+                  className="whitespace-nowrap px-4 py-3 font-semibold text-navy"
+                >
                   {c.label}
                 </th>
               ))}
+
               <th className="px-4 py-3" />
             </tr>
           </thead>
+
           <tbody>
             {isLoading && (
               <tr>
-                <td colSpan={columns.length + 1} className="px-4 py-10 text-center text-muted-foreground">
+                <td
+                  colSpan={columns.length + 1}
+                  className="px-4 py-10 text-center text-muted-foreground"
+                >
                   <Loader2 className="mx-auto size-5 animate-spin" />
                 </td>
               </tr>
             )}
+
             {!isLoading && (data?.length ?? 0) === 0 && (
               <tr>
-                <td colSpan={columns.length + 1} className="px-4 py-10 text-center text-muted-foreground">
+                <td
+                  colSpan={columns.length + 1}
+                  className="px-4 py-10 text-center text-muted-foreground"
+                >
                   Nothing here yet. Click “New” to add your first entry.
                 </td>
               </tr>
             )}
+
             {data?.map((row) => (
               <tr key={row.id} className="border-t border-border">
                 {columns.map((c) => (
-                  <td key={c.key} className="px-4 py-3 align-middle">
-                    {c.render ? c.render(row) : String(row[c.key] ?? "—")}
+                  <td
+                    key={c.key}
+                    className="px-4 py-3 align-middle"
+                  >
+                    {c.render
+                      ? c.render(row)
+                      : String(row[c.key] ?? "—")}
                   </td>
                 ))}
+
                 <td className="whitespace-nowrap px-4 py-3 text-right">
-                  <Button variant="ghost" size="icon" onClick={() => startEdit(row)} aria-label="Edit">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => startEdit(row)}
+                    aria-label="Edit"
+                  >
                     <Pencil className="size-4" />
                   </Button>
+
                   <Button
                     variant="ghost"
                     size="icon"
                     aria-label="Delete"
                     onClick={() => {
-                      if (confirm("Delete this entry permanently?")) remove.mutate(row.id);
+                      if (
+                        confirm(
+                          "Delete this entry permanently?",
+                        )
+                      ) {
+                        remove.mutate(row.id);
+                      }
                     }}
                   >
                     <Trash2 className="size-4 text-destructive" />
@@ -230,8 +314,15 @@ export function ResourceManager({
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-h-[88vh] max-w-3xl overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>{editing ? `Edit ${title.replace(/s$/, "")}` : `New ${title.replace(/s$/, "")}`}</DialogTitle>
-            <DialogDescription>{description}</DialogDescription>
+            <DialogTitle>
+              {editing
+                ? `Edit ${title.replace(/s$/, "")}`
+                : `New ${title.replace(/s$/, "")}`}
+            </DialogTitle>
+
+            <DialogDescription>
+              {description}
+            </DialogDescription>
           </DialogHeader>
 
           <form
@@ -246,24 +337,50 @@ export function ResourceManager({
               <div
                 key={f.name}
                 className={
-                  f.full || ["textarea", "richtext", "gallery", "image"].includes(f.type ?? "text")
+                  f.full ||
+                  ["textarea", "richtext", "gallery", "image"].includes(
+                    f.type ?? "text",
+                  )
                     ? "space-y-2 sm:col-span-2"
                     : "space-y-2"
                 }
               >
                 <Label htmlFor={f.name}>{f.label}</Label>
-                <FieldInput field={f} value={form[f.name]} onChange={(v) => set(f.name, v)} />
-                {f.help && <p className="text-xs text-muted-foreground">{f.help}</p>}
+
+                <FieldInput
+                  field={f}
+                  value={form[f.name]}
+                  onChange={(v) => set(f.name, v)}
+                />
+
+                {f.help && (
+                  <p className="text-xs text-muted-foreground">
+                    {f.help}
+                  </p>
+                )}
               </div>
             ))}
           </form>
 
           <DialogFooter>
-            <Button variant="outlineNavy" type="button" onClick={() => setOpen(false)}>
+            <Button
+              variant="outlineNavy"
+              type="button"
+              onClick={() => setOpen(false)}
+            >
               Cancel
             </Button>
-            <Button variant="gold" type="submit" form="resource-form" disabled={save.isPending}>
-              {save.isPending && <Loader2 className="size-4 animate-spin" />} Save
+
+            <Button
+              variant="gold"
+              type="submit"
+              form="resource-form"
+              disabled={save.isPending}
+            >
+              {save.isPending && (
+                <Loader2 className="size-4 animate-spin" />
+              )}
+              Save
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -287,33 +404,63 @@ function FieldInput({
       return (
         <Textarea
           id={field.name}
-          rows={4}
+          rows={5}
           value={value ?? ""}
           placeholder={field.placeholder}
           onChange={(e) => onChange(e.target.value)}
           required={field.required}
         />
       );
+
     case "richtext":
       return (
-        <Textarea
+        <div className="space-y-2">
+          <Textarea
+            id={field.name}
+            rows={18}
+            value={value ?? ""}
+            placeholder={
+              field.placeholder ??
+              "Write your article here. Leave a blank line between paragraphs."
+            }
+            onChange={(e) => onChange(e.target.value)}
+            required={field.required}
+            className="min-h-[360px] resize-y leading-7"
+          />
+
+          <div className="rounded-lg border border-border bg-muted/40 px-4 py-3">
+            <p className="text-xs font-semibold text-navy">
+              Writing guide
+            </p>
+
+            <p className="mt-1 text-xs leading-5 text-muted-foreground">
+              Keep paragraphs short and easy to read. Use a blank line
+              between paragraphs. You can also use simple section headings
+              by placing them on their own line.
+            </p>
+          </div>
+        </div>
+      );
+
+    case "switch":
+      return (
+        <Switch
           id={field.name}
-          rows={12}
-          className="font-mono text-xs"
-          value={value ?? ""}
-          placeholder={field.placeholder ?? "Write your content here. Blank lines start a new paragraph."}
-          onChange={(e) => onChange(e.target.value)}
-          required={field.required}
+          checked={Boolean(value)}
+          onCheckedChange={onChange}
         />
       );
-    case "switch":
-      return <Switch id={field.name} checked={Boolean(value)} onCheckedChange={onChange} />;
+
     case "select":
       return (
-        <Select value={value ? String(value) : ""} onValueChange={onChange}>
+        <Select
+          value={value ? String(value) : ""}
+          onValueChange={onChange}
+        >
           <SelectTrigger id={field.name}>
             <SelectValue placeholder="Select…" />
           </SelectTrigger>
+
           <SelectContent>
             {field.options?.map((o) => (
               <SelectItem key={o.value} value={o.value}>
@@ -323,16 +470,35 @@ function FieldInput({
           </SelectContent>
         </Select>
       );
+
     case "image":
-      return <MediaField value={value ?? null} onChange={onChange} />;
+      return (
+        <MediaField
+          value={value ?? null}
+          onChange={onChange}
+        />
+      );
+
     case "gallery":
-      return <GalleryField value={Array.isArray(value) ? value : []} onChange={onChange} />;
+      return (
+        <GalleryField
+          value={Array.isArray(value) ? value : []}
+          onChange={onChange}
+        />
+      );
+
     case "tags":
       return (
         <Input
           id={field.name}
-          value={Array.isArray(value) ? value.join(", ") : (value ?? "")}
-          placeholder={field.placeholder ?? "Separate with commas"}
+          value={
+            Array.isArray(value)
+              ? value.join(", ")
+              : (value ?? "")
+          }
+          placeholder={
+            field.placeholder ?? "Separate with commas"
+          }
           onChange={(e) =>
             onChange(
               e.target.value
@@ -343,6 +509,7 @@ function FieldInput({
           }
         />
       );
+
     case "number":
       return (
         <Input
@@ -353,8 +520,17 @@ function FieldInput({
           onChange={(e) => onChange(e.target.value)}
         />
       );
+
     case "date":
-      return <Input id={field.name} type="date" value={value ?? ""} onChange={(e) => onChange(e.target.value)} />;
+      return (
+        <Input
+          id={field.name}
+          type="date"
+          value={value ?? ""}
+          onChange={(e) => onChange(e.target.value)}
+        />
+      );
+
     default:
       return (
         <Input
@@ -368,9 +544,20 @@ function FieldInput({
   }
 }
 
-export function StatusBadge({ status }: { status: string }) {
+export function StatusBadge({
+  status,
+}: {
+  status: string;
+}) {
   return (
-    <Badge variant={status === "published" ? "default" : "secondary"} className="capitalize">
+    <Badge
+      variant={
+        status === "published"
+          ? "default"
+          : "secondary"
+      }
+      className="capitalize"
+    >
       {status}
     </Badge>
   );
