@@ -1,7 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ResourceManager, StatusBadge, statusField } from "@/components/admin/ResourceManager";
+import {
+  ResourceManager,
+  StatusBadge,
+  statusField,
+} from "@/components/admin/ResourceManager";
 
-export const Route = createFileRoute("/_authenticated/dashboard/blog")({ component: Page });
+export const Route = createFileRoute("/_authenticated/rbac/admin/blog")({
+  component: Page,
+});
 
 function Page() {
   return (
@@ -14,7 +20,11 @@ function Page() {
         { key: "title", label: "Title" },
         { key: "category", label: "Category" },
         { key: "author_name", label: "Author" },
-        { key: "status", label: "Status", render: (r) => <StatusBadge status={r.status} /> },
+        {
+          key: "status",
+          label: "Status",
+          render: (r) => <StatusBadge status={r.status} />,
+        },
       ]}
       fields={[
         { name: "title", label: "Title", required: true },
@@ -24,7 +34,11 @@ function Page() {
         { name: "excerpt", label: "Excerpt", type: "textarea" },
         { name: "content", label: "Content", type: "richtext" },
         { name: "tags", label: "Tags", type: "tags" },
-        { name: "featured_image", label: "Featured image", type: "image" },
+        {
+          name: "featured_image",
+          label: "Featured image",
+          type: "image",
+        },
         { name: "published_at", label: "Publish date", type: "date" },
         statusField,
       ]}
