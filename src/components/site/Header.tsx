@@ -2,15 +2,34 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { navLinks } from "@/config/site";
+import { Logo } from "./Logo";
+import { navLinks, site } from "@/config/site";
+import { cn } from "@/lib/utils";
 
 export function Header() {
+  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
   return (
     <header className="fixed inset-x-0 top-0 z-40">
-      <div className="bg-background shadow-[0_10px_30px_-24px_rgba(11,31,58,0.8)]">
-        <div className="mx-auto flex h-18 w-full max-w-[80rem] items-center justify-end gap-4 px-5 sm:px-6 lg:px-8 xl:px-10">
+      {/* Main navigation */}
+      <div
+        className={cn(
+          "transition-all duration-300",
+          scrolled
+            ? "bg-background shadow-[0_10px_30px_-24px_rgba(11,31,58,0.8)]"
+            : "bg-background/95",
+        )}
+      >
+        <div className="mx-auto flex h-18 w-full max-w-[80rem] items-center justify-between gap-4 px-5 sm:px-6 lg:px-8 xl:px-10">
+          <Link
+            to="/"
+            aria-label={site.name}
+            className="shrink-0"
+          >
+            <Logo />
+          </Link>
+
           <nav
             className="hidden items-center gap-5 lg:flex xl:gap-6"
             aria-label="Main"
