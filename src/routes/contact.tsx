@@ -25,10 +25,11 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { enquiryMessage, waLink } from "@/lib/cms";
 
-const title = "Contact & Book a Consultation | Brilliant Mind Travels & Tours";
+const title =
+  "Contact Brilliant Mind Travels & Tours | Travel Agency in Ede, Osun";
 
 const description =
-  "Send a general inquiry or book a consultation with Brilliant Mind Travels & Tours. Call, WhatsApp or visit our office in Ede South, Osun State.";
+  "Contact Brilliant Mind Travels & Tours in Ede, Osun for travel services, visa guidance, study abroad, tourism and consultation. Call, WhatsApp or visit our office.";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -59,9 +60,12 @@ function ContactPage() {
   return (
     <SiteLayout>
       <PageHero
-        eyebrow="Contact"
-        title="Let's plan your next move"
-        intro="Choose a general inquiry or book a consultation. We respond quickly on every channel."
+        eyebrow="Contact Brilliant Mind Travels & Tours"
+        title="Travel Agency & Consultancy in Ede, Osun"
+        intro={
+          s?.promise ??
+          "Contact Brilliant Mind Travels & Tours for travel services, visa guidance, study abroad and tourism support in Ede, Osun."
+        }
       />
 
       <section className="bg-background py-20">
@@ -69,7 +73,7 @@ function ContactPage() {
           <div>
             <SectionHeading
               eyebrow="Get in touch"
-              title="Send a message or book a slot"
+              title="Send a message or book a consultation"
             />
 
             <Tabs defaultValue="inquiry" className="mt-8">
@@ -95,7 +99,9 @@ function ContactPage() {
 
           <aside className="space-y-6 lg:sticky lg:top-28 lg:self-start">
             <div className="rounded-xl border border-border bg-card p-7">
-              <h2 className="text-lg text-navy">Contact details</h2>
+              <h2 className="text-lg text-navy">
+                Contact Brilliant Mind Travels & Tours
+              </h2>
 
               <ul className="mt-5 space-y-5 text-sm text-muted-foreground">
                 {s?.phone ? (
