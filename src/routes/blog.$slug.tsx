@@ -21,9 +21,13 @@ import { publishedItem, publishedList } from "@/lib/cms";
 
 export const Route = createFileRoute("/blog/$slug")({
   head: ({ params }) => {
-    const label = params.slug.replace(/-/g, " ");
-    const title = `${label} | Brilliant Mind Travels & Tours Blog`;
-    const description = `Read "${label}" for travel, visa, study abroad, work opportunity and travel updates from Brilliant Mind Travels & Tours.`;
+    const label = params.slug
+      .replace(/-/g, " ")
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+
+    const title = `${label} | Brilliant Mind Travels & Tours`;
+
+    const description = `Read ${label} from Brilliant Mind Travels & Tours in Ede, Osun. Get useful travel, visa, study abroad, work opportunity and tourism information.`;
 
     return {
       meta: [
@@ -344,7 +348,7 @@ function PostDetail() {
   return (
     <SiteLayout>
       <PageHero
-        eyebrow={post.category ?? "Article"}
+        eyebrow={post.category ?? "Travel & Study Abroad"}
         title={post.title}
         intro={post.excerpt}
         image={post.featured_image}
@@ -567,7 +571,7 @@ function PostDetail() {
                 <div>
                   <p className="eyebrow text-gold">Keep reading</p>
                   <h2 className="mt-2 text-2xl text-navy md:text-3xl">
-                    More from Brilliant Mind
+                    More from Brilliant Mind Travels & Tours
                   </h2>
                 </div>
 
