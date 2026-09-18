@@ -98,11 +98,14 @@ export const Route =
           name: "viewport",
           content: "width=device-width, initial-scale=1",
         },
-        { title: "Brilliant Mind Travels & Tours" },
+        {
+          title:
+            "Brilliant Mind Travels & Tours | Travel & Study Abroad in Ede, Osun",
+        },
         {
           name: "description",
           content:
-            "Premium travel and immigration consultancy in Ede South, Osun State, Nigeria.",
+            "Brilliant Mind Travels & Tours is a travel and educational consultancy in Ede, Osun, providing travel, visa guidance, study abroad and tourism services.",
         },
         {
           name: "author",
@@ -110,12 +113,13 @@ export const Route =
         },
         {
           property: "og:title",
-          content: "Brilliant Mind Travels & Tours",
+          content:
+            "Brilliant Mind Travels & Tours | Travel & Study Abroad in Ede, Osun",
         },
         {
           property: "og:description",
           content:
-            "Premium travel and immigration consultancy in Ede South, Osun State, Nigeria.",
+            "Brilliant Mind Travels & Tours is a travel and educational consultancy in Ede, Osun, providing travel, visa guidance, study abroad and tourism services.",
         },
         {
           property: "og:type",
