@@ -1,14 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { SiteLayout } from "@/components/public/SiteLayout";
-import { CardSkeletons, EmptyState, PageHero, Reveal } from "@/components/public/ui";
+import {
+  CardSkeletons,
+  EmptyState,
+  PageHero,
+  Reveal,
+} from "@/components/public/ui";
 import { TestimonialCard } from "@/components/home/Testimonials";
 import { WhatsAppCta } from "@/components/home/WhatsAppCta";
 import { publishedList } from "@/lib/cms";
 
-const title = "Client Testimonials | Brilliant Mind Travels & Tours";
+const title =
+  "Client Testimonials | Brilliant Mind Travels & Tours in Ede, Osun";
+
 const description =
-  "Real success stories from clients who secured visas, admissions and travel plans with Brilliant Mind Travels & Tours.";
+  "Read client testimonials about Brilliant Mind Travels & Tours in Ede, Osun and learn about experiences with travel, visa guidance, study abroad and tourism services.";
 
 export const Route = createFileRoute("/testimonials")({
   head: () => ({
@@ -26,15 +33,24 @@ export const Route = createFileRoute("/testimonials")({
 
 function TestimonialsPage() {
   const { data, isLoading } = useQuery(publishedList("testimonials"));
+
   return (
     <SiteLayout>
-      <PageHero eyebrow="Client stories" title="Testimonials" intro="Journeys we've helped make possible." />
+      <PageHero
+        eyebrow="Brilliant Mind Travels & Tours"
+        title="Client Testimonials"
+        intro="Read client experiences with our travel, visa guidance, study abroad and tourism services in Ede, Osun."
+      />
+
       <section className="bg-background py-20">
         <div className="container-page">
           {isLoading ? (
             <CardSkeletons />
           ) : !data?.length ? (
-            <EmptyState title="Stories coming soon" text="Client stories will be published here shortly." />
+            <EmptyState
+              title="Client testimonials coming soon"
+              text="Client testimonials will be published here as more experiences are added."
+            />
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {data.map((t: any, i: number) => (
@@ -46,6 +62,7 @@ function TestimonialsPage() {
           )}
         </div>
       </section>
+
       <WhatsAppCta />
     </SiteLayout>
   );
