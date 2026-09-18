@@ -14,13 +14,22 @@ import {
 import { InquiryForm } from "@/components/public/LeadForms";
 import { Button } from "@/components/ui/button";
 import { DetailSkeleton, NotAvailable } from "./services.$slug";
-import { enquiryMessage, publishedItem, universitiesForCountry } from "@/lib/cms";
+import {
+  enquiryMessage,
+  publishedItem,
+  universitiesForCountry,
+} from "@/lib/cms";
 
 export const Route = createFileRoute("/study-abroad/$slug")({
   head: ({ params }) => {
-    const label = params.slug.replace(/-/g, " ");
+    const label = params.slug
+      .replace(/-/g, " ")
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+
     const title = `Study in ${label} | Brilliant Mind Travels & Tours`;
-    const description = `Admission requirements, tuition, scholarships and student visa guidance for studying in ${label}.`;
+
+    const description = `Study in ${label} with Brilliant Mind Travels & Tours. Explore admission requirements, tuition, scholarships and student visa guidance for international students.`;
+
     return {
       meta: [
         { title },
@@ -38,8 +47,12 @@ export const Route = createFileRoute("/study-abroad/$slug")({
 function CountryDetail() {
   const { slug } = Route.useParams();
   const { data: s } = useSettings();
-  const { data, isLoading } = useQuery(publishedItem("study_abroad_countries", slug));
+  const { data, isLoading } = useQuery(
+    publishedItem("study_abroad_countries", slug),
+  );
+
   const item = data as any;
+
   const { data: unis } = useQuery({
     ...universitiesForCountry(item?.id ?? ""),
     enabled: Boolean(item?.id),
@@ -61,7 +74,10 @@ function CountryDetail() {
       <PageHero
         eyebrow="Study abroad"
         title={`${item.flag_emoji ? `${item.flag_emoji} ` : ""}Study in ${item.title}`}
-        intro={item.short_description}
+        intro={
+          item.short_description ??
+          `Explore study opportunities, admission requirements and student visa guidance for ${item.title}.`
+        }
         image={item.featured_image}
       />
 
@@ -82,19 +98,33 @@ function CountryDetail() {
             {unis?.length ? (
               <Reveal>
                 <h2 className="text-2xl text-navy">Partner universities</h2>
+
                 <div className="mt-5 grid gap-4 sm:grid-cols-2">
                   {unis.map((u: any) => (
-                    <div key={u.id} className="rounded-lg border border-border bg-card p-5">
+                    <div
+                      key={u.id}
+                      className="rounded-lg border border-border bg-card p-5"
+                    >
                       <span className="inline-flex size-9 items-center justify-center rounded-md bg-navy/5 text-navy">
                         <Building2 className="size-4" />
                       </span>
-                      <h3 className="mt-4 text-base text-navy">{u.title}</h3>
-                      {u.city ? <p className="text-xs text-muted-foreground">{u.city}</p> : null}
+
+                      <h3 className="mt-4 text-base text-navy">
+                        {u.title}
+                      </h3>
+
+                      {u.city ? (
+                        <p className="text-xs text-muted-foreground">
+                          {u.city}
+                        </p>
+                      ) : null}
+
                       {u.description ? (
                         <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">
                           {u.description}
                         </p>
                       ) : null}
+
                       {u.website_url ? (
                         <a
                           href={u.website_url}
@@ -102,7 +132,8 @@ function CountryDetail() {
                           rel="noopener noreferrer"
                           className="mt-3 inline-flex items-center gap-1.5 text-xs font-semibold text-navy hover:text-gold"
                         >
-                          Visit website <ExternalLink className="size-3.5" />
+                          Visit website
+                          <ExternalLink className="size-3.5" />
                         </a>
                       ) : null}
                     </div>
@@ -114,6 +145,7 @@ function CountryDetail() {
             {item.gallery_images?.length ? (
               <Reveal>
                 <h2 className="text-2xl text-navy">Gallery</h2>
+
                 <div className="mt-5">
                   <Gallery images={item.gallery_images} alt={item.title} />
                 </div>
@@ -123,19 +155,31 @@ function CountryDetail() {
 
           <aside className="space-y-8 lg:sticky lg:top-28 lg:self-start">
             <div className="rounded-xl border border-border bg-card p-7">
-              <SectionHeading eyebrow="Get started" title={`Apply to study in ${item.title}`} />
+              <SectionHeading
+                eyebrow="Get started"
+                title={`Apply to study in ${item.title}`}
+              />
+
               <div className="mt-6 flex flex-col gap-3">
                 <WhatsAppButton
                   whatsapp={s?.whatsapp}
-                  message={enquiryMessage(s?.company_name, `study abroad opportunities in ${item.title}`)}
+                  message={enquiryMessage(
+                    s?.company_name,
+                    `study abroad opportunities in ${item.title}`,
+                  )}
                 />
+
                 <Button asChild variant="outline" size="lg">
                   <Link to="/contact">Book a consultation</Link>
                 </Button>
               </div>
             </div>
+
             <div className="rounded-xl border border-border bg-card p-7">
-              <h2 className="text-lg text-navy">Request country details</h2>
+              <h2 className="text-lg text-navy">
+                Request {item.title} study details
+              </h2>
+
               <div className="mt-5">
                 <InquiryForm
                   relatedType="study_abroad_country"
