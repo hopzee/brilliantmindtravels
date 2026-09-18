@@ -12,9 +12,11 @@ import { Reveal } from "@/components/public/ui";
 import consultationImage from "@/assets/consultation.jpg";
 import homeTeam1 from "@/assets/home-team-1.jpg";
 
-const title = "Brilliant Mind Travels & Tours | Visa, Study Abroad & Tour Consultancy";
+const title =
+  "Brilliant Mind Travels & Tours | Travel & Study Abroad in Ede, Osun";
+
 const description =
-  "Trusted travel and immigration consultancy in Ede South, Osun State. Visa assistance, study abroad admissions, work pathways and curated tour packages.";
+  "Brilliant Mind Travels & Tours is a travel and educational consultancy in Ede, Osun, providing travel, visa guidance, study abroad and tourism services.";
 
 export const Route = createFileRoute("/")({
   head: () => ({
