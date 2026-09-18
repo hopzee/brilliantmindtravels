@@ -6,9 +6,11 @@ import { Services } from "@/components/home/Services";
 import { WhatsAppCta } from "@/components/home/WhatsAppCta";
 import { settingsQuery } from "@/lib/cms";
 
-const title = "Our Services | Brilliant Mind Travels & Tours";
+const title =
+  "Travel, Visa & Study Abroad Services in Ede, Osun | Brilliant Mind Travels & Tours";
+
 const description =
-  "Visa assistance, study abroad admissions, work and relocation pathways, flight booking and travel advisory from a trusted Nigerian consultancy.";
+  "Brilliant Mind Travels & Tours provides travel, visa guidance, study abroad, flight booking, tourism and travel support services in Ede, Osun.";
 
 export const Route = createFileRoute("/services/")({
   head: () => ({
@@ -26,15 +28,21 @@ export const Route = createFileRoute("/services/")({
 
 function ServicesPage() {
   const { data: s } = useQuery(settingsQuery);
+
   return (
     <SiteLayout>
       <PageHero
-        eyebrow="What we do"
-        title="Consultancy services"
-        intro={s?.promise}
+        eyebrow="Travel, Visa & Study Abroad Services"
+        title="Travel and Consultancy Services in Ede, Osun"
+        intro={
+          s?.promise ??
+          "Brilliant Mind Travels & Tours provides travel, visa guidance, study abroad and tourism support for individuals and families."
+        }
         image={s?.hero_image_url}
       />
+
       <Services />
+
       <WhatsAppCta />
     </SiteLayout>
   );
