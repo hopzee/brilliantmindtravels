@@ -24,9 +24,14 @@ import { enquiryMessage, publishedItem } from "@/lib/cms";
 
 export const Route = createFileRoute("/services/$slug")({
   head: ({ params }) => {
-    const label = params.slug.replace(/-/g, " ");
-    const title = `${label} | Brilliant Mind Travels & Tours`;
-    const description = `Professional ${label} consultancy — requirements, processing details and expert guidance from Brilliant Mind Travels & Tours.`;
+    const label = params.slug
+      .replace(/-/g, " ")
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+
+    const title = `${label} in Ede, Osun | Brilliant Mind Travels & Tours`;
+
+    const description = `Get ${label} support from Brilliant Mind Travels & Tours in Ede, Osun. Learn about requirements, processing details and professional travel consultancy guidance.`;
+
     return {
       meta: [
         { title },
@@ -55,9 +60,12 @@ function ServiceDetail() {
   return (
     <SiteLayout>
       <PageHero
-        eyebrow="Service"
+        eyebrow="Brilliant Mind Travels & Tours"
         title={item.title}
-        intro={item.short_description}
+        intro={
+          item.short_description ??
+          `${item.title} support from Brilliant Mind Travels & Tours in Ede, Osun.`
+        }
         image={item.featured_image}
       />
 
@@ -70,14 +78,18 @@ function ServiceDetail() {
 
             {item.requirements ? (
               <Reveal>
-                <h2 className="text-2xl text-navy">Requirements</h2>
+                <h2 className="text-2xl text-navy">
+                  {item.title} requirements
+                </h2>
                 <Prose className="mt-4" text={item.requirements} />
               </Reveal>
             ) : null}
 
             {item.processing_info ? (
               <Reveal>
-                <h2 className="text-2xl text-navy">Processing & timelines</h2>
+                <h2 className="text-2xl text-navy">
+                  {item.title} processing & timelines
+                </h2>
                 <Prose className="mt-4" text={item.processing_info} />
               </Reveal>
             ) : null}
@@ -93,13 +105,17 @@ function ServiceDetail() {
 
             {faqs.length ? (
               <Reveal>
-                <h2 className="text-2xl text-navy">Frequently asked questions</h2>
+                <h2 className="text-2xl text-navy">
+                  Frequently asked questions about {item.title}
+                </h2>
+
                 <Accordion type="single" collapsible className="mt-4">
                   {faqs.map((f, i) => (
                     <AccordionItem key={i} value={`faq-${i}`}>
                       <AccordionTrigger className="text-left text-base text-navy">
                         {f.question ?? f.q}
                       </AccordionTrigger>
+
                       <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
                         {f.answer ?? f.a}
                       </AccordionContent>
@@ -112,19 +128,28 @@ function ServiceDetail() {
 
           <aside className="space-y-8 lg:sticky lg:top-28 lg:self-start">
             <div className="rounded-xl border border-border bg-card p-7">
-              <SectionHeading eyebrow="Get started" title="Talk to a consultant" />
+              <SectionHeading
+                eyebrow="Get started"
+                title={`Talk to a consultant about ${item.title}`}
+              />
+
               <div className="mt-6 flex flex-col gap-3">
                 <WhatsAppButton
                   whatsapp={s?.whatsapp}
                   message={enquiryMessage(s?.company_name, item.title)}
                 />
+
                 <Button asChild variant="outline" size="lg">
                   <Link to="/contact">Book a consultation</Link>
                 </Button>
               </div>
             </div>
+
             <div className="rounded-xl border border-border bg-card p-7">
-              <h2 className="text-lg text-navy">Ask about {item.title}</h2>
+              <h2 className="text-lg text-navy">
+                Ask about {item.title}
+              </h2>
+
               <div className="mt-5">
                 <InquiryForm
                   relatedType="service"
@@ -157,12 +182,16 @@ export function NotAvailable() {
     <SiteLayout>
       <div className="container-page pt-40 pb-24 text-center">
         <h1 className="text-3xl text-navy">This page isn't available</h1>
+
         <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">
-          The content you're looking for may have been moved or is not yet published.
+          The content you're looking for may have been moved or is not yet
+          published.
         </p>
+
         <Button asChild variant="outline" className="mt-8">
           <Link to="/">
-            <ArrowLeft className="size-4" /> Back home
+            <ArrowLeft className="size-4" />
+            Back home
           </Link>
         </Button>
       </div>
