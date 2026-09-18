@@ -66,8 +66,8 @@ export function Services() {
     <section className="surface-soft py-20 md:py-28">
       <div className="container-page">
         <SectionHeading
-          eyebrow="What we do"
-          title="Professional services for every stage of your journey"
+          eyebrow="Travel, Visa & Study Abroad Services"
+          title="Travel and Study Abroad Services in Ede, Osun"
         />
 
         <div className="mt-12">
@@ -77,7 +77,7 @@ export function Services() {
             </p>
 
             <h2 className="mt-2 text-2xl font-semibold text-navy md:text-3xl">
-              Travel arrangements made easier
+              Travel Booking and Support Services
             </h2>
           </div>
 
