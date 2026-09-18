@@ -19,10 +19,11 @@ import filename1 from "@/assets/filename1.jpg";
 import filename2 from "@/assets/filename2.jpg";
 import filename3 from "@/assets/filename3.jpg";
 
-const title = "About Us | Brilliant Mind Travels & Tours";
+const title =
+  "About Brilliant Mind Travels & Tours | Travel & Study Abroad in Ede, Osun";
 
 const description =
-  "Learn about Brilliant Mind Travels & Tours — our story, vision and mission as a trusted travel, study abroad and immigration consultancy in Nigeria.";
+  "Learn about Brilliant Mind Travels & Tours, a travel and educational consultancy in Ede, Osun, providing travel, visa guidance, study abroad and tourism services.";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -44,9 +45,12 @@ function AboutPage() {
   return (
     <SiteLayout>
       <PageHero
-        eyebrow="Who we are"
-        title={`About ${s?.company_name ?? "us"}`}
-        intro={s?.tagline}
+        eyebrow="About Brilliant Mind Travels & Tours"
+        title="Brilliant Mind Travels & Tours"
+        intro={
+          s?.tagline ??
+          "Travel and educational consultancy in Ede, Osun, providing travel, visa guidance, study abroad and tourism services."
+        }
         image={imageOr(s?.hero_image_url, fallbackImages.consultation)}
       />
 
@@ -71,7 +75,7 @@ function AboutPage() {
             <div className="space-y-4">
               <img
                 src={studyAbroad}
-                alt="Students preparing to study abroad"
+                alt="Students preparing to study abroad with Brilliant Mind Travels & Tours"
                 loading="lazy"
                 decoding="async"
                 className="w-full rounded-xl object-cover shadow-[var(--shadow-elegant)]"
@@ -80,7 +84,7 @@ function AboutPage() {
               <div className="grid grid-cols-3 gap-3">
                 <img
                   src={filename1}
-                  alt="Brilliant Mind Travels and Tours"
+                  alt="Brilliant Mind Travels & Tours"
                   loading="lazy"
                   decoding="async"
                   className="h-32 w-full rounded-xl object-cover shadow-[var(--shadow-elegant)]"
@@ -88,7 +92,7 @@ function AboutPage() {
 
                 <img
                   src={filename2}
-                  alt="Brilliant Mind Travels and Tours"
+                  alt="Brilliant Mind Travels & Tours"
                   loading="lazy"
                   decoding="async"
                   className="h-32 w-full rounded-xl object-cover shadow-[var(--shadow-elegant)]"
@@ -96,7 +100,7 @@ function AboutPage() {
 
                 <img
                   src={filename3}
-                  alt="Brilliant Mind Travels and Tours"
+                  alt="Brilliant Mind Travels & Tours"
                   loading="lazy"
                   decoding="async"
                   className="h-32 w-full rounded-xl object-cover shadow-[var(--shadow-elegant)]"
