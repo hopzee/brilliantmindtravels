@@ -12,9 +12,11 @@ import { BlogCard } from "@/components/home/Blog";
 import { publishedList } from "@/lib/cms";
 import { Button } from "@/components/ui/button";
 
-const title = "Blog & Travel Updates | Brilliant Mind Travels & Tours";
+const title =
+  "Travel, Visa & Study Abroad Blog | Brilliant Mind Travels & Tours";
+
 const description =
-  "Travel updates, visa information, study abroad opportunities, work opportunities, scholarships, offers and useful travel tips from Brilliant Mind Travels & Tours.";
+  "Read travel updates, visa information, study abroad opportunities, scholarships, work opportunities and useful travel tips from Brilliant Mind Travels & Tours in Ede, Osun.";
 
 const categories = [
   { value: "all", label: "All" },
@@ -66,9 +68,9 @@ function BlogPage() {
   return (
     <SiteLayout>
       <PageHero
-        eyebrow="Insights & Updates"
-        title="Travel, visa & opportunity updates"
-        intro="Useful information, opportunities, events and travel updates from Brilliant Mind Travel & Tours."
+        eyebrow="Brilliant Mind Travels & Tours Blog"
+        title="Travel, Visa & Study Abroad Updates"
+        intro="Useful travel information, visa updates, study abroad opportunities, scholarships, work opportunities and company news from Brilliant Mind Travels & Tours."
       />
 
       <section className="bg-background py-16 md:py-20">
