@@ -10,11 +10,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { MediaField } from "@/components/admin/MediaField";
 import { supabase } from "@/integrations/supabase/client";
 import { cms } from "@/lib/db";
-
 export const Route = createFileRoute("/_authenticated/rbac/admin/settings")({
   component: Page,
 });
-
 type Group = {
   title: string;
   fields: {
@@ -23,7 +21,6 @@ type Group = {
     type?: "text" | "textarea" | "image";
   }[];
 };
-
 const groups: Group[] = [
   {
     title: "Company",
@@ -55,7 +52,8 @@ const groups: Group[] = [
       { name: "instagram_url", label: "Instagram" },
       { name: "twitter_url", label: "X / Twitter" },
       { name: "linkedin_url", label: "LinkedIn" },
-      { name: "tiktok_url", label: "TikTok" },
+      { name: "tiktok_url", label: "TikTok 1" },
+      { name: "tiktok_url_2", label: "TikTok 2" },
       { name: "youtube_url", label: "YouTube" },
     ],
   },
@@ -97,17 +95,13 @@ const groups: Group[] = [
     ],
   },
 ];
-
 function Page() {
   const qc = useQueryClient();
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [form, setForm] = useState<Record<string, any>>({});
-
   const [adminEmail, setAdminEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
   const { data } = useQuery({
     queryKey: ["website_settings"],
     queryFn: async () => {
@@ -116,38 +110,29 @@ function Page() {
         .select("*")
         .limit(1)
         .maybeSingle();
-
       if (error) throw error;
-
       return data;
     },
   });
-
   useEffect(() => {
     if (data) setForm(data);
   }, [data]);
-
   useEffect(() => {
     void supabase.auth.getUser().then(({ data: userData }) => {
       setAdminEmail(userData.user?.email ?? "");
     });
   }, []);
-
   const save = useMutation({
     mutationFn: async () => {
       if (!data?.id) throw new Error("Settings record not found");
-
       const { id, created_at, updated_at, ...rest } = form;
-
       void id;
       void created_at;
       void updated_at;
-
       const { error } = await cms
         .from("website_settings")
         .update(rest)
         .eq("id", data.id);
-
       if (error) throw error;
     },
     onSuccess: () => {
@@ -156,25 +141,19 @@ function Page() {
     },
     onError: (e: Error) => toast.error(e.message),
   });
-
   const changeEmail = useMutation({
     mutationFn: async () => {
       const email = adminEmail.trim();
-
       if (!email) {
         throw new Error("Enter an email address");
       }
-
       const { data: userData } = await supabase.auth.getUser();
-
       if (email === userData.user?.email) {
         throw new Error("This is already your current admin email");
       }
-
       const { error } = await supabase.auth.updateUser({
         email,
       });
-
       if (error) throw error;
     },
     onSuccess: () => {
@@ -184,21 +163,17 @@ function Page() {
     },
     onError: (e: Error) => toast.error(e.message),
   });
-
   const changePassword = useMutation({
     mutationFn: async () => {
       if (newPassword.length < 8) {
         throw new Error("Password must be at least 8 characters");
       }
-
       if (newPassword !== confirmPassword) {
         throw new Error("Passwords do not match");
       }
-
       const { error } = await supabase.auth.updateUser({
         password: newPassword,
       });
-
       if (error) throw error;
     },
     onSuccess: () => {
@@ -208,10 +183,8 @@ function Page() {
     },
     onError: (e: Error) => toast.error(e.message),
   });
-
   const set = (name: string, value: unknown) =>
     setForm((f) => ({ ...f, [name]: value }));
-
   return (
     <div className="space-y-8 pb-16">
       <form
@@ -228,7 +201,6 @@ function Page() {
               These details are used everywhere on the public website.
             </p>
           </div>
-
           <Button variant="gold" type="submit" disabled={save.isPending}>
             {save.isPending && (
               <Loader2 className="size-4 animate-spin" />
@@ -236,14 +208,12 @@ function Page() {
             Save changes
           </Button>
         </div>
-
         {groups.map((g) => (
           <section
             key={g.title}
             className="rounded-xl border border-border bg-card p-6"
           >
             <h2 className="text-lg text-navy">{g.title}</h2>
-
             <div className="mt-5 grid gap-5 sm:grid-cols-2">
               {g.fields.map((f) => (
                 <div
@@ -255,7 +225,6 @@ function Page() {
                   }
                 >
                   <Label htmlFor={f.name}>{f.label}</Label>
-
                   <div className="mt-2">
                     {f.type === "textarea" ? (
                       <Textarea
@@ -284,7 +253,6 @@ function Page() {
           </section>
         ))}
       </form>
-
       <section className="rounded-xl border border-border bg-card p-6">
         <div>
           <h2 className="text-lg text-navy">Admin Account Security</h2>
@@ -293,7 +261,6 @@ function Page() {
             dashboard.
           </p>
         </div>
-
         <div className="mt-6 grid gap-8 lg:grid-cols-2">
           <div className="space-y-4">
             <div>
@@ -302,7 +269,6 @@ function Page() {
                 A confirmation email may be sent when you change this address.
               </p>
             </div>
-
             <div className="space-y-2">
               <Label htmlFor="admin-email">Admin email address</Label>
               <Input
@@ -313,7 +279,6 @@ function Page() {
                 placeholder="admin@example.com"
               />
             </div>
-
             <Button
               type="button"
               variant="gold"
@@ -326,7 +291,6 @@ function Page() {
               Change admin email
             </Button>
           </div>
-
           <div className="space-y-4">
             <div>
               <h3 className="font-medium text-navy">Admin password</h3>
@@ -334,7 +298,6 @@ function Page() {
                 Use at least 8 characters. Both password fields must match.
               </p>
             </div>
-
             <div className="space-y-2">
               <Label htmlFor="new-password">New password</Label>
               <Input
@@ -346,7 +309,6 @@ function Page() {
                 minLength={8}
               />
             </div>
-
             <div className="space-y-2">
               <Label htmlFor="confirm-password">
                 Confirm new password
@@ -360,7 +322,6 @@ function Page() {
                 minLength={8}
               />
             </div>
-
             <Button
               type="button"
               variant="gold"
