@@ -1,4 +1,4 @@
-import { ArrowRight, Quote, Star } from "lucide-react";
+import { ArrowRight, Star } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -95,12 +95,9 @@ export function TestimonialCard({ item }: { item: any }) {
       {hasDetails && (
         <div className="flex flex-1 flex-col p-7">
           {hasContent && (
-            <>
-              <Quote className="size-6 text-gold" />
-              <blockquote className="mt-4 flex-1 text-sm leading-relaxed text-muted-foreground">
-                {item.content}
-              </blockquote>
-            </>
+            <blockquote className="flex-1 text-sm leading-relaxed text-muted-foreground">
+              {item.content}
+            </blockquote>
           )}
           {(hasName || hasRating || hasServiceDetails) && (
             <figcaption
