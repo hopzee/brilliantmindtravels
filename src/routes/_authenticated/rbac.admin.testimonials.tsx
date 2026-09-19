@@ -1,7 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useRef, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Loader2, Trash2, Upload } from "lucide-react";
+import {
+  Loader2,
+  Pencil,
+  Save,
+  Trash2,
+  Upload,
+  X,
+} from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -20,6 +27,7 @@ type TestimonialMedia = {
   id: string;
   featured_image: string | null;
   video_url: string | null;
+  content: string | null;
   status: string;
   created_at: string;
   created_by: string | null;
@@ -39,12 +47,17 @@ function Page() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
 
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingContent, setEditingContent] = useState("");
+
   const { data, isLoading } = useQuery({
     queryKey: ["testimonial-media"],
     queryFn: async () => {
       const { data, error } = await cms
         .from("testimonials")
-        .select("id, featured_image, video_url, status, created_at, created_by")
+        .select(
+          "id, featured_image, video_url, content, status, created_at, created_by",
+        )
         .order("created_at", { ascending: false });
 
       if (error) throw error;
@@ -104,6 +117,7 @@ function Page() {
           slug: crypto.randomUUID(),
           featured_image: isImage ? url : null,
           video_url: isVideo ? url : null,
+          content: null,
           status: "published",
           created_by: createdBy,
           sort_order: 0,
@@ -136,6 +150,10 @@ function Page() {
       await queryClient.invalidateQueries({
         queryKey: ["testimonial-media"],
       });
+
+      await queryClient.invalidateQueries({
+        queryKey: ["cms", "testimonials"],
+      });
     } catch (error) {
       toast.error(
         error instanceof Error ? error.message : "Upload failed",
@@ -148,6 +166,44 @@ function Page() {
       }
     }
   };
+
+  const saveComment = useMutation({
+    mutationFn: async ({
+      id,
+      content,
+    }: {
+      id: string;
+      content: string;
+    }) => {
+      const { error } = await cms
+        .from("testimonials")
+        .update({
+          content: content.trim() || null,
+        })
+        .eq("id", id);
+
+      if (error) throw error;
+    },
+
+    onSuccess: async () => {
+      toast.success("Testimonial comment saved.");
+
+      setEditingId(null);
+      setEditingContent("");
+
+      await queryClient.invalidateQueries({
+        queryKey: ["testimonial-media"],
+      });
+
+      await queryClient.invalidateQueries({
+        queryKey: ["cms", "testimonials"],
+      });
+    },
+
+    onError: (error: Error) => {
+      toast.error(error.message);
+    },
+  });
 
   const toggleStatus = useMutation({
     mutationFn: async ({
@@ -166,6 +222,7 @@ function Page() {
 
       if (error) throw error;
     },
+
     onSuccess: async () => {
       toast.success("Status updated.");
 
@@ -177,6 +234,7 @@ function Page() {
         queryKey: ["cms", "testimonials"],
       });
     },
+
     onError: (error: Error) => toast.error(error.message),
   });
 
@@ -196,6 +254,7 @@ function Page() {
 
       if (error) throw error;
     },
+
     onSuccess: async () => {
       toast.success("Media deleted.");
 
@@ -207,8 +266,19 @@ function Page() {
         queryKey: ["cms", "testimonials"],
       });
     },
+
     onError: (error: Error) => toast.error(error.message),
   });
+
+  const startEditing = (item: TestimonialMedia) => {
+    setEditingId(item.id);
+    setEditingContent(item.content ?? "");
+  };
+
+  const cancelEditing = () => {
+    setEditingId(null);
+    setEditingContent("");
+  };
 
   return (
     <div className="space-y-6">
@@ -264,9 +334,22 @@ function Page() {
             <table className="w-full text-sm">
               <thead className="border-b border-border bg-muted/40">
                 <tr>
-                  <th className="px-4 py-3 text-left font-medium">Media</th>
-                  <th className="px-4 py-3 text-left font-medium">Type</th>
-                  <th className="px-4 py-3 text-left font-medium">Status</th>
+                  <th className="px-4 py-3 text-left font-medium">
+                    Media
+                  </th>
+
+                  <th className="px-4 py-3 text-left font-medium">
+                    Comment
+                  </th>
+
+                  <th className="px-4 py-3 text-left font-medium">
+                    Type
+                  </th>
+
+                  <th className="px-4 py-3 text-left font-medium">
+                    Status
+                  </th>
+
                   <th className="px-4 py-3 text-right font-medium">
                     Action
                   </th>
@@ -276,14 +359,17 @@ function Page() {
               <tbody>
                 {data.map((item) => {
                   const isVideo = Boolean(item.video_url);
-                  const mediaUrl = item.video_url || item.featured_image;
+                  const mediaUrl =
+                    item.video_url || item.featured_image;
+
+                  const isEditing = editingId === item.id;
 
                   return (
                     <tr
                       key={item.id}
                       className="border-b border-border last:border-0"
                     >
-                      <td className="px-4 py-4">
+                      <td className="px-4 py-4 align-top">
                         {isVideo ? (
                           <video
                             src={mediaUrl ?? undefined}
@@ -301,13 +387,85 @@ function Page() {
                         )}
                       </td>
 
-                      <td className="px-4 py-4">
+                      <td className="min-w-[280px] max-w-[420px] px-4 py-4 align-top">
+                        {isEditing ? (
+                          <div className="space-y-3">
+                            <textarea
+                              value={editingContent}
+                              onChange={(event) =>
+                                setEditingContent(event.target.value)
+                              }
+                              placeholder="Add an optional client comment or testimonial..."
+                              rows={4}
+                              className="w-full resize-y rounded-md border border-border bg-background px-3 py-2 text-sm outline-none transition focus:border-gold focus:ring-1 focus:ring-gold"
+                            />
+
+                            <div className="flex flex-wrap gap-2">
+                              <Button
+                                size="sm"
+                                variant="gold"
+                                disabled={saveComment.isPending}
+                                onClick={() =>
+                                  saveComment.mutate({
+                                    id: item.id,
+                                    content: editingContent,
+                                  })
+                                }
+                              >
+                                {saveComment.isPending ? (
+                                  <Loader2 className="size-4 animate-spin" />
+                                ) : (
+                                  <Save className="size-4" />
+                                )}
+
+                                Save Comment
+                              </Button>
+
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                disabled={saveComment.isPending}
+                                onClick={cancelEditing}
+                              >
+                                <X className="size-4" />
+                                Cancel
+                              </Button>
+                            </div>
+                          </div>
+                        ) : (
+                          <div>
+                            {item.content ? (
+                              <p className="line-clamp-4 text-sm leading-relaxed text-muted-foreground">
+                                {item.content}
+                              </p>
+                            ) : (
+                              <p className="text-sm italic text-muted-foreground/60">
+                                No comment added
+                              </p>
+                            )}
+
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="mt-2 px-2"
+                              onClick={() => startEditing(item)}
+                            >
+                              <Pencil className="size-4" />
+                              {item.content
+                                ? "Edit Comment"
+                                : "Add Comment"}
+                            </Button>
+                          </div>
+                        )}
+                      </td>
+
+                      <td className="px-4 py-4 align-top">
                         <Badge variant="outline">
                           {isVideo ? "Video" : "Photo"}
                         </Badge>
                       </td>
 
-                      <td className="px-4 py-4">
+                      <td className="px-4 py-4 align-top">
                         <div className="flex items-center gap-3">
                           <Switch
                             checked={item.status === "published"}
@@ -328,7 +486,7 @@ function Page() {
                         </div>
                       </td>
 
-                      <td className="px-4 py-4 text-right">
+                      <td className="px-4 py-4 text-right align-top">
                         <Button
                           variant="ghost"
                           size="sm"
