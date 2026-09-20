@@ -18,68 +18,71 @@ import {
 import { DetailSkeleton, NotAvailable } from "./services.$slug";
 import { BlogCard, formatDate } from "@/components/home/Blog";
 import { publishedItem, publishedList } from "@/lib/cms";
-
 export const Route = createFileRoute("/blog/$slug")({
   head: ({ params }) => {
     const label = params.slug
       .replace(/-/g, " ")
       .replace(/\b\w/g, (char) => char.toUpperCase());
-
     const title = `${label} | Brilliant Mind Travels & Tours`;
-
     const description = `Read ${label} from Brilliant Mind Travels & Tours in Ede, Osun. Get useful travel, visa, study abroad, work opportunity and tourism information.`;
-
+    const canonicalUrl = `https://www.brilliantmindtravels.com/blog/${params.slug}`;
     return {
       meta: [
         { title },
         { name: "description", content: description },
+        { name: "robots", content: "index, follow" },
+        {
+          name: "author",
+          content: "Brilliant Mind Travels & Tours",
+        },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
         { property: "og:type", content: "article" },
+        { property: "og:url", content: canonicalUrl },
+        {
+          property: "og:site_name",
+          content: "Brilliant Mind Travels & Tours",
+        },
+        { property: "og:locale", content: "en_NG" },
         { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
+      ],
+      links: [
+        {
+          rel: "canonical",
+          href: canonicalUrl,
+        },
       ],
     };
   },
   component: PostDetail,
 });
-
 function getTikTokEmbedUrl(url?: string | null) {
   if (!url) return null;
-
   const match = url.match(/\/video\/(\d+)/);
-
   if (!match) return null;
-
   return `https://www.tiktok.com/player/v1/${match[1]}?description=1&music_info=1`;
 }
-
 function getYouTubeEmbedUrl(url?: string | null) {
   if (!url) return null;
-
   try {
     const parsed = new URL(url);
-
     if (parsed.hostname.includes("youtu.be")) {
       const videoId = parsed.pathname.replace("/", "").split("/")[0];
-
       return videoId
         ? `https://www.youtube.com/embed/${videoId}`
         : null;
     }
-
     if (parsed.hostname.includes("youtube.com")) {
       const videoId = parsed.searchParams.get("v");
-
       if (videoId) {
         return `https://www.youtube.com/embed/${videoId}`;
       }
-
       const pathParts = parsed.pathname.split("/").filter(Boolean);
-
       if (pathParts[0] === "shorts" && pathParts[1]) {
         return `https://www.youtube.com/embed/${pathParts[1]}`;
       }
-
       if (pathParts[0] === "embed" && pathParts[1]) {
         return `https://www.youtube.com/embed/${pathParts[1]}`;
       }
@@ -87,23 +90,18 @@ function getYouTubeEmbedUrl(url?: string | null) {
   } catch {
     return null;
   }
-
   return null;
 }
-
 function getFacebookEmbedUrl(url?: string | null) {
   if (!url) return null;
-
   try {
     const parsed = new URL(url);
-
     if (
       !parsed.hostname.includes("facebook.com") &&
       !parsed.hostname.includes("fb.watch")
     ) {
       return null;
     }
-
     return `https://www.facebook.com/plugins/post.php?href=${encodeURIComponent(
       url,
     )}&show_text=true&width=500`;
@@ -111,10 +109,8 @@ function getFacebookEmbedUrl(url?: string | null) {
     return null;
   }
 }
-
 function isInstagramUrl(url?: string | null) {
   if (!url) return false;
-
   try {
     const parsed = new URL(url);
     return (
@@ -127,13 +123,10 @@ function isInstagramUrl(url?: string | null) {
     return false;
   }
 }
-
 function isXPostUrl(url?: string | null) {
   if (!url) return false;
-
   try {
     const parsed = new URL(url);
-
     return (
       (parsed.hostname.includes("x.com") ||
         parsed.hostname.includes("twitter.com")) &&
@@ -143,13 +136,10 @@ function isXPostUrl(url?: string | null) {
     return false;
   }
 }
-
 function isThreadsPostUrl(url?: string | null) {
   if (!url) return false;
-
   try {
     const parsed = new URL(url);
-
     return (
       parsed.hostname.includes("threads.net") &&
       parsed.pathname.length > 1
@@ -158,26 +148,20 @@ function isThreadsPostUrl(url?: string | null) {
     return false;
   }
 }
-
 function PostDetail() {
   const { slug } = Route.useParams();
-
   const { data, isLoading } = useQuery(
     publishedItem("blog_posts", slug),
   );
-
   const { data: recentPosts } = useQuery(
     publishedList("blog_posts", {
       orderBy: "published_at",
       limit: 4,
     }),
   );
-
   const post = data as any;
-
   useEffect(() => {
     if (!post) return;
-
     const loadScript = (
       src: string,
       id: string,
@@ -185,30 +169,25 @@ function PostDetail() {
       if (document.getElementById(id)) {
         return;
       }
-
       const script = document.createElement("script");
       script.id = id;
       script.src = src;
       script.async = true;
       script.defer = true;
-
       document.body.appendChild(script);
     };
-
     if (post.instagram_url && isInstagramUrl(post.instagram_url)) {
       loadScript(
         "https://www.instagram.com/embed.js",
         "instagram-embed-script",
       );
     }
-
     if (post.twitter_url && isXPostUrl(post.twitter_url)) {
       loadScript(
         "https://platform.twitter.com/widgets.js",
         "twitter-widgets-script",
       );
     }
-
     if (post.threads_url && isThreadsPostUrl(post.threads_url)) {
       loadScript(
         "https://www.threads.net/embed.js",
@@ -220,10 +199,8 @@ function PostDetail() {
     post?.twitter_url,
     post?.threads_url,
   ]);
-
   useEffect(() => {
     if (!post) return;
-
     const timer = window.setTimeout(() => {
       const twitterWindow = window as typeof window & {
         twttr?: {
@@ -232,9 +209,7 @@ function PostDetail() {
           };
         };
       };
-
       twitterWindow.twttr?.widgets?.load?.();
-
       const instagramWindow = window as typeof window & {
         instgrm?: {
           Embeds?: {
@@ -242,44 +217,34 @@ function PostDetail() {
           };
         };
       };
-
       instagramWindow.instgrm?.Embeds?.process?.();
     }, 500);
-
     return () => window.clearTimeout(timer);
   }, [
     post?.instagram_url,
     post?.twitter_url,
     post?.threads_url,
   ]);
-
   if (isLoading) return <DetailSkeleton />;
   if (!post) return <NotAvailable />;
-
   const relatedPosts =
     recentPosts?.filter((item: any) => item.slug !== post.slug) ?? [];
-
   const galleryImages = post["gallery-images"] ?? [];
-
   const tikTokEmbed = getTikTokEmbedUrl(post.tiktok_url);
   const youTubeEmbed = getYouTubeEmbedUrl(post.youtube_url);
   const facebookEmbed = getFacebookEmbedUrl(post.facebook_url);
-
   const instagramEmbed =
     post.instagram_url && isInstagramUrl(post.instagram_url)
       ? post.instagram_url
       : null;
-
   const xPost =
     post.twitter_url && isXPostUrl(post.twitter_url)
       ? post.twitter_url
       : null;
-
   const threadsPost =
     post.threads_url && isThreadsPostUrl(post.threads_url)
       ? post.threads_url
       : null;
-
   const socialLinks = [
     {
       name: "TikTok",
@@ -344,7 +309,6 @@ function PostDetail() {
         "border-border bg-card text-navy hover:border-navy hover:bg-navy hover:text-white",
     },
   ].filter((item) => item.url);
-
   return (
     <SiteLayout>
       <PageHero
@@ -353,7 +317,6 @@ function PostDetail() {
         intro={post.excerpt}
         image={post.featured_image}
       />
-
       <article className="bg-background py-16 md:py-20">
         <div className="container-page">
           <div className="mx-auto max-w-3xl">
@@ -363,14 +326,12 @@ function PostDetail() {
                   {formatCategory(post.category)}
                 </span>
               ) : null}
-
               {post.author_name ? (
                 <>
                   <span>•</span>
                   <span>{post.author_name}</span>
                 </>
               ) : null}
-
               {(post.published_at ?? post.created_at) ? (
                 <>
                   <span>•</span>
@@ -380,9 +341,7 @@ function PostDetail() {
                 </>
               ) : null}
             </div>
-
             <Prose className="mt-8" text={post.content} />
-
             {tikTokEmbed ? (
               <MediaSection title="TikTok">
                 <div className="overflow-hidden rounded-xl border border-border bg-black">
@@ -398,7 +357,6 @@ function PostDetail() {
                 </div>
               </MediaSection>
             ) : null}
-
             {youTubeEmbed ? (
               <MediaSection title="YouTube">
                 <div className="overflow-hidden rounded-xl border border-border bg-black">
@@ -415,7 +373,6 @@ function PostDetail() {
                 </div>
               </MediaSection>
             ) : null}
-
             {facebookEmbed ? (
               <MediaSection title="Facebook">
                 <div className="overflow-hidden rounded-xl border border-border bg-card">
@@ -429,7 +386,6 @@ function PostDetail() {
                 </div>
               </MediaSection>
             ) : null}
-
             {instagramEmbed ? (
               <MediaSection title="Instagram">
                 <div className="flex justify-center overflow-hidden rounded-xl border border-border bg-card p-2">
@@ -453,7 +409,6 @@ function PostDetail() {
                 </div>
               </MediaSection>
             ) : null}
-
             {xPost ? (
               <MediaSection title="X">
                 <div className="rounded-xl border border-border bg-card p-4">
@@ -465,7 +420,6 @@ function PostDetail() {
                 </div>
               </MediaSection>
             ) : null}
-
             {threadsPost ? (
               <MediaSection title="Threads">
                 <div className="rounded-xl border border-border bg-card p-4">
@@ -485,7 +439,6 @@ function PostDetail() {
                 </div>
               </MediaSection>
             ) : null}
-
             {post.image_url ? (
               <MediaSection title="Image">
                 <div className="overflow-hidden rounded-xl border border-border bg-card">
@@ -499,7 +452,6 @@ function PostDetail() {
                 </div>
               </MediaSection>
             ) : null}
-
             {galleryImages.length ? (
               <div className="mt-12">
                 <Gallery
@@ -508,19 +460,15 @@ function PostDetail() {
                 />
               </div>
             ) : null}
-
             {socialLinks.length > 0 ? (
               <div className="mt-12 border-t border-border pt-8">
                 <p className="eyebrow text-gold">Related Links</p>
-
                 <h2 className="mt-2 text-2xl text-navy">
                   Follow or view this update
                 </h2>
-
                 <div className="mt-6 flex flex-wrap gap-3">
                   {socialLinks.map((item) => {
                     const Icon = item.icon;
-
                     return (
                       <a
                         key={item.name}
@@ -536,7 +484,6 @@ function PostDetail() {
                             {item.name === "TikTok" ? "♪" : "@"}
                           </span>
                         )}
-
                         {item.label}
                       </a>
                     );
@@ -544,13 +491,11 @@ function PostDetail() {
                 </div>
               </div>
             ) : null}
-
             {post.tags?.length ? (
               <div className="mt-12 border-t border-border pt-6">
                 <p className="mb-3 text-sm font-semibold text-navy">
                   Tags
                 </p>
-
                 <div className="flex flex-wrap gap-2">
                   {post.tags.map((tag: string) => (
                     <span
@@ -564,7 +509,6 @@ function PostDetail() {
               </div>
             ) : null}
           </div>
-
           {relatedPosts.length > 0 ? (
             <section className="mx-auto mt-20 max-w-6xl border-t border-border pt-12">
               <div className="flex flex-wrap items-end justify-between gap-4">
@@ -574,7 +518,6 @@ function PostDetail() {
                     More from Brilliant Mind Travels & Tours
                   </h2>
                 </div>
-
                 <Link
                   to="/blog"
                   className="text-sm font-semibold text-navy underline-offset-4 hover:underline"
@@ -582,7 +525,6 @@ function PostDetail() {
                   View all articles
                 </Link>
               </div>
-
               <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {relatedPosts.slice(0, 3).map((item: any) => (
                   <BlogCard key={item.id} post={item} />
@@ -595,7 +537,6 @@ function PostDetail() {
     </SiteLayout>
   );
 }
-
 function MediaSection({
   title,
   children,
@@ -610,10 +551,8 @@ function MediaSection({
     </section>
   );
 }
-
 function formatCategory(value?: string | null) {
   if (!value) return "Article";
-
   return value
     .split("-")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
