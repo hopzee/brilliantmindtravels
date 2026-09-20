@@ -14,7 +14,7 @@ const title =
   "Brilliant Mind Travels & Tours | Travel & Study Abroad in Ede, Osun";
 const description =
   "Brilliant Mind Travels & Tours is a travel and educational consultancy in Ede, Osun, providing travel, visa guidance, study abroad, flight booking and tourism services.";
-const canonicalUrl = "https://brilliantmindtravels.com/";
+const canonicalUrl = "const canonicalUrl = "https://www.brilliantmindtravels.com/";
 export const Route = createFileRoute("/")({
   head: () => ({
     links: [
