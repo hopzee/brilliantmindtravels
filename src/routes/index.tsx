@@ -10,11 +10,38 @@ import { WhatsAppCta } from "@/components/home/WhatsAppCta";
 import { Reveal } from "@/components/public/ui";
 import consultationImage from "@/assets/consultation.jpg";
 import homeTeam1 from "@/assets/home-team-1.jpg";
+
 const title =
   "Brilliant Mind Travels & Tours | Travel & Study Abroad in Ede, Osun";
+
 const description =
   "Brilliant Mind Travels & Tours is a travel and educational consultancy in Ede, Osun, providing travel, visa guidance, study abroad, flight booking and tourism services.";
+
 const canonicalUrl = "https://www.brilliantmindtravels.com/";
+
+const businessSchema = {
+  "@context": "https://schema.org",
+  "@type": "TravelAgency",
+  name: "Brilliant Mind Travels & Tours",
+  url: canonicalUrl,
+  logo: "https://www.brilliantmindtravels.com/favicon.ico",
+  image: canonicalUrl,
+  description,
+  telephone: "+2348165900571",
+  email: "brilliantmindtravels1@gmail.com",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Beside Eyiowu Awi Pharmacy",
+    addressLocality: "Ede South",
+    addressRegion: "Osun State",
+    addressCountry: "NG",
+  },
+  areaServed: {
+    "@type": "Country",
+    name: "Nigeria",
+  },
+};
+
 export const Route = createFileRoute("/")({
   head: () => ({
     links: [
@@ -23,6 +50,7 @@ export const Route = createFileRoute("/")({
         href: canonicalUrl,
       },
     ],
+
     meta: [
       {
         title,
@@ -76,17 +104,29 @@ export const Route = createFileRoute("/")({
         content: description,
       },
     ],
+
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(businessSchema),
+      },
+    ],
   }),
+
   component: HomePage,
 });
+
 function HomeAboutImages() {
   const [showSecondImage, setShowSecondImage] = useState(false);
+
   useEffect(() => {
     const timer = window.setTimeout(() => {
       setShowSecondImage(true);
     }, 5000);
+
     return () => window.clearTimeout(timer);
   }, []);
+
   return (
     <section className="bg-background py-12 md:py-16">
       <div className="container-page">
@@ -105,6 +145,7 @@ function HomeAboutImages() {
     </section>
   );
 }
+
 function HomePage() {
   return (
     <SiteLayout>
