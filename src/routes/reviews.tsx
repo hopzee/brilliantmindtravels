@@ -24,15 +24,33 @@ const title =
 const description =
   "Read client reviews about Brilliant Mind Travels & Tours in Ede, Osun and share your experience with our travel, visa, study abroad and tourism services.";
 
+const canonicalUrl = "https://www.brilliantmindtravels.com/reviews";
+
 export const Route = createFileRoute("/reviews")({
   head: () => ({
     meta: [
       { title },
       { name: "description", content: description },
+      { name: "robots", content: "index, follow" },
+      { name: "author", content: "Brilliant Mind Travels & Tours" },
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: canonicalUrl },
+      {
+        property: "og:site_name",
+        content: "Brilliant Mind Travels & Tours",
+      },
+      { property: "og:locale", content: "en_NG" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: title },
+      { name: "twitter:description", content: description },
+    ],
+    links: [
+      {
+        rel: "canonical",
+        href: canonicalUrl,
+      },
     ],
   }),
   component: ReviewsPage,
