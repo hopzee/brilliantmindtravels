@@ -21,24 +21,32 @@ const title =
 const description =
   "Download free visa checklists, study abroad guides, travel checklists and useful travel preparation resources from Brilliant Mind Travels & Tours in Ede, Osun.";
 
+const canonicalUrl = "https://www.brilliantmindtravels.com/downloads";
+
 export const Route = createFileRoute("/downloads")({
   head: () => ({
     meta: [
       { title },
       { name: "description", content: description },
+      { name: "robots", content: "index, follow" },
+      { name: "author", content: "Brilliant Mind Travels & Tours" },
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: canonicalUrl },
       {
-        property: "og:url",
-        content: "https://brilliantmindtravels.com/downloads",
+        property: "og:site_name",
+        content: "Brilliant Mind Travels & Tours",
       },
+      { property: "og:locale", content: "en_NG" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: title },
+      { name: "twitter:description", content: description },
     ],
     links: [
       {
         rel: "canonical",
-        href: "https://brilliantmindtravels.com/downloads",
+        href: canonicalUrl,
       },
     ],
   }),
