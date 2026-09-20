@@ -11,13 +11,11 @@ import {
 import { BlogCard } from "@/components/home/Blog";
 import { publishedList } from "@/lib/cms";
 import { Button } from "@/components/ui/button";
-
 const title =
   "Travel, Visa & Study Abroad Blog | Brilliant Mind Travels & Tours";
-
 const description =
   "Read travel updates, visa information, study abroad opportunities, scholarships, work opportunities and useful travel tips from Brilliant Mind Travels & Tours in Ede, Osun.";
-
+const canonicalUrl = "https://www.brilliantmindtravels.com/blog";
 const categories = [
   { value: "all", label: "All" },
   { value: "visa-travel", label: "Visa & Travel" },
@@ -29,42 +27,51 @@ const categories = [
   { value: "travel-tips", label: "Travel Tips" },
   { value: "company-news", label: "Company News" },
 ];
-
 export const Route = createFileRoute("/blog/")({
   head: () => ({
     meta: [
       { title },
       { name: "description", content: description },
+      { name: "robots", content: "index, follow" },
+      { name: "author", content: "Brilliant Mind Travels & Tours" },
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: canonicalUrl },
+      {
+        property: "og:site_name",
+        content: "Brilliant Mind Travels & Tours",
+      },
+      { property: "og:locale", content: "en_NG" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: title },
+      { name: "twitter:description", content: description },
+    ],
+    links: [
+      {
+        rel: "canonical",
+        href: canonicalUrl,
+      },
     ],
   }),
   component: BlogPage,
 });
-
 function BlogPage() {
   const [activeCategory, setActiveCategory] = useState("all");
-
   const { data, isLoading } = useQuery(
     publishedList("blog_posts", {
       orderBy: "published_at",
     }),
   );
-
   const filteredPosts = useMemo(() => {
     if (!data) return [];
-
     if (activeCategory === "all") {
       return data;
     }
-
     return data.filter(
       (post: any) => post.category === activeCategory,
     );
   }, [data, activeCategory]);
-
   return (
     <SiteLayout>
       <PageHero
@@ -72,7 +79,6 @@ function BlogPage() {
         title="Travel, Visa & Study Abroad Updates"
         intro="Useful travel information, visa updates, study abroad opportunities, scholarships, work opportunities and company news from Brilliant Mind Travels & Tours."
       />
-
       <section className="bg-background py-16 md:py-20">
         <div className="container-page">
           <div className="mb-10 overflow-x-auto">
@@ -94,7 +100,6 @@ function BlogPage() {
               ))}
             </div>
           </div>
-
           {isLoading ? (
             <CardSkeletons />
           ) : !data?.length ? (
