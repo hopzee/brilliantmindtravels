@@ -1,5 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import {
+  Facebook,
+  Instagram,
+  Linkedin,
+  Music2,
+  Twitter,
+  Youtube,
+} from "lucide-react";
 import { SiteLayout } from "@/components/public/SiteLayout";
 import {
   EmptyState,
@@ -18,24 +26,32 @@ const title =
 const description =
   "Find answers about travel consultation, visa guidance, flight booking, study abroad, university admissions, tour packages and other services from Brilliant Mind Travels & Tours in Ede, Osun.";
 
+const canonicalUrl = "https://www.brilliantmindtravels.com/faq";
+
 export const Route = createFileRoute("/faq")({
   head: () => ({
     meta: [
       { title },
       { name: "description", content: description },
+      { name: "robots", content: "index, follow" },
+      { name: "author", content: "Brilliant Mind Travels & Tours" },
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: canonicalUrl },
       {
-        property: "og:url",
-        content: "https://brilliantmindtravels.com/faq",
+        property: "og:site_name",
+        content: "Brilliant Mind Travels & Tours",
       },
+      { property: "og:locale", content: "en_NG" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: title },
+      { name: "twitter:description", content: description },
     ],
     links: [
       {
         rel: "canonical",
-        href: "https://brilliantmindtravels.com/faq",
+        href: canonicalUrl,
       },
     ],
   }),
@@ -48,6 +64,12 @@ const serviceFaqs: FaqItem[] = [
     question: "What services does Brilliant Mind Travels & Tours provide?",
     answer:
       "Brilliant Mind Travels & Tours provides travel consultation, visa guidance, flight booking support, study abroad guidance, university admission support, tourism and tour packages, travel documentation assistance and personalized travel planning.",
+  },
+  {
+    category: "Our Services",
+    question: "What other travel services do you provide?",
+    answer:
+      "Our services also include travel consultation, flight booking support, visa guidance, study abroad and university admission support, tour planning, travel documentation assistance, tourism services and personalized travel planning. Contact our team to discuss the service you need.",
   },
   {
     category: "Our Services",
@@ -121,6 +143,16 @@ function FaqPage() {
     ),
   );
 
+  const socials = [
+    ["facebook_url", "Facebook", Facebook],
+    ["instagram_url", "Instagram", Instagram],
+    ["twitter_url", "X", Twitter],
+    ["linkedin_url", "LinkedIn", Linkedin],
+    ["tiktok_url", "TikTok", Music2],
+    ["tiktok_url_2", "TikTok 2", Music2],
+    ["youtube_url", "YouTube", Youtube],
+  ] as const;
+
   return (
     <SiteLayout>
       <PageHero
@@ -181,6 +213,41 @@ function FaqPage() {
               text="Our team is preparing more answers to the questions clients ask most often."
             />
           )}
+
+          {socials.some(([key]) => s?.[key]) ? (
+            <Reveal>
+              <div className="rounded-xl border border-border bg-card p-7 text-center">
+                <SectionHeading
+                  eyebrow="Stay Connected"
+                  title="Follow Brilliant Mind Travels & Tours"
+                />
+
+                <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                  Follow us on social media for travel updates, visa
+                  information, study abroad opportunities, tour packages,
+                  announcements and other useful travel information.
+                </p>
+
+                <div className="mt-6 flex flex-wrap justify-center gap-3">
+                  {socials.map(([key, label, Icon]) =>
+                    s?.[key] ? (
+                      <a
+                        key={key}
+                        href={s[key] as string}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={label}
+                        title={label}
+                        className="flex size-11 items-center justify-center rounded-full border border-navy/15 text-navy/70 transition-all hover:border-gold hover:bg-gold hover:text-navy-deep"
+                      >
+                        <Icon className="size-5" />
+                      </a>
+                    ) : null,
+                  )}
+                </div>
+              </div>
+            </Reveal>
+          ) : null}
         </div>
       </section>
 
