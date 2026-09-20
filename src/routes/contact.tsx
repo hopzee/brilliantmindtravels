@@ -31,16 +31,29 @@ const title =
 const description =
   "Contact Brilliant Mind Travels & Tours in Ede, Osun for travel services, visa guidance, study abroad, tourism and consultation. Call, WhatsApp or visit our office.";
 
+const canonicalUrl = "https://www.brilliantmindtravels.com/contact";
+
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
       { title },
       { name: "description", content: description },
+      { name: "robots", content: "index, follow" },
+      { name: "author", content: "Brilliant Mind Travels & Tours" },
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: canonicalUrl },
+      {
+        property: "og:site_name",
+        content: "Brilliant Mind Travels & Tours",
+      },
+      { property: "og:locale", content: "en_NG" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: title },
+      { name: "twitter:description", content: description },
     ],
+    links: [{ rel: "canonical", href: canonicalUrl }],
   }),
   component: ContactPage,
 });
