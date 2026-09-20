@@ -19,48 +19,53 @@ import {
   publishedItem,
   universitiesForCountry,
 } from "@/lib/cms";
-
 export const Route = createFileRoute("/study-abroad/$slug")({
   head: ({ params }) => {
     const label = params.slug
       .replace(/-/g, " ")
       .replace(/\b\w/g, (char) => char.toUpperCase());
-
     const title = `Study in ${label} | Brilliant Mind Travels & Tours`;
-
     const description = `Study in ${label} with Brilliant Mind Travels & Tours. Explore admission requirements, tuition, scholarships and student visa guidance for international students.`;
-
+    const canonicalUrl = `https://www.brilliantmindtravels.com/study-abroad/${params.slug}`;
     return {
+      links: [
+        {
+          rel: "canonical",
+          href: canonicalUrl,
+        },
+      ],
       meta: [
         { title },
         { name: "description", content: description },
+        { name: "robots", content: "index, follow" },
+        { name: "author", content: "Brilliant Mind Travels & Tours" },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
         { property: "og:type", content: "article" },
+        { property: "og:url", content: canonicalUrl },
+        { property: "og:site_name", content: "Brilliant Mind Travels & Tours" },
+        { property: "og:locale", content: "en_NG" },
         { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: title },
+        { name: "twitter:description", content: description },
       ],
     };
   },
   component: CountryDetail,
 });
-
 function CountryDetail() {
   const { slug } = Route.useParams();
   const { data: s } = useSettings();
   const { data, isLoading } = useQuery(
     publishedItem("study_abroad_countries", slug),
   );
-
   const item = data as any;
-
   const { data: unis } = useQuery({
     ...universitiesForCountry(item?.id ?? ""),
     enabled: Boolean(item?.id),
   });
-
   if (isLoading) return <DetailSkeleton />;
   if (!item) return <NotAvailable />;
-
   const blocks = [
     { heading: "Why study there", text: item.why_study_there },
     { heading: "Admission requirements", text: item.admission_requirements },
@@ -68,7 +73,6 @@ function CountryDetail() {
     { heading: "Tuition & living costs", text: item.tuition_info },
     { heading: "Scholarships", text: item.scholarships },
   ].filter((b) => Boolean(b.text));
-
   return (
     <SiteLayout>
       <PageHero
@@ -80,25 +84,21 @@ function CountryDetail() {
         }
         image={item.featured_image}
       />
-
       <section className="bg-background py-16 md:py-20">
         <div className="container-page grid gap-14 lg:grid-cols-[1.15fr_0.85fr]">
           <div className="space-y-12">
             <Reveal>
               <Prose text={item.description} />
             </Reveal>
-
             {blocks.map((b) => (
               <Reveal key={b.heading}>
                 <h2 className="text-2xl text-navy">{b.heading}</h2>
                 <Prose className="mt-4" text={b.text} />
               </Reveal>
             ))}
-
             {unis?.length ? (
               <Reveal>
                 <h2 className="text-2xl text-navy">Partner universities</h2>
-
                 <div className="mt-5 grid gap-4 sm:grid-cols-2">
                   {unis.map((u: any) => (
                     <div
@@ -108,23 +108,19 @@ function CountryDetail() {
                       <span className="inline-flex size-9 items-center justify-center rounded-md bg-navy/5 text-navy">
                         <Building2 className="size-4" />
                       </span>
-
                       <h3 className="mt-4 text-base text-navy">
                         {u.title}
                       </h3>
-
                       {u.city ? (
                         <p className="text-xs text-muted-foreground">
                           {u.city}
                         </p>
                       ) : null}
-
                       {u.description ? (
                         <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">
                           {u.description}
                         </p>
                       ) : null}
-
                       {u.website_url ? (
                         <a
                           href={u.website_url}
@@ -141,25 +137,21 @@ function CountryDetail() {
                 </div>
               </Reveal>
             ) : null}
-
             {item.gallery_images?.length ? (
               <Reveal>
                 <h2 className="text-2xl text-navy">Gallery</h2>
-
                 <div className="mt-5">
                   <Gallery images={item.gallery_images} alt={item.title} />
                 </div>
               </Reveal>
             ) : null}
           </div>
-
           <aside className="space-y-8 lg:sticky lg:top-28 lg:self-start">
             <div className="rounded-xl border border-border bg-card p-7">
               <SectionHeading
                 eyebrow="Get started"
                 title={`Apply to study in ${item.title}`}
               />
-
               <div className="mt-6 flex flex-col gap-3">
                 <WhatsAppButton
                   whatsapp={s?.whatsapp}
@@ -168,18 +160,15 @@ function CountryDetail() {
                     `study abroad opportunities in ${item.title}`,
                   )}
                 />
-
                 <Button asChild variant="outline" size="lg">
                   <Link to="/contact">Book a consultation</Link>
                 </Button>
               </div>
             </div>
-
             <div className="rounded-xl border border-border bg-card p-7">
               <h2 className="text-lg text-navy">
                 Request {item.title} study details
               </h2>
-
               <div className="mt-5">
                 <InquiryForm
                   relatedType="study_abroad_country"
