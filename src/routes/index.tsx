@@ -10,6 +10,7 @@ import { WhatsAppCta } from "@/components/home/WhatsAppCta";
 import { Reveal } from "@/components/public/ui";
 import consultationImage from "@/assets/consultation.jpg";
 import homeTeam1 from "@/assets/home-team-1.jpg";
+import logoUrl from "@/assets/brilliant-mind-logo.png";
 
 const title =
   "Brilliant Mind Travels & Tours | Travel & Study Abroad in Ede, Osun";
@@ -19,13 +20,15 @@ const description =
 
 const canonicalUrl = "https://www.brilliantmindtravels.com/";
 
+const absoluteLogoUrl = new URL(logoUrl, canonicalUrl).toString();
+
 const businessSchema = {
   "@context": "https://schema.org",
   "@type": "TravelAgency",
   name: "Brilliant Mind Travels & Tours",
   url: canonicalUrl,
-  logo: "https://www.brilliantmindtravels.com/favicon.ico",
-  image: canonicalUrl,
+  logo: absoluteLogoUrl,
+  image: absoluteLogoUrl,
   description,
   telephone: "+2348165900571",
   email: "brilliantmindtravels1@gmail.com",
@@ -92,6 +95,14 @@ export const Route = createFileRoute("/")({
         content: "en_NG",
       },
       {
+        property: "og:image",
+        content: absoluteLogoUrl,
+      },
+      {
+        property: "og:image:alt",
+        content: "Brilliant Mind Travels & Tours company logo",
+      },
+      {
         name: "twitter:card",
         content: "summary_large_image",
       },
@@ -102,6 +113,10 @@ export const Route = createFileRoute("/")({
       {
         name: "twitter:description",
         content: description,
+      },
+      {
+        name: "twitter:image",
+        content: absoluteLogoUrl,
       },
     ],
 
