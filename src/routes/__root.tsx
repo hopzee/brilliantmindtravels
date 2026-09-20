@@ -10,7 +10,6 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import logoUrl from "../assets/brilliant-mind-logo.png";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "@/components/ui/sonner";
 
@@ -151,8 +150,12 @@ export const Route =
         },
         {
           rel: "icon",
-          href: logoUrl,
+          href: "/favicon.png",
           type: "image/png",
+        },
+        {
+          rel: "apple-touch-icon",
+          href: "/favicon.png",
         },
       ],
     }),
