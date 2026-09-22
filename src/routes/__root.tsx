@@ -150,12 +150,12 @@ export const Route =
         },
         {
           rel: "icon",
-          href: "/favicon.png",
-          type: "image/png",
+          href: "/favicon.ico",
+          type: "image/x-icon",
         },
         {
           rel: "apple-touch-icon",
-          href: "/favicon.png",
+          href: "/favicon.ico",
         },
       ],
     }),
