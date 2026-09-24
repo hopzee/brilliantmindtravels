@@ -8,9 +8,9 @@ import { Testimonials } from "@/components/home/Testimonials";
 import { Faq } from "@/components/home/Faq";
 import { WhatsAppCta } from "@/components/home/WhatsAppCta";
 import { Reveal } from "@/components/public/ui";
-import consultationImage from "@/assets/consultation.jpg";
+import consultationImage from "@/assets/consultation.webp";
 import homeTeam1 from "@/assets/home-team-1.jpg";
-import logoUrl from "@/assets/brilliant-mind-logo.png";
+import logoUrl from "@/assets/brilliant-mind-logo.webp";
 
 const title =
   "Brilliant Mind Travels & Tours | Travel & Study Abroad in Ede, Osun";
