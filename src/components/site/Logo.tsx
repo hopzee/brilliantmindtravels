@@ -1,4 +1,4 @@
-import logo from "@/assets/brilliant-mind-logo.png";
+import logo from "@/assets/brilliant-mind-logo.webp";
 import { site } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { useSettings } from "@/components/public/ui";
@@ -8,6 +8,7 @@ export function Logo({ light = false, className }: { light?: boolean; className?
   const src = settings?.logo_url || logo;
   const name = settings?.company_name || site.name;
   const [first, ...rest] = name.split(" ");
+
   return (
     <span className={cn("flex items-center gap-3", className)}>
       <img
