@@ -5,11 +5,15 @@ import { PageHero } from "@/components/public/ui";
 import { Services } from "@/components/home/Services";
 import { WhatsAppCta } from "@/components/home/WhatsAppCta";
 import { settingsQuery } from "@/lib/cms";
+
 const title =
   "Travel, Visa & Study Abroad Services in Ede, Osun | Brilliant Mind Travels & Tours";
+
 const description =
-  "Brilliant Mind Travels & Tours provides travel, visa guidance, study abroad, flight booking, tourism and travel support services in Ede, Osun.";
+  "Brilliant Mind Travels & Tours offers travel, visa guidance, study abroad, flight booking and tourism services in Ede, Osun State.";
+
 const canonicalUrl = "https://www.brilliantmindtravels.com/services";
+
 export const Route = createFileRoute("/services/")({
   head: () => ({
     links: [
@@ -18,6 +22,7 @@ export const Route = createFileRoute("/services/")({
         href: canonicalUrl,
       },
     ],
+
     meta: [
       { title },
       { name: "description", content: description },
@@ -34,10 +39,13 @@ export const Route = createFileRoute("/services/")({
       { name: "twitter:description", content: description },
     ],
   }),
+
   component: ServicesPage,
 });
+
 function ServicesPage() {
   const { data: s } = useQuery(settingsQuery);
+
   return (
     <SiteLayout>
       <PageHero
@@ -49,6 +57,7 @@ function ServicesPage() {
         }
         image={s?.hero_image_url}
       />
+
       <Services />
       <WhatsAppCta />
     </SiteLayout>
