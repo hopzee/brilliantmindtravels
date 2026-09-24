@@ -21,14 +21,19 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { enquiryMessage, publishedItem } from "@/lib/cms";
+
 export const Route = createFileRoute("/services/$slug")({
   head: ({ params }) => {
     const label = params.slug
       .replace(/-/g, " ")
       .replace(/\b\w/g, (char) => char.toUpperCase());
+
     const title = `${label} in Ede, Osun | Brilliant Mind Travels & Tours`;
-    const description = `Get ${label} support from Brilliant Mind Travels & Tours in Ede, Osun. Learn about requirements, processing details and professional travel consultancy guidance.`;
+
+    const description = `Brilliant Mind Travels & Tours offers ${label} support in Ede, Osun, with professional travel consultancy guidance.`;
+
     const canonicalUrl = `https://www.brilliantmindtravels.com/services/${params.slug}`;
+
     return {
       meta: [
         { title },
@@ -59,16 +64,21 @@ export const Route = createFileRoute("/services/$slug")({
       ],
     };
   },
+
   component: ServiceDetail,
 });
+
 function ServiceDetail() {
   const { slug } = Route.useParams();
   const { data: s } = useSettings();
   const { data, isLoading } = useQuery(publishedItem("services", slug));
   const item = data as any;
+
   if (isLoading) return <DetailSkeleton />;
   if (!item) return <NotAvailable />;
+
   const faqs = Array.isArray(item.faqs) ? (item.faqs as any[]) : [];
+
   return (
     <SiteLayout>
       <PageHero
@@ -80,12 +90,14 @@ function ServiceDetail() {
         }
         image={item.featured_image}
       />
+
       <section className="bg-background py-16 md:py-20">
         <div className="container-page grid gap-14 lg:grid-cols-[1.15fr_0.85fr]">
           <div className="space-y-12">
             <Reveal>
               <Prose text={item.description} />
             </Reveal>
+
             {item.requirements ? (
               <Reveal>
                 <h2 className="text-2xl text-navy">
@@ -94,6 +106,7 @@ function ServiceDetail() {
                 <Prose className="mt-4" text={item.requirements} />
               </Reveal>
             ) : null}
+
             {item.processing_info ? (
               <Reveal>
                 <h2 className="text-2xl text-navy">
@@ -102,6 +115,7 @@ function ServiceDetail() {
                 <Prose className="mt-4" text={item.processing_info} />
               </Reveal>
             ) : null}
+
             {item.gallery_images?.length ? (
               <Reveal>
                 <h2 className="text-2xl text-navy">Gallery</h2>
@@ -110,17 +124,20 @@ function ServiceDetail() {
                 </div>
               </Reveal>
             ) : null}
+
             {faqs.length ? (
               <Reveal>
                 <h2 className="text-2xl text-navy">
                   Frequently asked questions about {item.title}
                 </h2>
+
                 <Accordion type="single" collapsible className="mt-4">
                   {faqs.map((f, i) => (
                     <AccordionItem key={i} value={`faq-${i}`}>
                       <AccordionTrigger className="text-left text-base text-navy">
                         {f.question ?? f.q}
                       </AccordionTrigger>
+
                       <AccordionContent className="text-sm leading-relaxed text-muted-foreground">
                         {f.answer ?? f.a}
                       </AccordionContent>
@@ -130,26 +147,31 @@ function ServiceDetail() {
               </Reveal>
             ) : null}
           </div>
+
           <aside className="space-y-8 lg:sticky lg:top-28 lg:self-start">
             <div className="rounded-xl border border-border bg-card p-7">
               <SectionHeading
                 eyebrow="Get started"
                 title={`Talk to a consultant about ${item.title}`}
               />
+
               <div className="mt-6 flex flex-col gap-3">
                 <WhatsAppButton
                   whatsapp={s?.whatsapp}
                   message={enquiryMessage(s?.company_name, item.title)}
                 />
+
                 <Button asChild variant="outline" size="lg">
                   <Link to="/contact">Book a consultation</Link>
                 </Button>
               </div>
             </div>
+
             <div className="rounded-xl border border-border bg-card p-7">
               <h2 className="text-lg text-navy">
                 Ask about {item.title}
               </h2>
+
               <div className="mt-5">
                 <InquiryForm
                   relatedType="service"
@@ -164,6 +186,7 @@ function ServiceDetail() {
     </SiteLayout>
   );
 }
+
 export function DetailSkeleton() {
   return (
     <SiteLayout>
@@ -175,6 +198,7 @@ export function DetailSkeleton() {
     </SiteLayout>
   );
 }
+
 export function NotAvailable() {
   return (
     <SiteLayout>
@@ -182,10 +206,12 @@ export function NotAvailable() {
         <h1 className="text-3xl text-navy">
           This page isn't available
         </h1>
+
         <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">
           The content you're looking for may have been moved or is not yet
           published.
         </p>
+
         <Button asChild variant="outline" className="mt-8">
           <Link to="/">
             <ArrowLeft className="size-4" />
