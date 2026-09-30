@@ -1,4 +1,5 @@
-# Brilliant Journeys
+This is a brilliant mind travel and tours website ede,osun state Olayia's complex, beside Eyiowu Awi pharmacy, Ede 102213, Osun
+#Brilliant Journeys
 https://www.brilliantmindtravels.com/
 https://brilliantmindtravels.com/
 I will still give you phrase by phrase for you to give me something extraordinary but this long prompt is an blueprint of what website am building.. firstly go on web search for brilliant mind travel abd tours in ede souls, to understand our purpose and logo and background and features… Brilliant Mind Travels & Tours Website Development Brief
