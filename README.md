@@ -1,5 +1,6 @@
 # Brilliant Journeys
-
+https://www.brilliantmindtravels.com/
+https://brilliantmindtravels.com/
 I will still give you phrase by phrase for you to give me something extraordinary but this long prompt is an blueprint of what website am building.. firstly go on web search for brilliant mind travel abd tours in ede souls, to understand our purpose and logo and background and features… Brilliant Mind Travels & Tours Website Development Brief
 
 Project Overview
@@ -830,13 +831,6 @@ Create reusable components and prepare the system for an admin dashboard.
 
 Do not create a generic travel template. The design should look like a serious immigration and travel consultancy brand.” The website logo is online
 
-This project was built with [Lovable](https://lovable.dev).
-
-**Live app**: https://brilliantmindtravels.lovable.app
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/f6ac0859-4997-423e-95ec-60ded541dd45).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
 - **Stay in sync**: every change made in Lovable is committed straight to this repository.
