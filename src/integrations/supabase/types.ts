@@ -59,6 +59,7 @@ export type Database = {
         }
         Relationships: []
       }
+
       blog_posts: {
         Row: {
           author_name: string | null
@@ -75,6 +76,7 @@ export type Database = {
           status: Database["public"]["Enums"]["content_status"]
           tags: string[]
           title: string
+          tiktok_url: string | null
           updated_at: string
         }
         Insert: {
@@ -92,6 +94,7 @@ export type Database = {
           status?: Database["public"]["Enums"]["content_status"]
           tags?: string[]
           title: string
+          tiktok_url?: string | null
           updated_at?: string
         }
         Update: {
@@ -109,10 +112,12 @@ export type Database = {
           status?: Database["public"]["Enums"]["content_status"]
           tags?: string[]
           title?: string
+          tiktok_url?: string | null
           updated_at?: string
         }
         Relationships: []
       }
+
       contact_messages: {
         Row: {
           created_at: string
@@ -149,6 +154,7 @@ export type Database = {
         }
         Relationships: []
       }
+
       downloads: {
         Row: {
           category: string
@@ -206,6 +212,7 @@ export type Database = {
         }
         Relationships: []
       }
+
       faqs: {
         Row: {
           answer: string
@@ -242,6 +249,7 @@ export type Database = {
         }
         Relationships: []
       }
+
       inquiries: {
         Row: {
           created_at: string
@@ -287,6 +295,7 @@ export type Database = {
         }
         Relationships: []
       }
+
       media_library: {
         Row: {
           alt_text: string | null
@@ -329,6 +338,7 @@ export type Database = {
         }
         Relationships: []
       }
+
       profiles: {
         Row: {
           avatar_url: string | null
@@ -356,6 +366,7 @@ export type Database = {
         }
         Relationships: []
       }
+
       promotions: {
         Row: {
           created_at: string
@@ -404,6 +415,7 @@ export type Database = {
         }
         Relationships: []
       }
+
       reviews: {
         Row: {
           content: string
@@ -429,20 +441,9 @@ export type Database = {
           rating: number
           updated_at?: string
         }
-        Update: {
-          content?: string
-          created_at?: string
-          customer_name?: string
-          email?: string | null
-          id?: string
-          is_approved?: boolean
-          is_flagged?: boolean
-          moderation_reason?: string | null
-          rating?: number
-          updated_at?: string
-        }
         Relationships: []
       }
+
       services: {
         Row: {
           created_at: string
@@ -500,6 +501,7 @@ export type Database = {
         }
         Relationships: []
       }
+
       study_abroad_countries: {
         Row: {
           admission_requirements: string | null
@@ -545,6 +547,8 @@ export type Database = {
         }
         Update: {
           admission_requirements?: string | null
+          category?: string | null
+          content?: string | null
           created_at?: string
           created_by?: string | null
           description?: string | null
@@ -566,6 +570,7 @@ export type Database = {
         }
         Relationships: []
       }
+
       team_members: {
         Row: {
           bio: string | null
@@ -632,6 +637,7 @@ export type Database = {
         }
         Relationships: []
       }
+
       testimonials: {
         Row: {
           client_name: string | null
@@ -689,6 +695,7 @@ export type Database = {
         }
         Relationships: []
       }
+
       tour_packages: {
         Row: {
           created_at: string
@@ -737,8 +744,6 @@ export type Database = {
           created_by?: string | null
           currency?: string
           description?: string | null
-          destination?: string | null
-          duration?: string | null
           excluded_services?: string[]
           featured_image?: string | null
           gallery_images?: string[]
@@ -747,7 +752,6 @@ export type Database = {
           is_featured?: boolean
           itinerary?: Json
           price?: number | null
-          short_description?: string | null
           slug?: string
           status?: Database["public"]["Enums"]["content_status"]
           title?: string
@@ -755,6 +759,7 @@ export type Database = {
         }
         Relationships: []
       }
+
       universities: {
         Row: {
           city: string | null
@@ -793,8 +798,6 @@ export type Database = {
           created_by?: string | null
           description?: string | null
           featured_image?: string | null
-          gallery_images?: string[]
-          id?: string
           slug?: string
           status?: Database["public"]["Enums"]["content_status"]
           title?: string
@@ -811,6 +814,7 @@ export type Database = {
           },
         ]
       }
+
       user_roles: {
         Row: {
           created_at: string
@@ -822,7 +826,7 @@ export type Database = {
           created_at?: string
           id?: string
           role: Database["public"]["Enums"]["app_role"]
-          user_id: string
+          user_id?: string
         }
         Update: {
           created_at?: string
@@ -832,6 +836,7 @@ export type Database = {
         }
         Relationships: []
       }
+
       website_settings: {
         Row: {
           about_story: string | null
@@ -892,7 +897,6 @@ export type Database = {
           hero_headline?: string | null
           hero_image_url?: string | null
           hero_subheadline?: string | null
-          hero_video_url?: string | null
           id?: string
           instagram_url?: string | null
           linkedin_url?: string | null
@@ -932,7 +936,6 @@ export type Database = {
           hero_headline?: string | null
           hero_image_url?: string | null
           hero_subheadline?: string | null
-          hero_video_url?: string | null
           id?: string
           instagram_url?: string | null
           linkedin_url?: string | null
@@ -955,6 +958,7 @@ export type Database = {
         }
         Relationships: []
       }
+
       why_choose_us: {
         Row: {
           created_at: string
@@ -995,11 +999,16 @@ export type Database = {
         Relationships: []
       }
     }
+
     Views: {
       [_ in never]: never
     }
+
     Functions: {
-      claim_first_admin: { Args: never; Returns: boolean }
+      claim_first_admin: {
+        Args: never
+        Returns: boolean
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -1007,13 +1016,23 @@ export type Database = {
         }
         Returns: boolean
       }
-      increment_download: { Args: { _id: string }; Returns: undefined }
-      is_admin: { Args: never; Returns: boolean }
+      increment_download: {
+        Args: {
+          _id: string
+        }
+        Returns: undefined
+      }
+      is_admin: {
+        Args: never
+        Returns: boolean
+      }
     }
+
     Enums: {
       app_role: "admin" | "editor" | "user"
       content_status: "draft" | "published"
     }
+
     CompositeTypes: {
       [_ in never]: never
     }
@@ -1022,7 +1041,10 @@ export type Database = {
 
 type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
 
-type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
+type DefaultSchema = DatabaseWithoutInternals[Extract<
+  keyof Database,
+  "public"
+>]
 
 export type Tables<
   DefaultSchemaTableNameOrOptions extends
@@ -1085,12 +1107,12 @@ export type TablesUpdate<
   TableName extends (DefaultSchemaTableNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
     : never) = never,
 > = DefaultSchemaTableNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
-  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+  ? DatabaseWithoutInternals[DefaultSchemaWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
       Update: infer U
     }
     ? U
@@ -1110,14 +1132,14 @@ export type Enums<
   EnumName extends (DefaultSchemaEnumNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Enums"]
     : never) = never,
 > = DefaultSchemaEnumNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
-  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
-  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
-    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Enums"][EnumName]
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Enums"]
+    ? DefaultSchema["Enums"][DefaultSchemaTableNameOrOptions]
     : never
 
 export type CompositeTypes<
@@ -1127,12 +1149,12 @@ export type CompositeTypes<
   CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
     schema: keyof DatabaseWithoutInternals
   }
-    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["CompositeTypes"]
     : never) = never,
 > = PublicCompositeTypeNameOrOptions extends {
   schema: keyof DatabaseWithoutInternals
 }
-  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  ? DatabaseWithoutInternals[DefaultSchemaWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
     ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
     : never
