@@ -31,6 +31,10 @@ jobs:
 
           echo "TanStack Start version:"
           grep '"@tanstack/react-start"' package.json
+      - name: Check TanStack versions
+        run: |
+          echo "TanStack packages in bun.lock:"
+          grep -A 3 -B 1 '@tanstack/' bun.lock | head -100
 
       - name: Regenerate Bun lockfile
         run: bun install
