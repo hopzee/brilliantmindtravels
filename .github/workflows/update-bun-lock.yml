@@ -1,0 +1,49 @@
+name: Update Bun Lockfile
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-lockfile:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Verify package versions
+        run: |
+          echo "Current commit:"
+          git rev-parse HEAD
+
+          echo "Radix dropdown version:"
+          grep '"@radix-ui/react-dropdown-menu"' package.json
+
+          echo "TanStack Start version:"
+          grep '"@tanstack/react-start"' package.json
+
+      - name: Check TanStack versions in lockfile
+        run: |
+          echo "TanStack packages in bun.lock:"
+          grep -A 3 -B 1 '@tanstack/' bun.lock | head -100
+
+      - name: Regenerate Bun lockfile
+        run: bun install
+
+      - name: Commit updated lockfile
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add bun.lock package.json
+          git diff --cached --quiet || git commit -m "Update TanStack Start lockfile"
+          git push
