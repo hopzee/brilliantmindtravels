@@ -8,11 +8,9 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
-
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "@/components/ui/sonner";
-
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -36,7 +34,6 @@ function NotFoundComponent() {
     </div>
   );
 }
-
 function ErrorComponent({
   error,
   reset,
@@ -46,25 +43,21 @@ function ErrorComponent({
 }) {
   console.error(error);
   const router = useRouter();
-
   useEffect(() => {
     reportLovableError(error, {
       boundary: "tanstack_root_error_component",
     });
   }, [error]);
-
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
           This page didn't load
         </h1>
-
         <p className="mt-2 text-sm text-muted-foreground">
           Something went wrong on our end. You can try refreshing or head back
           home.
         </p>
-
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
             onClick={() => {
@@ -75,7 +68,6 @@ function ErrorComponent({
           >
             Try again
           </button>
-
           <a
             href="/"
             className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
@@ -87,7 +79,6 @@ function ErrorComponent({
     </div>
   );
 }
-
 export const Route =
   createRootRouteWithContext<{ queryClient: QueryClient }>()({
     head: () => ({
@@ -129,7 +120,6 @@ export const Route =
           content: "summary_large_image",
         },
       ],
-
       links: [
         {
           rel: "preconnect",
@@ -138,7 +128,6 @@ export const Route =
         {
           rel: "preconnect",
           href: "https://fonts.gstatic.com",
-          crossOrigin: "anonymous",
         },
         {
           rel: "stylesheet",
@@ -151,28 +140,38 @@ export const Route =
         {
           rel: "icon",
           href: "/favicon.ico",
-          type: "image/x-icon",
+          sizes: "any",
+        },
+        {
+          rel: "icon",
+          href: "/favicon-48x48.png",
+          type: "image/png",
+          sizes: "48x48",
+        },
+        {
+          rel: "icon",
+          href: "/icon-192.png",
+          type: "image/png",
+          sizes: "192x192",
         },
         {
           rel: "apple-touch-icon",
-          href: "/favicon.ico",
+          href: "/apple-touch-icon.png",
+          sizes: "180x180",
         },
       ],
     }),
-
     shellComponent: RootShell,
     component: RootComponent,
     notFoundComponent: NotFoundComponent,
     errorComponent: ErrorComponent,
   });
-
 function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
         <HeadContent />
       </head>
-
       <body>
         {children}
         <Scripts />
@@ -180,10 +179,8 @@ function RootShell({ children }: { children: ReactNode }) {
     </html>
   );
 }
-
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
-
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
