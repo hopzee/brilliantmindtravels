@@ -11,13 +11,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout main branch
         uses: actions/checkout@v4
+        with:
+          ref: main
 
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
+
+      - name: Verify package versions
+        run: |
+          echo "Current commit:"
+          git rev-parse HEAD
+
+          echo "Radix dropdown version:"
+          grep '"@radix-ui/react-dropdown-menu"' package.json
+
+          echo "TanStack Start version:"
+          grep '"@tanstack/react-start"' package.json
 
       - name: Regenerate Bun lockfile
         run: bun install
