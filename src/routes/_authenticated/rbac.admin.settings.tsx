@@ -100,6 +100,7 @@ function Page() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [form, setForm] = useState<Record<string, any>>({});
   const [adminEmail, setAdminEmail] = useState("");
+  const [newAdminEmail, setNewAdminEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const { data } = useQuery({
@@ -119,12 +120,16 @@ function Page() {
   }, [data]);
   useEffect(() => {
     void supabase.auth.getUser().then(({ data: userData }) => {
-      setAdminEmail(userData.user?.email ?? "");
+      const currentEmail = userData.user?.email ?? "";
+      setAdminEmail(currentEmail);
+      setNewAdminEmail(currentEmail);
     });
   }, []);
   const save = useMutation({
     mutationFn: async () => {
-      if (!data?.id) throw new Error("Settings record not found");
+      if (!data?.id) {
+        throw new Error("Settings record not found");
+      }
       const { id, created_at, updated_at, ...rest } = form;
       void id;
       void created_at;
@@ -143,22 +148,36 @@ function Page() {
   });
   const changeEmail = useMutation({
     mutationFn: async () => {
-      const email = adminEmail.trim();
+      const email = newAdminEmail.trim();
       if (!email) {
         throw new Error("Enter an email address");
       }
-      const { data: userData } = await supabase.auth.getUser();
-      if (email === userData.user?.email) {
+      const { data: userData, error: userError } =
+        await supabase.auth.getUser();
+      if (userError) {
+        throw userError;
+      }
+      const currentEmail = userData.user?.email?.trim().toLowerCase();
+      if (!currentEmail) {
+        throw new Error("Unable to determine the current admin email");
+      }
+      if (email.toLowerCase() === currentEmail) {
         throw new Error("This is already your current admin email");
       }
-      const { error } = await supabase.auth.updateUser({
-        email,
-      });
+      const { error } = await supabase.auth.updateUser(
+        {
+          email,
+        },
+        {
+          emailRedirectTo:
+            "https://www.brilliantmindtravels.com/rbac/admin/settings",
+        },
+      );
       if (error) throw error;
     },
     onSuccess: () => {
       toast.success(
-        "Email change requested. Check your email for the confirmation link.",
+        "Email change requested. Check the required confirmation email(s) and complete the confirmation before trying to log in with the new address.",
       );
     },
     onError: (e: Error) => toast.error(e.message),
@@ -266,16 +285,20 @@ function Page() {
             <div>
               <h3 className="font-medium text-navy">Admin email</h3>
               <p className="mt-1 text-xs text-muted-foreground">
-                A confirmation email may be sent when you change this address.
+                Current admin email: {adminEmail || "Loading..."}
+              </p>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Email changes require confirmation before the new address
+                becomes active.
               </p>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="admin-email">Admin email address</Label>
+              <Label htmlFor="admin-email">New admin email address</Label>
               <Input
                 id="admin-email"
                 type="email"
-                value={adminEmail}
-                onChange={(e) => setAdminEmail(e.target.value)}
+                value={newAdminEmail}
+                onChange={(e) => setNewAdminEmail(e.target.value)}
                 placeholder="admin@example.com"
               />
             </div>
