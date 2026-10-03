@@ -11,19 +11,25 @@ import { Reveal } from "@/components/public/ui";
 import consultationImage from "@/assets/consultation.webp";
 import homeTeam1 from "@/assets/home-team-1.jpg";
 import logoUrl from "@/assets/brilliant-mind-logo.webp";
+
 const title =
-  "Brilliant Mind Travels & Tours | Travel & Study Abroad in Ede, Osun";
+  "Brilliant Mind Travel and Tours | Travel & Study Abroad in Ede, Osun";
+
 const description =
-  "Brilliant Mind Travels & Tours in Ede, Osun provides travel, visa guidance, study abroad, flight booking and tourism services.";
+  "Brilliant Mind Travel and Tours in Ede, Osun provides travel, visa guidance, study abroad, flight booking and tourism services.";
+
 const canonicalUrl = "https://www.brilliantmindtravels.com/";
+
 const absoluteLogoUrl = new URL(logoUrl, canonicalUrl).toString();
+
 const ogImageUrl =
   "https://www.brilliantmindtravels.com/og-image.png";
+
 const businessSchema = {
   "@context": "https://schema.org",
   "@type": "TravelAgency",
   "@id": `${canonicalUrl}#travel-agency`,
-  name: "Brilliant Mind Travels & Tours",
+  name: "Brilliant Mind Travel and Tours",
   url: canonicalUrl,
   logo: absoluteLogoUrl,
   image: ogImageUrl,
@@ -32,9 +38,11 @@ const businessSchema = {
   email: "brilliantmindtravels1@gmail.com",
   address: {
     "@type": "PostalAddress",
-    streetAddress: "Beside Eyiowu Awi Pharmacy",
-    addressLocality: "Ede South",
-    addressRegion: "Osun State",
+    streetAddress:
+      "Olayia's Complex, Beside Eyiowu Awi Pharmacy",
+    addressLocality: "Ede",
+    postalCode: "102213",
+    addressRegion: "Osun",
     addressCountry: "NG",
   },
   areaServed: {
@@ -49,6 +57,7 @@ const businessSchema = {
     availableLanguage: ["English"],
   },
 };
+
 export const Route = createFileRoute("/")({
   head: () => ({
     links: [
@@ -57,6 +66,7 @@ export const Route = createFileRoute("/")({
         href: canonicalUrl,
       },
     ],
+
     meta: [
       {
         title,
@@ -71,7 +81,7 @@ export const Route = createFileRoute("/")({
       },
       {
         name: "author",
-        content: "Brilliant Mind Travels & Tours",
+        content: "Brilliant Mind Travel and Tours",
       },
       {
         property: "og:title",
@@ -91,7 +101,7 @@ export const Route = createFileRoute("/")({
       },
       {
         property: "og:site_name",
-        content: "Brilliant Mind Travels & Tours",
+        content: "Brilliant Mind Travel and Tours",
       },
       {
         property: "og:locale",
@@ -104,7 +114,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:image:alt",
         content:
-          "Brilliant Mind Travels & Tours - Travel and Study Abroad Services",
+          "Brilliant Mind Travel and Tours - Travel and Study Abroad Services",
       },
       {
         name: "twitter:card",
@@ -123,6 +133,7 @@ export const Route = createFileRoute("/")({
         content: ogImageUrl,
       },
     ],
+
     scripts: [
       {
         type: "application/ld+json",
@@ -130,23 +141,28 @@ export const Route = createFileRoute("/")({
       },
     ],
   }),
+
   component: HomePage,
 });
+
 function HomeAboutImages() {
   const [showSecondImage, setShowSecondImage] = useState(false);
+
   useEffect(() => {
     const timer = window.setTimeout(() => {
       setShowSecondImage(true);
     }, 5000);
+
     return () => window.clearTimeout(timer);
   }, []);
+
   return (
     <section className="bg-background py-12 md:py-16">
       <div className="container-page">
         <Reveal>
           <img
             src={showSecondImage ? homeTeam1 : consultationImage}
-            alt="Brilliant Mind Travels & Tours travel and educational consultancy in Ede, Osun"
+            alt="Brilliant Mind Travel and Tours travel and educational consultancy in Ede, Osun"
             width={1200}
             height={912}
             loading="lazy"
@@ -158,6 +174,7 @@ function HomeAboutImages() {
     </section>
   );
 }
+
 function HomePage() {
   return (
     <SiteLayout>
