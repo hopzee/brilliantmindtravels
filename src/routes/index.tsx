@@ -11,17 +11,14 @@ import { Reveal } from "@/components/public/ui";
 import consultationImage from "@/assets/consultation.webp";
 import homeTeam1 from "@/assets/home-team-1.jpg";
 import logoUrl from "@/assets/brilliant-mind-logo.webp";
-
 const title =
   "Brilliant Mind Travels & Tours | Travel & Study Abroad in Ede, Osun";
-
 const description =
   "Brilliant Mind Travels & Tours in Ede, Osun provides travel, visa guidance, study abroad, flight booking and tourism services.";
-
 const canonicalUrl = "https://www.brilliantmindtravels.com/";
-
 const absoluteLogoUrl = new URL(logoUrl, canonicalUrl).toString();
-
+const ogImageUrl =
+  "https://www.brilliantmindtravels.com/og-image.png";
 const businessSchema = {
   "@context": "https://schema.org",
   "@type": "TravelAgency",
@@ -29,7 +26,7 @@ const businessSchema = {
   name: "Brilliant Mind Travels & Tours",
   url: canonicalUrl,
   logo: absoluteLogoUrl,
-  image: absoluteLogoUrl,
+  image: ogImageUrl,
   description,
   telephone: "+2348165900571",
   email: "brilliantmindtravels1@gmail.com",
@@ -52,7 +49,6 @@ const businessSchema = {
     availableLanguage: ["English"],
   },
 };
-
 export const Route = createFileRoute("/")({
   head: () => ({
     links: [
@@ -61,7 +57,6 @@ export const Route = createFileRoute("/")({
         href: canonicalUrl,
       },
     ],
-
     meta: [
       {
         title,
@@ -104,11 +99,12 @@ export const Route = createFileRoute("/")({
       },
       {
         property: "og:image",
-        content: absoluteLogoUrl,
+        content: ogImageUrl,
       },
       {
         property: "og:image:alt",
-        content: "Brilliant Mind Travels & Tours company logo",
+        content:
+          "Brilliant Mind Travels & Tours - Travel and Study Abroad Services",
       },
       {
         name: "twitter:card",
@@ -124,10 +120,9 @@ export const Route = createFileRoute("/")({
       },
       {
         name: "twitter:image",
-        content: absoluteLogoUrl,
+        content: ogImageUrl,
       },
     ],
-
     scripts: [
       {
         type: "application/ld+json",
@@ -135,21 +130,16 @@ export const Route = createFileRoute("/")({
       },
     ],
   }),
-
   component: HomePage,
 });
-
 function HomeAboutImages() {
   const [showSecondImage, setShowSecondImage] = useState(false);
-
   useEffect(() => {
     const timer = window.setTimeout(() => {
       setShowSecondImage(true);
     }, 5000);
-
     return () => window.clearTimeout(timer);
   }, []);
-
   return (
     <section className="bg-background py-12 md:py-16">
       <div className="container-page">
@@ -168,7 +158,6 @@ function HomeAboutImages() {
     </section>
   );
 }
-
 function HomePage() {
   return (
     <SiteLayout>
