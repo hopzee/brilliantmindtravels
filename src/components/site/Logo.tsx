@@ -3,7 +3,13 @@ import { site } from "@/config/site";
 import { cn } from "@/lib/utils";
 import { useSettings } from "@/components/public/ui";
 
-export function Logo({ light = false, className }: { light?: boolean; className?: string }) {
+export function Logo({
+  light = false,
+  className,
+}: {
+  light?: boolean;
+  className?: string;
+}) {
   const { data: settings } = useSettings();
   const src = settings?.logo_url || logo;
   const name = settings?.company_name || site.name;
@@ -18,6 +24,7 @@ export function Logo({ light = false, className }: { light?: boolean; className?
         height={48}
         className="size-11 rounded-full object-cover ring-1 ring-gold/40"
       />
+
       <span className="leading-tight">
         <span
           className={cn(
@@ -27,8 +34,9 @@ export function Logo({ light = false, className }: { light?: boolean; className?
         >
           {first} {rest[0] ?? ""}
         </span>
+
         <span className="block text-[0.62rem] font-medium uppercase tracking-[0.24em] text-gold">
-          {rest.slice(1).join(" ") || "Travels & Tours"}
+          {rest.slice(1).join(" ") || "Travel and Tours"}
         </span>
       </span>
     </span>
