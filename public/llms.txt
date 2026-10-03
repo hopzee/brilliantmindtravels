@@ -1,31 +1,34 @@
-# Brilliant Mind Travels & Tours
+# Brilliant Mind Travel and Tours
 
-Brilliant Mind Travels & Tours is a travel and educational consultancy based in Ede South, Osun State, Nigeria.
+Brilliant Mind Travel and Tours is a travel and educational consultancy based in Ede, Osun State, Nigeria.
 
 ## Business Information
 
-- Business name: Brilliant Mind Travels & Tours
-- Location: Ede South, Osun State, Nigeria
-- Address: Beside Eyiowu Awi Pharmacy, Ede South, Osun State
-- Phone/WhatsApp: +234 816 590 0571
+- Business name: Brilliant Mind Travel and Tours
+- Category: Travel agency
+- Address: Olayia's Complex, Beside Eyiowu Awi Pharmacy, Ede 102213, Osun, Nigeria
+- Phone: +234 816 590 0571
+- WhatsApp: +234 816 590 0571
 - Email: brilliantmindtravels1@gmail.com
 - Website: https://www.brilliantmindtravels.com/
 
-## Main Services
+## Services
 
 - Visa guidance and consultancy
 - Study abroad consultancy
-- Flight booking
+- University admission guidance
+- Flight booking support
 - Travel consultancy
 - Tourism and tour packages
-- Educational consultancy
+- Travel documentation assistance
+- Personalized travel planning
 
-## Important Pages
+## Main Pages
 
 - Homepage: https://www.brilliantmindtravels.com/
 - About: https://www.brilliantmindtravels.com/about
 - Services: https://www.brilliantmindtravels.com/services
-- Tours: https://www.brilliantmindtravels.com/tours
+- Tour Packages: https://www.brilliantmindtravels.com/tours
 - Blog: https://www.brilliantmindtravels.com/blog
 - Testimonials: https://www.brilliantmindtravels.com/testimonials
 - Reviews: https://www.brilliantmindtravels.com/reviews
@@ -33,9 +36,29 @@ Brilliant Mind Travels & Tours is a travel and educational consultancy based in 
 - Downloads: https://www.brilliantmindtravels.com/downloads
 - Contact: https://www.brilliantmindtravels.com/contact
 
-## Content
+## Study Abroad
 
-The website publishes information about travel, visa guidance, study abroad opportunities, tourism, flight booking, and related travel and educational services.
+Brilliant Mind Travel and Tours provides study abroad guidance, university and course selection support, admission guidance, documentation assistance and student visa preparation.
 
-For current service information and contact details, use the official website:
+Study abroad country pages are available through the website's Study Abroad section.
+
+## Travel and Visa
+
+The website provides information and guidance relating to travel, visa applications, flight booking and travel preparation.
+
+Visa decisions are made by the relevant embassy, consulate or immigration authority. Brilliant Mind Travel and Tours provides consultancy and application support but does not guarantee visa approval.
+
+## Tours
+
+Brilliant Mind Travel and Tours provides tour packages and travel experiences for leisure, family and group travel.
+
+## Blog
+
+The website publishes travel updates, visa information, study abroad opportunities, scholarships, work opportunities, travel tips and company updates.
+
+## Contact
+
+For current services, travel enquiries, visa guidance, study abroad assistance or tour enquiries, use the official contact details and website above.
+
+Official website:
 https://www.brilliantmindtravels.com/
