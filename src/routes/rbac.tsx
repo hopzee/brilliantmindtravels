@@ -10,9 +10,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { supabase } from "@/integrations/supabase/client";
 import { Logo } from "@/components/site/Logo";
 
-const title = "Administrator Login | Brilliant Mind Travels & Tours";
+const title = "Administrator Login | Brilliant Mind Travel and Tours";
 const description =
-  "Secure sign-in for Brilliant Mind Travels & Tours website administrators.";
+  "Secure sign-in for Brilliant Mind Travel and Tours website administrators.";
 
 export const Route = createFileRoute("/rbac")({
   head: () => ({
