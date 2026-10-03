@@ -11,6 +11,17 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Toaster } from "@/components/ui/sonner";
+
+const siteName = "Brilliant Mind Travel and Tours";
+
+const siteDescription =
+  "Brilliant Mind Travel and Tours is a travel and educational consultancy in Ede, Osun, providing travel, visa guidance, study abroad, flight booking and tourism services.";
+
+const siteUrl = "https://www.brilliantmindtravels.com/";
+
+const ogImageUrl =
+  "https://www.brilliantmindtravels.com/og-image.png";
+
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -34,6 +45,7 @@ function NotFoundComponent() {
     </div>
   );
 }
+
 function ErrorComponent({
   error,
   reset,
@@ -43,21 +55,25 @@ function ErrorComponent({
 }) {
   console.error(error);
   const router = useRouter();
+
   useEffect(() => {
     reportLovableError(error, {
       boundary: "tanstack_root_error_component",
     });
   }, [error]);
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h1 className="text-xl font-semibold tracking-tight text-foreground">
           This page didn't load
         </h1>
+
         <p className="mt-2 text-sm text-muted-foreground">
           Something went wrong on our end. You can try refreshing or head back
           home.
         </p>
+
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
             onClick={() => {
@@ -68,6 +84,7 @@ function ErrorComponent({
           >
             Try again
           </button>
+
           <a
             href="/"
             className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
@@ -79,6 +96,7 @@ function ErrorComponent({
     </div>
   );
 }
+
 export const Route =
   createRootRouteWithContext<{ queryClient: QueryClient }>()({
     head: () => ({
@@ -90,34 +108,66 @@ export const Route =
         },
         {
           title:
-            "Brilliant Mind Travels & Tours | Travel & Study Abroad in Ede, Osun",
+            "Brilliant Mind Travel and Tours | Travel & Study Abroad in Ede, Osun",
         },
         {
           name: "description",
-          content:
-            "Brilliant Mind Travels & Tours is a travel and educational consultancy in Ede, Osun, providing travel, visa guidance, study abroad and tourism services.",
+          content: siteDescription,
         },
         {
           name: "author",
-          content: "Brilliant Mind Travels & Tours",
+          content: siteName,
         },
         {
           property: "og:title",
           content:
-            "Brilliant Mind Travels & Tours | Travel & Study Abroad in Ede, Osun",
+            "Brilliant Mind Travel and Tours | Travel & Study Abroad in Ede, Osun",
         },
         {
           property: "og:description",
-          content:
-            "Brilliant Mind Travels & Tours is a travel and educational consultancy in Ede, Osun, providing travel, visa guidance, study abroad and tourism services.",
+          content: siteDescription,
         },
         {
           property: "og:type",
           content: "website",
         },
         {
+          property: "og:url",
+          content: siteUrl,
+        },
+        {
+          property: "og:site_name",
+          content: siteName,
+        },
+        {
+          property: "og:locale",
+          content: "en_NG",
+        },
+        {
+          property: "og:image",
+          content: ogImageUrl,
+        },
+        {
+          property: "og:image:alt",
+          content:
+            "Brilliant Mind Travel and Tours - Travel and Study Abroad Services",
+        },
+        {
           name: "twitter:card",
           content: "summary_large_image",
+        },
+        {
+          name: "twitter:title",
+          content:
+            "Brilliant Mind Travel and Tours | Travel & Study Abroad in Ede, Osun",
+        },
+        {
+          name: "twitter:description",
+          content: siteDescription,
+        },
+        {
+          name: "twitter:image",
+          content: ogImageUrl,
         },
       ],
       links: [
@@ -162,17 +212,20 @@ export const Route =
         },
       ],
     }),
+
     shellComponent: RootShell,
     component: RootComponent,
     notFoundComponent: NotFoundComponent,
     errorComponent: ErrorComponent,
   });
+
 function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
         <HeadContent />
       </head>
+
       <body>
         {children}
         <Scripts />
@@ -180,12 +233,15 @@ function RootShell({ children }: { children: ReactNode }) {
     </html>
   );
 }
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+
   return (
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+
       <Toaster position="top-right" richColors />
     </QueryClientProvider>
   );
