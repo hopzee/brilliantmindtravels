@@ -25,8 +25,11 @@ export function waLink(whatsapp: string | null | undefined, message: string) {
   return `https://wa.me/${digitsOnly(whatsapp)}?text=${encodeURIComponent(message)}`;
 }
 
-export function enquiryMessage(company: string | null | undefined, topic: string) {
-  return `Hello ${company ?? "Brilliant Mind Travels & Tours"}.\n\nI would like to make an inquiry regarding the ${topic}.\n\nMy name is __________.\n\nPlease assist me.`;
+export function enquiryMessage(
+  company: string | null | undefined,
+  topic: string,
+) {
+  return `Hello ${company ?? "Brilliant Mind Travel and Tours"}.\n\nI would like to make an inquiry regarding the ${topic}.\n\nMy name is __________.\n\nPlease assist me.`;
 }
 
 export const settingsQuery = queryOptions({
@@ -50,8 +53,17 @@ type ListOpts = {
   featuredOnly?: boolean;
 };
 
-export function publishedList<T = Record<string, any>>(table: string, opts: ListOpts = {}) {
-  const { orderBy = "created_at", ascending = false, limit, featuredOnly } = opts;
+export function publishedList<T = Record<string, any>>(
+  table: string,
+  opts: ListOpts = {},
+) {
+  const {
+    orderBy = "created_at",
+    ascending = false,
+    limit,
+    featuredOnly,
+  } = opts;
+
   return queryOptions({
     queryKey: ["cms", table, opts],
     queryFn: async () => {
@@ -67,7 +79,10 @@ export function publishedList<T = Record<string, any>>(table: string, opts: List
   });
 }
 
-export function publishedItem<T = Record<string, any>>(table: string, slug: string) {
+export function publishedItem<T = Record<string, any>>(
+  table: string,
+  slug: string,
+) {
   return queryOptions({
     queryKey: ["cms-item", table, slug],
     queryFn: async () => {
@@ -114,8 +129,12 @@ export function universitiesForCountry(countryId: string) {
     staleTime: 60_000,
   });
 }
+
 /** Ordered, published list for the small CMS collections (why choose us, team, FAQs, downloads, promotions). */
-export function orderedPublished<T = Record<string, any>>(table: string, extra: Record<string, unknown> = {}) {
+export function orderedPublished<T = Record<string, any>>(
+  table: string,
+  extra: Record<string, unknown> = {},
+) {
   return queryOptions({
     queryKey: ["cms-ordered", table, extra],
     queryFn: async () => {
@@ -146,6 +165,9 @@ export const orderedTestimonialsQuery = orderedPublished("testimonials");
 export function formatBytes(bytes?: number | null) {
   if (!bytes || bytes <= 0) return null;
   const units = ["B", "KB", "MB", "GB"];
-  const i = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+  const i = Math.min(
+    Math.floor(Math.log(bytes) / Math.log(1024)),
+    units.length - 1,
+  );
   return `${(bytes / 1024 ** i).toFixed(i === 0 ? 0 : 1)} ${units[i]}`;
 }
