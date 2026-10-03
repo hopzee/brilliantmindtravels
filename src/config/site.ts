@@ -3,7 +3,7 @@ export const site = {
   shortName: "Brilliant Mind",
   tagline: "...your dream. our expertise. global opportunities",
   promise: "We don't just process visas. We open doors to your global future.",
-  address: "Ede South, Osun State, Nigeria",
+  address: "Beside Eyiowu Awi Pharmacy, Ede South, Osun State, Nigeria",
   email: "brilliantmindtravels1@gmail.com",
   // Fallbacks only — the live values are managed in Website Settings (CMS).
   phone: "+234 816 590 0571",
