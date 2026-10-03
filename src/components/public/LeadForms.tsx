@@ -146,7 +146,7 @@ export function InquiryForm({
     }
 
     const whatsappText = [
-      `Hello ${settings?.company_name ?? "Brilliant Mind Travels & Tours"}.`,
+      `Hello ${settings?.company_name ?? "Brilliant Mind Travel and Tours"}.`,
       "",
       "I have just submitted an inquiry through your website.",
       "",
@@ -290,7 +290,7 @@ export function BookingForm({
     }
 
     const whatsappText = [
-      `Hello ${settings?.company_name ?? "Brilliant Mind Travels & Tours"}.`,
+      `Hello ${settings?.company_name ?? "Brilliant Mind Travel and Tours"}.`,
       "",
       "I have just requested a consultation through your website.",
       "",
@@ -470,7 +470,7 @@ export function ContactMessageForm() {
     }
 
     const whatsappText = [
-      `Hello ${settings?.company_name ?? "Brilliant Mind Travels & Tours"}.`,
+      `Hello ${settings?.company_name ?? "Brilliant Mind Travel and Tours"}.`,
       "",
       "I have just sent a message through your website.",
       "",
