@@ -1,29 +1,43 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useMemo, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import { SiteLayout } from "@/components/public/SiteLayout";
-import { PageHero } from "@/components/public/ui";
-import { LatestBlog } from "@/components/home/LatestBlog";
-import { WhatsAppCta } from "@/components/home/WhatsAppCta";
+import {
+  CardSkeletons,
+  EmptyState,
+  PageHero,
+  Reveal,
+} from "@/components/public/ui";
+import { BlogCard } from "@/components/home/Blog";
+import { publishedList } from "@/lib/cms";
+import { Button } from "@/components/ui/button";
 
 const title =
-  "Travel & Visa Blog | Brilliant Mind Travel and Tours";
+  "Travel, Visa & Study Abroad Blog | Brilliant Mind Travel and Tours";
 
 const description =
-  "Read travel, visa, study abroad and tourism updates from Brilliant Mind Travel and Tours in Ede, Osun State, Nigeria.";
+  "Read travel updates, visa information, study abroad opportunities, scholarships, work opportunities and useful travel tips from Brilliant Mind Travel and Tours in Ede, Osun.";
 
-const canonicalUrl = "https://www.brilliantmindtravels.com/blog";
+const canonicalUrl =
+  "https://www.brilliantmindtravels.com/blog";
 
 const ogImageUrl =
   "https://www.brilliantmindtravels.com/og-image.png";
 
+const categories = [
+  { value: "all", label: "All" },
+  { value: "visa-travel", label: "Visa & Travel" },
+  { value: "study-abroad", label: "Study Abroad" },
+  { value: "work-opportunities", label: "Work Opportunities" },
+  { value: "scholarships", label: "Scholarships" },
+  { value: "offers-promotions", label: "Offers & Promotions" },
+  { value: "events-activities", label: "Events & Activities" },
+  { value: "travel-tips", label: "Travel Tips" },
+  { value: "company-news", label: "Company News" },
+];
+
 export const Route = createFileRoute("/blog/")({
   head: () => ({
-    links: [
-      {
-        rel: "canonical",
-        href: canonicalUrl,
-      },
-    ],
-
     meta: [
       {
         title,
@@ -71,7 +85,7 @@ export const Route = createFileRoute("/blog/")({
       {
         property: "og:image:alt",
         content:
-          "Brilliant Mind Travel and Tours - Travel and Visa Blog",
+          "Brilliant Mind Travel and Tours - Travel, Visa and Study Abroad Blog",
       },
       {
         name: "twitter:card",
@@ -90,23 +104,105 @@ export const Route = createFileRoute("/blog/")({
         content: ogImageUrl,
       },
     ],
+
+    links: [
+      {
+        rel: "canonical",
+        href: canonicalUrl,
+      },
+    ],
   }),
 
   component: BlogPage,
 });
 
 function BlogPage() {
+  const [activeCategory, setActiveCategory] =
+    useState("all");
+
+  const { data, isLoading } = useQuery(
+    publishedList("blog_posts", {
+      orderBy: "published_at",
+    }),
+  );
+
+  const filteredPosts = useMemo(() => {
+    if (!data) {
+      return [];
+    }
+
+    if (activeCategory === "all") {
+      return data;
+    }
+
+    return data.filter(
+      (post: any) =>
+        post.category === activeCategory,
+    );
+  }, [data, activeCategory]);
+
   return (
     <SiteLayout>
       <PageHero
-        eyebrow="Travel & Visa Updates"
-        title="Travel, Visa & Study Abroad Insights"
-        intro="Stay informed with travel updates, visa guidance, study abroad information and useful advice from Brilliant Mind Travel and Tours."
+        eyebrow="Brilliant Mind Travel and Tours Blog"
+        title="Travel, Visa & Study Abroad Updates"
+        intro="Useful travel information, visa updates, study abroad opportunities, scholarships, work opportunities and company news from Brilliant Mind Travel and Tours."
       />
 
-      <LatestBlog />
+      <section className="bg-background py-16 md:py-20">
+        <div className="container-page">
+          <div className="mb-10 overflow-x-auto">
+            <div className="flex min-w-max gap-2 pb-2">
+              {categories.map((category) => (
+                <Button
+                  key={category.value}
+                  type="button"
+                  variant={
+                    activeCategory === category.value
+                      ? "gold"
+                      : "outlineNavy"
+                  }
+                  onClick={() =>
+                    setActiveCategory(
+                      category.value,
+                    )
+                  }
+                  className="whitespace-nowrap"
+                >
+                  {category.label}
+                </Button>
+              ))}
+            </div>
+          </div>
 
-      <WhatsAppCta />
+          {isLoading ? (
+            <CardSkeletons />
+          ) : !data?.length ? (
+            <EmptyState
+              title="Articles coming soon"
+              text="Travel updates, opportunities and useful information will be published here."
+            />
+          ) : !filteredPosts.length ? (
+            <EmptyState
+              title="No posts in this category yet"
+              text="Check another category or come back later for new updates."
+            />
+          ) : (
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {filteredPosts.map(
+                (post: any, i: number) => (
+                  <Reveal
+                    key={post.id}
+                    delay={i * 60}
+                  >
+                    <BlogCard post={post} />
+                  </Reveal>
+                ),
+              )}
+            </div>
+          )}
+        </div>
+      </section>
     </SiteLayout>
   );
 }
