@@ -21,32 +21,84 @@ import { WhatsAppCta } from "@/components/home/WhatsAppCta";
 import { faqsQuery } from "@/lib/cms";
 
 const title =
-  "Frequently Asked Questions | Brilliant Mind Travels & Tours";
+  "Frequently Asked Questions | Brilliant Mind Travel and Tours";
 
 const description =
-  "Find answers about travel consultation, visa guidance, flight booking, study abroad, university admissions, tour packages and other services from Brilliant Mind Travels & Tours in Ede, Osun.";
+  "Find answers about travel consultation, visa guidance, flight booking, study abroad, university admissions, tour packages and other services from Brilliant Mind Travel and Tours in Ede, Osun.";
 
-const canonicalUrl = "https://www.brilliantmindtravels.com/faq";
+const canonicalUrl =
+  "https://www.brilliantmindtravels.com/faq";
+
+const ogImageUrl =
+  "https://www.brilliantmindtravels.com/og-image.png";
 
 export const Route = createFileRoute("/faq")({
   head: () => ({
     meta: [
-      { title },
-      { name: "description", content: description },
-      { name: "robots", content: "index, follow" },
-      { name: "author", content: "Brilliant Mind Travels & Tours" },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: canonicalUrl },
+      {
+        title,
+      },
+      {
+        name: "description",
+        content: description,
+      },
+      {
+        name: "robots",
+        content: "index, follow",
+      },
+      {
+        name: "author",
+        content: "Brilliant Mind Travel and Tours",
+      },
+      {
+        property: "og:title",
+        content: title,
+      },
+      {
+        property: "og:description",
+        content: description,
+      },
+      {
+        property: "og:type",
+        content: "website",
+      },
+      {
+        property: "og:url",
+        content: canonicalUrl,
+      },
       {
         property: "og:site_name",
-        content: "Brilliant Mind Travels & Tours",
+        content: "Brilliant Mind Travel and Tours",
       },
-      { property: "og:locale", content: "en_NG" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: title },
-      { name: "twitter:description", content: description },
+      {
+        property: "og:locale",
+        content: "en_NG",
+      },
+      {
+        property: "og:image",
+        content: ogImageUrl,
+      },
+      {
+        property: "og:image:alt",
+        content:
+          "Brilliant Mind Travel and Tours - Frequently Asked Questions",
+      },
+      {
+        name: "twitter:card",
+        content: "summary_large_image",
+      },
+      {
+        name: "twitter:title",
+        content: title,
+      },
+      {
+        name: "twitter:description",
+        content: description,
+      },
+      {
+        name: "twitter:image",
+        content: ogImageUrl,
+      },
     ],
     links: [
       {
@@ -55,73 +107,85 @@ export const Route = createFileRoute("/faq")({
       },
     ],
   }),
+
   component: FaqPage,
 });
 
 const serviceFaqs: FaqItem[] = [
   {
     category: "Our Services",
-    question: "What services does Brilliant Mind Travels & Tours provide?",
+    question:
+      "What services does Brilliant Mind Travel and Tours provide?",
     answer:
-      "Brilliant Mind Travels & Tours provides travel consultation, visa guidance, flight booking support, study abroad guidance, university admission support, tourism and tour packages, travel documentation assistance and personalized travel planning.",
+      "Brilliant Mind Travel and Tours provides travel consultation, visa guidance, flight booking support, study abroad guidance, university admission support, tourism and tour packages, travel documentation assistance and personalized travel planning.",
   },
   {
     category: "Our Services",
-    question: "What other travel services do you provide?",
+    question:
+      "What other travel services do you provide?",
     answer:
       "Our services also include travel consultation, flight booking support, visa guidance, study abroad and university admission support, tour planning, travel documentation assistance, tourism services and personalized travel planning. Contact our team to discuss the service you need.",
   },
   {
     category: "Our Services",
-    question: "Do you help with visa applications?",
+    question:
+      "Do you help with visa applications?",
     answer:
       "Yes. We provide visa guidance and support throughout the application process. Our consultants help clients understand requirements, prepare documents and follow the appropriate application process.",
   },
   {
     category: "Our Services",
-    question: "Do you provide study abroad services?",
+    question:
+      "Do you provide study abroad services?",
     answer:
       "Yes. We assist students with study abroad planning, university and course selection, admission guidance, documentation and student visa preparation.",
   },
   {
     category: "Our Services",
-    question: "Can you help me choose a university abroad?",
+    question:
+      "Can you help me choose a university abroad?",
     answer:
       "Yes. We can help you explore suitable universities and courses based on your academic background, preferred destination, study level and available options.",
   },
   {
     category: "Our Services",
-    question: "Do you assist with flight booking?",
+    question:
+      "Do you assist with flight booking?",
     answer:
       "Yes. We provide flight booking support and help clients identify suitable travel options based on their destination, travel dates and requirements.",
   },
   {
     category: "Our Services",
-    question: "Do you offer tour packages?",
+    question:
+      "Do you offer tour packages?",
     answer:
       "Yes. We provide planned tour packages for leisure, family and group travel. We can also discuss customized travel arrangements based on your preferred destination and itinerary.",
   },
   {
     category: "Our Services",
-    question: "Can you help me plan a complete trip?",
+    question:
+      "Can you help me plan a complete trip?",
     answer:
       "Yes. Our travel consultants can help you plan your trip by discussing your destination, travel dates, documentation, flight options, accommodation needs and other relevant travel arrangements.",
   },
   {
     category: "Our Services",
-    question: "Where is Brilliant Mind Travels & Tours located?",
+    question:
+      "Where is Brilliant Mind Travel and Tours located?",
     answer:
-      "Brilliant Mind Travels & Tours is located beside Eyiowu Awi Pharmacy, Ede South, Osun State, Nigeria.",
+      "Brilliant Mind Travel and Tours is located at Olayia's Complex, beside Eyiowu Awi Pharmacy, Ede 102213, Osun, Nigeria.",
   },
   {
     category: "Our Services",
-    question: "How can I speak with a travel consultant?",
+    question:
+      "How can I speak with a travel consultant?",
     answer:
-      "You can contact Brilliant Mind Travels & Tours through WhatsApp, phone or our contact page to discuss your travel, visa, study abroad or tourism needs.",
+      "You can contact Brilliant Mind Travel and Tours through WhatsApp, phone or our contact page to discuss your travel, visa, study abroad or tourism needs.",
   },
   {
     category: "Our Services",
-    question: "Do you guarantee visa approval?",
+    question:
+      "Do you guarantee visa approval?",
     answer:
       "No. Visa decisions are made by the relevant embassy, consulate or immigration authority. We provide guidance and document preparation support, but the final decision is made by the appropriate authority.",
   },
@@ -156,7 +220,7 @@ function FaqPage() {
   return (
     <SiteLayout>
       <PageHero
-        eyebrow="Brilliant Mind Travels & Tours"
+        eyebrow="Brilliant Mind Travel and Tours"
         title="Frequently Asked Questions"
         intro={
           s?.business_hours
@@ -219,7 +283,7 @@ function FaqPage() {
               <div className="rounded-xl border border-border bg-card p-7 text-center">
                 <SectionHeading
                   eyebrow="Stay Connected"
-                  title="Follow Brilliant Mind Travels & Tours"
+                  title="Follow Brilliant Mind Travel and Tours"
                 />
 
                 <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
