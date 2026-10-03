@@ -1,9 +1,10 @@
 export const site = {
-  name: "Brilliant Mind Travels & Tours",
+  name: "Brilliant Mind Travel and Tours",
   shortName: "Brilliant Mind",
   tagline: "...your dream. our expertise. global opportunities",
   promise: "We don't just process visas. We open doors to your global future.",
-  address: "Beside Eyiowu Awi Pharmacy, Ede South, Osun State, Nigeria",
+  address:
+    "Olayia's Complex, Beside Eyiowu Awi Pharmacy, Ede 102213, Osun, Nigeria",
   email: "brilliantmindtravels1@gmail.com",
   // Fallbacks only — the live values are managed in Website Settings (CMS).
   phone: "+234 816 590 0571",
@@ -13,9 +14,11 @@ export const site = {
   mission:
     "To empower individuals and families to achieve their international education, travel and relocation goals by providing transparent, reliable and professional consultancy services that inspire confidence and create lasting impact.",
 } as const;
+
 export function whatsappLink(message: string) {
   return `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(message)}`;
 }
+
 export const navLinks = [
   { label: "Home", to: "/" },
   { label: "About", to: "/about" },
@@ -26,6 +29,7 @@ export const navLinks = [
   { label: "Blog", to: "/blog" },
   { label: "Contact", to: "/contact" },
 ] as const;
+
 /** Extra links surfaced in the footer (bottom header) only. */
 export const footerLinks = [
   { label: "FAQ", to: "/faq" },
