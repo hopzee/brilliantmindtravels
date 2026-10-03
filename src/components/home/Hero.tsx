@@ -37,11 +37,11 @@ export function Hero() {
           {s?.address ? <span className="eyebrow">{s.address}</span> : null}
 
           <h1 className="mt-5 max-w-2xl text-4xl leading-[1.06] sm:text-5xl lg:text-6xl">
-            Brilliant Mind Travels & Tours
+            Brilliant Mind Travel and Tours
           </h1>
 
           <p className="mt-6 max-w-xl text-base leading-relaxed text-navy-foreground/75 sm:text-lg">
-            Brilliant Mind Travels & Tours is a travel and educational
+            Brilliant Mind Travel and Tours is a travel and educational
             consultancy in Ede, Osun, providing travel, visa guidance, study
             abroad and tourism services.
           </p>
