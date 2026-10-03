@@ -25,6 +25,7 @@ const absoluteLogoUrl = new URL(logoUrl, canonicalUrl).toString();
 const businessSchema = {
   "@context": "https://schema.org",
   "@type": "TravelAgency",
+  "@id": `${canonicalUrl}#travel-agency`,
   name: "Brilliant Mind Travels & Tours",
   url: canonicalUrl,
   logo: absoluteLogoUrl,
@@ -42,6 +43,13 @@ const businessSchema = {
   areaServed: {
     "@type": "Country",
     name: "Nigeria",
+  },
+  contactPoint: {
+    "@type": "ContactPoint",
+    telephone: "+2348165900571",
+    contactType: "customer service",
+    areaServed: "NG",
+    availableLanguage: ["English"],
   },
 };
 
