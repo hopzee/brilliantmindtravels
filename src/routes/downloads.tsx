@@ -16,12 +16,16 @@ import { downloadsQuery, formatBytes } from "@/lib/cms";
 import { cms } from "@/lib/db";
 
 const title =
-  "Travel & Visa Resources | Brilliant Mind Travels & Tours in Ede, Osun";
+  "Travel & Visa Resources | Brilliant Mind Travel and Tours in Ede, Osun";
 
 const description =
-  "Download free visa checklists, study abroad guides, travel checklists and useful travel preparation resources from Brilliant Mind Travels & Tours in Ede, Osun.";
+  "Download free visa checklists, study abroad guides, travel checklists and useful travel preparation resources from Brilliant Mind Travel and Tours in Ede, Osun.";
 
-const canonicalUrl = "https://www.brilliantmindtravels.com/downloads";
+const canonicalUrl =
+  "https://www.brilliantmindtravels.com/downloads";
+
+const ogImageUrl =
+  "https://www.brilliantmindtravels.com/og-image.png";
 
 export const Route = createFileRoute("/downloads")({
   head: () => ({
@@ -29,19 +33,59 @@ export const Route = createFileRoute("/downloads")({
       { title },
       { name: "description", content: description },
       { name: "robots", content: "index, follow" },
-      { name: "author", content: "Brilliant Mind Travels & Tours" },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: canonicalUrl },
+      {
+        name: "author",
+        content: "Brilliant Mind Travel and Tours",
+      },
+      {
+        property: "og:title",
+        content: title,
+      },
+      {
+        property: "og:description",
+        content: description,
+      },
+      {
+        property: "og:type",
+        content: "website",
+      },
+      {
+        property: "og:url",
+        content: canonicalUrl,
+      },
       {
         property: "og:site_name",
-        content: "Brilliant Mind Travels & Tours",
+        content: "Brilliant Mind Travel and Tours",
       },
-      { property: "og:locale", content: "en_NG" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: title },
-      { name: "twitter:description", content: description },
+      {
+        property: "og:locale",
+        content: "en_NG",
+      },
+      {
+        property: "og:image",
+        content: ogImageUrl,
+      },
+      {
+        property: "og:image:alt",
+        content:
+          "Brilliant Mind Travel and Tours - Travel and Visa Resources",
+      },
+      {
+        name: "twitter:card",
+        content: "summary_large_image",
+      },
+      {
+        name: "twitter:title",
+        content: title,
+      },
+      {
+        name: "twitter:description",
+        content: description,
+      },
+      {
+        name: "twitter:image",
+        content: ogImageUrl,
+      },
     ],
     links: [
       {
@@ -50,6 +94,7 @@ export const Route = createFileRoute("/downloads")({
       },
     ],
   }),
+
   component: DownloadsPage,
 });
 
@@ -68,7 +113,9 @@ function DownloadCard({ item }: { item: any }) {
   const uploaded = formatDate(item.created_at);
 
   const record = () => {
-    void cms.rpc("increment_download", { _id: item.id });
+    void cms.rpc("increment_download", {
+      _id: item.id,
+    });
   };
 
   return (
@@ -103,7 +150,12 @@ function DownloadCard({ item }: { item: any }) {
             .join(" · ")}
         </p>
 
-        <Button asChild variant="gold" size="lg" className="mt-5 w-full">
+        <Button
+          asChild
+          variant="gold"
+          size="lg"
+          className="mt-5 w-full"
+        >
           <a
             href={item.file_url}
             target="_blank"
@@ -111,7 +163,8 @@ function DownloadCard({ item }: { item: any }) {
             download
             onClick={record}
           >
-            <Download className="size-4" /> Download
+            <Download className="size-4" />
+            Download
           </a>
         </Button>
       </div>
@@ -121,17 +174,23 @@ function DownloadCard({ item }: { item: any }) {
 
 function DownloadsPage() {
   const { data, isLoading } = useQuery(downloadsQuery);
+
   const items = data ?? [];
+
   const categories = Array.from(
-    new Set(items.map((d: any) => d.category || "General")),
+    new Set(
+      items.map(
+        (d: any) => d.category || "General",
+      ),
+    ),
   );
 
   return (
     <SiteLayout>
       <PageHero
-        eyebrow="Brilliant Mind Travels & Tours"
+        eyebrow="Brilliant Mind Travel and Tours"
         title="Travel, Visa & Study Abroad Resources"
-        intro="Download free checklists, guides and travel preparation resources from Brilliant Mind Travels & Tours in Ede, Osun."
+        intro="Download free checklists, guides and travel preparation resources from Brilliant Mind Travel and Tours in Ede, Osun."
       />
 
       <section className="bg-background py-20">
@@ -146,13 +205,17 @@ function DownloadsPage() {
           ) : (
             categories.map((category, index) => (
               <div key={category}>
-                <SectionHeading eyebrow="Resource category" title={category} />
+                <SectionHeading
+                  eyebrow="Resource category"
+                  title={category}
+                />
 
                 <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                   {items
                     .filter(
                       (d: any) =>
-                        (d.category || "General") === category,
+                        (d.category || "General") ===
+                        category,
                     )
                     .map((d: any, i: number) => (
                       <Reveal
