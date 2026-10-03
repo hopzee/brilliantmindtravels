@@ -29,10 +29,9 @@ const title =
   "Contact Brilliant Mind Travel and Tours | Travel Agency in Ede, Osun";
 
 const description =
-  "Contact Brilliant Mind Travel and Tours in Ede, Osun for travel services, visa guidance, study abroad, flight booking, tourism and consultation. Call, WhatsApp or visit our office.";
+  "Contact Brilliant Mind Travel and Tours in Ede, Osun for travel services, visa guidance, study abroad, tourism and consultation. Call, WhatsApp or visit our office.";
 
-const canonicalUrl =
-  "https://www.brilliantmindtravels.com/contact";
+const canonicalUrl = "https://www.brilliantmindtravels.com/contact";
 
 const ogImageUrl =
   "https://www.brilliantmindtravels.com/og-image.png";
@@ -40,79 +39,34 @@ const ogImageUrl =
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      {
-        title,
-      },
-      {
-        name: "description",
-        content: description,
-      },
-      {
-        name: "robots",
-        content: "index, follow",
-      },
-      {
-        name: "author",
-        content: "Brilliant Mind Travel and Tours",
-      },
-      {
-        property: "og:title",
-        content: title,
-      },
-      {
-        property: "og:description",
-        content: description,
-      },
-      {
-        property: "og:type",
-        content: "website",
-      },
-      {
-        property: "og:url",
-        content: canonicalUrl,
-      },
+      { title },
+      { name: "description", content: description },
+      { name: "robots", content: "index, follow" },
+      { name: "author", content: "Brilliant Mind Travel and Tours" },
+
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: canonicalUrl },
       {
         property: "og:site_name",
         content: "Brilliant Mind Travel and Tours",
       },
-      {
-        property: "og:locale",
-        content: "en_NG",
-      },
-      {
-        property: "og:image",
-        content: ogImageUrl,
-      },
+      { property: "og:locale", content: "en_NG" },
+      { property: "og:image", content: ogImageUrl },
       {
         property: "og:image:alt",
         content:
-          "Brilliant Mind Travel and Tours - Contact and Travel Consultancy",
+          "Brilliant Mind Travel and Tours - Contact and Travel Consultancy in Ede, Osun",
       },
-      {
-        name: "twitter:card",
-        content: "summary_large_image",
-      },
-      {
-        name: "twitter:title",
-        content: title,
-      },
-      {
-        name: "twitter:description",
-        content: description,
-      },
-      {
-        name: "twitter:image",
-        content: ogImageUrl,
-      },
-    ],
-    links: [
-      {
-        rel: "canonical",
-        href: canonicalUrl,
-      },
-    ],
-  }),
 
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: title },
+      { name: "twitter:description", content: description },
+      { name: "twitter:image", content: ogImageUrl },
+    ],
+    links: [{ rel: "canonical", href: canonicalUrl }],
+  }),
   component: ContactPage,
 });
 
@@ -128,10 +82,6 @@ function ContactPage() {
     ["youtube_url", "YouTube", Youtube],
   ] as const;
 
-  const companyName =
-    s?.company_name ??
-    "Brilliant Mind Travel and Tours";
-
   return (
     <SiteLayout>
       <PageHero
@@ -139,7 +89,7 @@ function ContactPage() {
         title="Travel Agency & Consultancy in Ede, Osun"
         intro={
           s?.promise ??
-          "Contact Brilliant Mind Travel and Tours for travel services, visa guidance, study abroad, flight booking and tourism support in Ede, Osun."
+          "Contact Brilliant Mind Travel and Tours for travel services, visa guidance, study abroad and tourism support in Ede, Osun."
         }
       />
 
@@ -175,7 +125,7 @@ function ContactPage() {
           <aside className="space-y-6 lg:sticky lg:top-28 lg:self-start">
             <div className="rounded-xl border border-border bg-card p-7">
               <h2 className="text-lg text-navy">
-                Contact {companyName}
+                Contact Brilliant Mind Travel and Tours
               </h2>
 
               <ul className="mt-5 space-y-5 text-sm text-muted-foreground">
@@ -211,7 +161,7 @@ function ContactPage() {
                         href={waLink(
                           s.whatsapp,
                           enquiryMessage(
-                            companyName,
+                            s.company_name,
                             "services you offer",
                           ),
                         )}
@@ -277,7 +227,7 @@ function ContactPage() {
                 <WhatsAppButton
                   whatsapp={s?.whatsapp}
                   message={enquiryMessage(
-                    companyName,
+                    s?.company_name,
                     "services you offer",
                   )}
                   className="w-full"
@@ -299,7 +249,7 @@ function ContactPage() {
                 </h2>
 
                 <p className="mt-2 text-sm text-muted-foreground">
-                  Connect with {companyName} on social media.
+                  Connect with Brilliant Mind Travel and Tours on social media.
                 </p>
 
                 <div className="mt-5 flex flex-wrap gap-3">
