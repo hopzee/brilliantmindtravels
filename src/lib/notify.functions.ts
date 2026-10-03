@@ -16,7 +16,11 @@ const leadSchema = z.object({
 export type LeadNotification = z.infer<typeof leadSchema>;
 
 const escape = (value: string) =>
-  value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
 
 /**
  * Emails a new lead to the office inbox and sends the visitor a confirmation.
@@ -36,9 +40,14 @@ export const notifyLead = createServerFn({ method: "POST" })
       global: {
         fetch: (input, init) => {
           const headers = new Headers(init?.headers);
-          if (key.startsWith("sb_") && headers.get("Authorization") === `Bearer ${key}`) {
+
+          if (
+            key.startsWith("sb_") &&
+            headers.get("Authorization") === `Bearer ${key}`
+          ) {
             headers.delete("Authorization");
           }
+
           headers.set("apikey", key);
           return fetch(input, { ...init, headers });
         },
@@ -51,12 +60,18 @@ export const notifyLead = createServerFn({ method: "POST" })
       .limit(1)
       .maybeSingle();
 
-    const company = settings?.company_name ?? "Brilliant Mind Travels & Tours";
+    const company =
+      settings?.company_name ?? "Brilliant Mind Travel and Tours";
     const officeEmail = settings?.email;
+
     if (!officeEmail) return { sent: false, reason: "no-office-email" };
 
     const label =
-      data.kind === "booking" ? "Consultation booking" : data.kind === "inquiry" ? "Service inquiry" : "Contact message";
+      data.kind === "booking"
+        ? "Consultation booking"
+        : data.kind === "inquiry"
+          ? "Service inquiry"
+          : "Contact message";
 
     const rows = [
       ["Name", data.full_name],
@@ -97,7 +112,9 @@ export const notifyLead = createServerFn({ method: "POST" })
         {
           to: data.email,
           from: `${company} <noreply@brilliantmindtravels.lovable.app>`,
-          subject: `We received your ${data.kind === "booking" ? "consultation request" : "message"}`,
+          subject: `We received your ${
+            data.kind === "booking" ? "consultation request" : "message"
+          }`,
           html: `<div style="font-family:sans-serif;color:#0B1F3A;font-size:15px;line-height:1.6"><p>Hello ${escape(data.full_name)},</p><p>Thank you for contacting ${escape(company)}. Your ${escape(data.kind === "booking" ? "consultation request" : "message")} has reached our team and a consultant will respond shortly.</p>${settings?.phone ? `<p>If it is urgent, call us on ${escape(settings.phone)}.</p>` : ""}<p style="color:#64748b;font-size:13px">This is an automated confirmation. Please do not reply to this address.</p></div>`,
           text: `Hello ${data.full_name}, thank you for contacting ${company}. A consultant will respond shortly.`,
           purpose: "transactional",
