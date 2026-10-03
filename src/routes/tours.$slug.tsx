@@ -1,48 +1,99 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { SiteLayout } from "@/components/public/SiteLayout";
 import {
-  Gallery,
   PageHero,
   Prose,
   Reveal,
+  SectionHeading,
   useSettings,
   WhatsAppButton,
 } from "@/components/public/ui";
 import { InquiryForm } from "@/components/public/LeadForms";
-import { Button } from "@/components/ui/button";
-import { DetailSkeleton, NotAvailable } from "./services.$slug";
-import { formatPrice } from "@/components/home/Tours";
-import { enquiryMessage, publishedItem } from "@/lib/cms";
+import { publishedItem } from "@/lib/cms";
+
+const ogImageUrl =
+  "https://www.brilliantmindtravels.com/og-image.png";
+
 export const Route = createFileRoute("/tours/$slug")({
   head: ({ params }) => {
     const label = params.slug
       .replace(/-/g, " ")
       .replace(/\b\w/g, (char) => char.toUpperCase());
-    const title = `${label} Tour Package | Brilliant Mind Travels & Tours`;
-    const description = `Explore the ${label} tour package from Brilliant Mind Travels & Tours in Ede, Osun. View the itinerary, inclusions, pricing and travel details.`;
-    const canonicalUrl = `https://www.brilliantmindtravels.com/tours/${params.slug}`;
+
+    const title = `${label} | Brilliant Mind Travel and Tours`;
+
+    const description = `Explore ${label} with Brilliant Mind Travel and Tours in Ede, Osun, Nigeria. Get travel planning and tour package information.`;
+
+    const canonicalUrl =
+      `https://www.brilliantmindtravels.com/tours/${params.slug}`;
+
     return {
       meta: [
-        { title },
-        { name: "description", content: description },
-        { name: "robots", content: "index, follow" },
+        {
+          title,
+        },
+        {
+          name: "description",
+          content: description,
+        },
+        {
+          name: "robots",
+          content: "index, follow",
+        },
         {
           name: "author",
-          content: "Brilliant Mind Travels & Tours",
+          content: "Brilliant Mind Travel and Tours",
         },
-        { property: "og:title", content: title },
-        { property: "og:description", content: description },
-        { property: "og:type", content: "article" },
-        { property: "og:url", content: canonicalUrl },
+        {
+          property: "og:title",
+          content: title,
+        },
+        {
+          property: "og:description",
+          content: description,
+        },
+        {
+          property: "og:type",
+          content: "article",
+        },
+        {
+          property: "og:url",
+          content: canonicalUrl,
+        },
         {
           property: "og:site_name",
-          content: "Brilliant Mind Travels & Tours",
+          content: "Brilliant Mind Travel and Tours",
         },
-        { property: "og:locale", content: "en_NG" },
-        { name: "twitter:card", content: "summary_large_image" },
-        { name: "twitter:title", content: title },
-        { name: "twitter:description", content: description },
+        {
+          property: "og:locale",
+          content: "en_NG",
+        },
+        {
+          property: "og:image",
+          content: ogImageUrl,
+        },
+        {
+          property: "og:image:alt",
+          content:
+            "Brilliant Mind Travel and Tours - Tour Package",
+        },
+        {
+          name: "twitter:card",
+          content: "summary_large_image",
+        },
+        {
+          name: "twitter:title",
+          content: title,
+        },
+        {
+          name: "twitter:description",
+          content: description,
+        },
+        {
+          name: "twitter:image",
+          content: ogImageUrl,
+        },
       ],
       links: [
         {
@@ -52,132 +103,234 @@ export const Route = createFileRoute("/tours/$slug")({
       ],
     };
   },
+
   component: TourDetail,
 });
+
 function TourDetail() {
   const { slug } = Route.useParams();
+
   const { data: s } = useSettings();
+
   const { data, isLoading } = useQuery(
     publishedItem("tour_packages", slug),
   );
+
   const item = data as any;
-  if (isLoading) return <DetailSkeleton />;
-  if (!item) return <NotAvailable />;
-  const itinerary = Array.isArray(item.itinerary)
-    ? (item.itinerary as any[])
+
+  if (isLoading) {
+    return (
+      <SiteLayout>
+        <div className="container-page pt-40 pb-20">
+          <div className="h-10 w-2/3 animate-pulse rounded bg-muted" />
+          <div className="mt-4 h-5 w-1/2 animate-pulse rounded bg-muted" />
+          <div className="mt-10 h-64 w-full animate-pulse rounded-xl bg-muted" />
+        </div>
+      </SiteLayout>
+    );
+  }
+
+  if (!item) {
+    return (
+      <SiteLayout>
+        <div className="container-page pt-40 pb-24 text-center">
+          <h1 className="text-3xl text-navy">
+            Tour package not available
+          </h1>
+
+          <p className="mx-auto mt-3 max-w-md text-sm text-muted-foreground">
+            This tour package may have been moved or is not currently
+            published.
+          </p>
+        </div>
+      </SiteLayout>
+    );
+  }
+
+  const galleryImages = Array.isArray(item.gallery_images)
+    ? item.gallery_images
     : [];
-  const price = formatPrice(item.price, item.currency);
+
+  const destination =
+    item.destination ??
+    item.location ??
+    item.country ??
+    "";
+
+  const duration =
+    item.duration ??
+    item.duration_text ??
+    "";
+
+  const price =
+    item.price ??
+    item.price_text ??
+    "";
+
+  const overview =
+    item.description ??
+    item.overview ??
+    item.short_description ??
+    "";
+
   return (
     <SiteLayout>
       <PageHero
-        eyebrow={item.destination ?? "Tour package"}
+        eyebrow="Tour Package"
         title={item.title}
-        intro={item.short_description}
+        intro={
+          item.short_description ??
+          `Explore ${item.title} with Brilliant Mind Travel and Tours.`
+        }
         image={item.featured_image}
       />
+
       <section className="bg-background py-16 md:py-20">
         <div className="container-page grid gap-14 lg:grid-cols-[1.15fr_0.85fr]">
-          <div className="space-y-12">
-            <Reveal>
-              <Prose text={item.description} />
-            </Reveal>
-            {itinerary.length ? (
+          <div className="space-y-10">
+            {(destination || duration || price) && (
               <Reveal>
-                <h2 className="text-2xl text-navy">Tour Itinerary</h2>
-                <ol className="mt-5 space-y-5">
-                  {itinerary.map((d: any, i: number) => (
-                    <li
-                      key={i}
-                      className="rounded-lg surface-soft p-5"
-                    >
-                      <span className="text-xs font-semibold uppercase tracking-[0.18em] text-gold">
-                        Day {d.day ?? i + 1}
-                      </span>
-                      <h3 className="mt-2 text-base text-navy">
-                        {d.title}
-                      </h3>
-                      {d.description ? (
-                        <p className="mt-1 text-sm text-muted-foreground">
-                          {d.description}
-                        </p>
-                      ) : null}
-                    </li>
-                  ))}
-                </ol>
+                <div className="grid gap-4 sm:grid-cols-3">
+                  {destination ? (
+                    <div className="rounded-xl border border-border bg-card p-5">
+                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gold">
+                        Destination
+                      </p>
+                      <p className="mt-2 text-sm font-semibold text-navy">
+                        {destination}
+                      </p>
+                    </div>
+                  ) : null}
+
+                  {duration ? (
+                    <div className="rounded-xl border border-border bg-card p-5">
+                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gold">
+                        Duration
+                      </p>
+                      <p className="mt-2 text-sm font-semibold text-navy">
+                        {duration}
+                      </p>
+                    </div>
+                  ) : null}
+
+                  {price ? (
+                    <div className="rounded-xl border border-border bg-card p-5">
+                      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gold">
+                        Package
+                      </p>
+                      <p className="mt-2 text-sm font-semibold text-navy">
+                        {price}
+                      </p>
+                    </div>
+                  ) : null}
+                </div>
+              </Reveal>
+            )}
+
+            {overview ? (
+              <Reveal>
+                <SectionHeading
+                  eyebrow="Tour details"
+                  title={`About ${item.title}`}
+                />
+
+                <Prose
+                  className="mt-6"
+                  text={overview}
+                />
               </Reveal>
             ) : null}
-            <div className="grid gap-6 sm:grid-cols-2">
-              {item.included_services?.length ? (
-                <div className="rounded-lg border border-border bg-card p-6">
-                  <h2 className="text-base text-navy">
-                    What is included
-                  </h2>
-                  <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-                    {item.included_services.map((x: string) => (
-                      <li key={x}>• {x}</li>
-                    ))}
-                  </ul>
-                </div>
-              ) : null}
-              {item.excluded_services?.length ? (
-                <div className="rounded-lg border border-border bg-card p-6">
-                  <h2 className="text-base text-navy">
-                    What is not included
-                  </h2>
-                  <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-                    {item.excluded_services.map((x: string) => (
-                      <li key={x}>• {x}</li>
-                    ))}
-                  </ul>
-                </div>
-              ) : null}
-            </div>
-            {item.gallery_images?.length ? (
+
+            {item.itinerary ? (
               <Reveal>
-                <h2 className="text-2xl text-navy">
-                  Tour Gallery
-                </h2>
-                <div className="mt-5">
-                  <Gallery
-                    images={item.gallery_images}
-                    alt={item.title}
-                  />
+                <SectionHeading
+                  eyebrow="Itinerary"
+                  title="What the trip includes"
+                />
+
+                <Prose
+                  className="mt-6"
+                  text={item.itinerary}
+                />
+              </Reveal>
+            ) : null}
+
+            {item.inclusions ? (
+              <Reveal>
+                <SectionHeading
+                  eyebrow="Included"
+                  title="What's included"
+                />
+
+                <Prose
+                  className="mt-6"
+                  text={item.inclusions}
+                />
+              </Reveal>
+            ) : null}
+
+            {item.exclusions ? (
+              <Reveal>
+                <SectionHeading
+                  eyebrow="Not included"
+                  title="What's not included"
+                />
+
+                <Prose
+                  className="mt-6"
+                  text={item.exclusions}
+                />
+              </Reveal>
+            ) : null}
+
+            {galleryImages.length > 0 ? (
+              <Reveal>
+                <SectionHeading
+                  eyebrow="Gallery"
+                  title={`Images from ${item.title}`}
+                />
+
+                <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                  {galleryImages.map(
+                    (image: string, index: number) => (
+                      <img
+                        key={`${image}-${index}`}
+                        src={image}
+                        alt={`${item.title} tour image ${index + 1}`}
+                        loading="lazy"
+                        decoding="async"
+                        className="h-64 w-full rounded-xl object-cover shadow-[var(--shadow-elegant)]"
+                      />
+                    ),
+                  )}
                 </div>
               </Reveal>
             ) : null}
           </div>
+
           <aside className="space-y-8 lg:sticky lg:top-28 lg:self-start">
             <div className="rounded-xl border border-border bg-card p-7">
-              {price ? (
-                <p className="font-[family-name:var(--font-display)] text-2xl font-bold text-navy">
-                  {price}
-                </p>
-              ) : null}
-              <p className="mt-2 text-sm text-muted-foreground">
-                Payments are arranged directly with our team, never online.
-              </p>
-              <div className="mt-6 flex flex-col gap-3">
+              <SectionHeading
+                eyebrow="Plan your trip"
+                title={`Ask about ${item.title}`}
+              />
+
+              <div className="mt-6">
                 <WhatsAppButton
                   whatsapp={s?.whatsapp}
-                  message={enquiryMessage(
-                    s?.company_name,
-                    `${item.title} tour package`,
-                  )}
+                  message={`Hello Brilliant Mind Travel and Tours, I would like to enquire about the ${item.title} tour package.`}
                 />
-                <Button asChild variant="outline" size="lg">
-                  <Link to="/contact">
-                    Book a consultation
-                  </Link>
-                </Button>
               </div>
             </div>
+
             <div className="rounded-xl border border-border bg-card p-7">
               <h2 className="text-lg text-navy">
-                Request this tour package
+                Send an enquiry
               </h2>
+
               <div className="mt-5">
                 <InquiryForm
-                  relatedType="tour_package"
+                  relatedType="tour"
                   relatedId={item.id}
                   defaultSubject={item.title}
                 />
