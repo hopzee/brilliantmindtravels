@@ -22,15 +22,18 @@ import {
 } from "@/components/ui/accordion";
 import { enquiryMessage, publishedItem } from "@/lib/cms";
 
+const ogImageUrl =
+  "https://www.brilliantmindtravels.com/og-image.png";
+
 export const Route = createFileRoute("/services/$slug")({
   head: ({ params }) => {
     const label = params.slug
       .replace(/-/g, " ")
       .replace(/\b\w/g, (char) => char.toUpperCase());
 
-    const title = `${label} in Ede, Osun | Brilliant Mind Travels & Tours`;
+    const title = `${label} in Ede, Osun | Brilliant Mind Travel and Tours`;
 
-    const description = `Brilliant Mind Travels & Tours offers ${label} support in Ede, Osun, with professional travel consultancy guidance.`;
+    const description = `Brilliant Mind Travel and Tours offers ${label} support in Ede, Osun, with professional travel consultancy guidance.`;
 
     const canonicalUrl = `https://www.brilliantmindtravels.com/services/${params.slug}`;
 
@@ -41,7 +44,7 @@ export const Route = createFileRoute("/services/$slug")({
         { name: "robots", content: "index, follow" },
         {
           name: "author",
-          content: "Brilliant Mind Travels & Tours",
+          content: "Brilliant Mind Travel and Tours",
         },
         { property: "og:title", content: title },
         { property: "og:description", content: description },
@@ -49,12 +52,25 @@ export const Route = createFileRoute("/services/$slug")({
         { property: "og:url", content: canonicalUrl },
         {
           property: "og:site_name",
-          content: "Brilliant Mind Travels & Tours",
+          content: "Brilliant Mind Travel and Tours",
         },
         { property: "og:locale", content: "en_NG" },
+        {
+          property: "og:image",
+          content: ogImageUrl,
+        },
+        {
+          property: "og:image:alt",
+          content:
+            "Brilliant Mind Travel and Tours - Travel and Visa Services",
+        },
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:title", content: title },
         { name: "twitter:description", content: description },
+        {
+          name: "twitter:image",
+          content: ogImageUrl,
+        },
       ],
       links: [
         {
@@ -82,11 +98,11 @@ function ServiceDetail() {
   return (
     <SiteLayout>
       <PageHero
-        eyebrow="Brilliant Mind Travels & Tours"
+        eyebrow="Brilliant Mind Travel and Tours"
         title={item.title}
         intro={
           item.short_description ??
-          `${item.title} support from Brilliant Mind Travels & Tours in Ede, Osun.`
+          `${item.title} support from Brilliant Mind Travel and Tours in Ede, Osun.`
         }
         image={item.featured_image}
       />
