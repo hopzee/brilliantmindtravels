@@ -12,13 +12,16 @@ import { WhatsAppCta } from "@/components/home/WhatsAppCta";
 import { publishedList } from "@/lib/cms";
 
 const title =
-  "Client Testimonials | Brilliant Mind Travels & Tours in Ede, Osun";
+  "Client Testimonials | Brilliant Mind Travel and Tours in Ede, Osun";
 
 const description =
-  "Read client testimonials about Brilliant Mind Travels & Tours in Ede, Osun and learn about experiences with travel, visa guidance, study abroad and tourism services.";
+  "Read client testimonials about Brilliant Mind Travel and Tours in Ede, Osun and learn about experiences with travel, visa guidance, study abroad and tourism services.";
 
 const canonicalUrl =
   "https://www.brilliantmindtravels.com/testimonials";
+
+const ogImageUrl =
+  "https://www.brilliantmindtravels.com/og-image.png";
 
 export const Route = createFileRoute("/testimonials")({
   head: () => ({
@@ -26,19 +29,59 @@ export const Route = createFileRoute("/testimonials")({
       { title },
       { name: "description", content: description },
       { name: "robots", content: "index, follow" },
-      { name: "author", content: "Brilliant Mind Travels & Tours" },
-      { property: "og:title", content: title },
-      { property: "og:description", content: description },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: canonicalUrl },
+      {
+        name: "author",
+        content: "Brilliant Mind Travel and Tours",
+      },
+      {
+        property: "og:title",
+        content: title,
+      },
+      {
+        property: "og:description",
+        content: description,
+      },
+      {
+        property: "og:type",
+        content: "website",
+      },
+      {
+        property: "og:url",
+        content: canonicalUrl,
+      },
       {
         property: "og:site_name",
-        content: "Brilliant Mind Travels & Tours",
+        content: "Brilliant Mind Travel and Tours",
       },
-      { property: "og:locale", content: "en_NG" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: title },
-      { name: "twitter:description", content: description },
+      {
+        property: "og:locale",
+        content: "en_NG",
+      },
+      {
+        property: "og:image",
+        content: ogImageUrl,
+      },
+      {
+        property: "og:image:alt",
+        content:
+          "Client testimonials for Brilliant Mind Travel and Tours",
+      },
+      {
+        name: "twitter:card",
+        content: "summary_large_image",
+      },
+      {
+        name: "twitter:title",
+        content: title,
+      },
+      {
+        name: "twitter:description",
+        content: description,
+      },
+      {
+        name: "twitter:image",
+        content: ogImageUrl,
+      },
     ],
     links: [
       {
@@ -47,16 +90,19 @@ export const Route = createFileRoute("/testimonials")({
       },
     ],
   }),
+
   component: TestimonialsPage,
 });
 
 function TestimonialsPage() {
-  const { data, isLoading } = useQuery(publishedList("testimonials"));
+  const { data, isLoading } = useQuery(
+    publishedList("testimonials"),
+  );
 
   return (
     <SiteLayout>
       <PageHero
-        eyebrow="Brilliant Mind Travels & Tours"
+        eyebrow="Brilliant Mind Travel and Tours"
         title="Client Testimonials"
         intro="Read client experiences with our travel, visa guidance, study abroad and tourism services in Ede, Osun."
       />
@@ -73,7 +119,10 @@ function TestimonialsPage() {
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {data.map((t: any, i: number) => (
-                <Reveal key={t.id} delay={i * 60}>
+                <Reveal
+                  key={t.id}
+                  delay={i * 60}
+                >
                   <TestimonialCard item={t} />
                 </Reveal>
               ))}
