@@ -113,9 +113,7 @@ function DownloadCard({ item }: { item: any }) {
   const uploaded = formatDate(item.created_at);
 
   const record = () => {
-    void cms.rpc("increment_download", {
-      _id: item.id,
-    });
+    void cms.rpc("increment_download", { _id: item.id });
   };
 
   return (
@@ -163,8 +161,7 @@ function DownloadCard({ item }: { item: any }) {
             download
             onClick={record}
           >
-            <Download className="size-4" />
-            Download
+            <Download className="size-4" /> Download
           </a>
         </Button>
       </div>
@@ -174,7 +171,6 @@ function DownloadCard({ item }: { item: any }) {
 
 function DownloadsPage() {
   const { data, isLoading } = useQuery(downloadsQuery);
-
   const items = data ?? [];
 
   const categories = Array.from(
