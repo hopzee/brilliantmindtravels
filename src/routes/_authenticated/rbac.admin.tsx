@@ -4,11 +4,11 @@ import { AdminShell } from "@/components/admin/AdminShell";
 export const Route = createFileRoute("/_authenticated/rbac/admin")({
   head: () => ({
     meta: [
-      { title: "Admin Dashboard | Brilliant Mind Travels & Tours" },
+      { title: "Admin Dashboard | Brilliant Mind Travel and Tours" },
       {
         name: "description",
         content:
-          "Manage website content for Brilliant Mind Travels & Tours.",
+          "Manage website content for Brilliant Mind Travel and Tours.",
       },
       { name: "robots", content: "noindex" },
     ],
