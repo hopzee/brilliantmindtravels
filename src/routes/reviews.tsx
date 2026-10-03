@@ -1,21 +1,28 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
+import { toast } from "sonner";
+import { z } from "zod";
 import { SiteLayout } from "@/components/public/SiteLayout";
 import {
   EmptyState,
   PageHero,
   Reveal,
   SectionHeading,
-  useSettings,
 } from "@/components/public/ui";
-import { WhatsAppCta } from "@/components/home/WhatsAppCta";
-import { reviewsQuery } from "@/lib/cms";
+import { Stars } from "@/components/home/Testimonials";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { cms } from "@/lib/db";
+import { approvedReviewsQuery } from "@/lib/cms";
 
 const title =
-  "Reviews | Brilliant Mind Travel and Tours in Ede, Osun";
+  "Client Reviews | Brilliant Mind Travel and Tours in Ede, Osun";
 
 const description =
-  "Read customer reviews and experiences with Brilliant Mind Travel and Tours, a travel agency and educational consultancy in Ede, Osun State, Nigeria.";
+  "Read client reviews about Brilliant Mind Travel and Tours in Ede, Osun and share your experience with our travel, visa, study abroad and tourism services.";
 
 const canonicalUrl =
   "https://www.brilliantmindtravels.com/reviews";
@@ -26,17 +33,9 @@ const ogImageUrl =
 export const Route = createFileRoute("/reviews")({
   head: () => ({
     meta: [
-      {
-        title,
-      },
-      {
-        name: "description",
-        content: description,
-      },
-      {
-        name: "robots",
-        content: "index, follow",
-      },
+      { title },
+      { name: "description", content: description },
+      { name: "robots", content: "index, follow" },
       {
         name: "author",
         content: "Brilliant Mind Travel and Tours",
@@ -72,7 +71,7 @@ export const Route = createFileRoute("/reviews")({
       {
         property: "og:image:alt",
         content:
-          "Customer reviews for Brilliant Mind Travel and Tours",
+          "Client reviews for Brilliant Mind Travel and Tours",
       },
       {
         name: "twitter:card",
@@ -102,131 +101,207 @@ export const Route = createFileRoute("/reviews")({
   component: ReviewsPage,
 });
 
-function ReviewsPage() {
-  const { data: settings } = useSettings();
-  const { data, isLoading } = useQuery(reviewsQuery);
+const schema = z.object({
+  customer_name: z
+    .string()
+    .trim()
+    .min(2, "Enter your name")
+    .max(100),
 
-  const reviews = Array.isArray(data) ? data : [];
+  email: z
+    .string()
+    .trim()
+    .email("Enter a valid email")
+    .max(255)
+    .optional()
+    .or(z.literal("")),
+
+  rating: z.coerce.number().min(1).max(5),
+
+  content: z
+    .string()
+    .trim()
+    .min(10, "Tell us a little more")
+    .max(1500),
+});
+
+function ReviewsPage() {
+  const { data } = useQuery(approvedReviewsQuery);
+
+  const [busy, setBusy] = useState(false);
+  const [done, setDone] = useState(false);
+
+  const submit = async (
+    e: React.FormEvent<HTMLFormElement>,
+  ) => {
+    e.preventDefault();
+
+    const parsed = schema.safeParse(
+      Object.fromEntries(
+        new FormData(e.currentTarget),
+      ),
+    );
+
+    if (!parsed.success) {
+      return toast.error(
+        parsed.error.issues[0].message,
+      );
+    }
+
+    setBusy(true);
+
+    const { error } = await cms
+      .from("reviews")
+      .insert({
+        ...parsed.data,
+        email: parsed.data.email || null,
+      });
+
+    setBusy(false);
+
+    if (error) {
+      return toast.error(
+        "We couldn't submit your review. Please try again.",
+      );
+    }
+
+    toast.success(
+      "Thank you. Your review is now live on the site.",
+    );
+
+    setDone(true);
+  };
 
   return (
     <SiteLayout>
       <PageHero
-        eyebrow="Customer Reviews"
-        title="Reviews of Brilliant Mind Travel and Tours"
-        intro={
-          settings?.promise ??
-          "See what clients have shared about their experience with our travel, visa, study abroad and tourism services."
-        }
+        eyebrow="Brilliant Mind Travel and Tours"
+        title="Client Reviews"
+        intro="Read reviews from clients about their experience with our travel, visa guidance, study abroad and tourism services."
       />
 
       <section className="bg-background py-20">
-        <div className="container-page">
-          <Reveal>
+        <div className="container-page grid gap-14 lg:grid-cols-[1.1fr_0.9fr]">
+          <div>
             <SectionHeading
-              eyebrow="Client experiences"
+              eyebrow="Client Experiences"
               title="What our clients say"
             />
-          </Reveal>
 
-          {isLoading ? (
-            <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {[1, 2, 3].map((item) => (
-                <div
-                  key={item}
-                  className="h-52 animate-pulse rounded-xl bg-muted"
+            <div className="mt-8 space-y-5">
+              {!data?.length ? (
+                <EmptyState
+                  title="No reviews yet"
+                  text="Be the first to share your experience with Brilliant Mind Travel and Tours."
                 />
-              ))}
-            </div>
-          ) : reviews.length === 0 ? (
-            <div className="mt-10">
-              <EmptyState
-                title="No reviews available yet"
-                text="Customer reviews will appear here as they are published."
-              />
-            </div>
-          ) : (
-            <div className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {reviews.map((review: any, index) => {
-                const name =
-                  review.name ??
-                  review.full_name ??
-                  review.client_name ??
-                  "Client";
-
-                const comment =
-                  review.comment ??
-                  review.review ??
-                  review.message ??
-                  "";
-
-                const rating =
-                  typeof review.rating === "number"
-                    ? review.rating
-                    : Number(review.rating ?? 0);
-
-                return (
+              ) : (
+                data.map((r: any, i: number) => (
                   <Reveal
-                    key={review.id ?? index}
-                    delay={index * 50}
+                    key={r.id}
+                    delay={i * 50}
                   >
-                    <article className="h-full rounded-xl border border-border bg-card p-7">
-                      {rating > 0 ? (
-                        <div
-                          className="flex gap-1 text-gold"
-                          aria-label={`${rating} out of 5 stars`}
-                        >
-                          {Array.from({ length: 5 }).map(
-                            (_, starIndex) => (
-                              <span key={starIndex}>
-                                {starIndex < rating ? "★" : "☆"}
-                              </span>
-                            ),
-                          )}
-                        </div>
-                      ) : null}
+                    <article className="rounded-xl border border-border bg-card p-6">
+                      <Stars rating={r.rating} />
 
-                      {comment ? (
-                        <blockquote className="mt-5 text-sm leading-7 text-muted-foreground">
-                          “{comment}”
-                        </blockquote>
-                      ) : null}
+                      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                        {r.content}
+                      </p>
 
-                      <div className="mt-6 border-t border-border pt-5">
-                        <p className="font-medium text-navy">
-                          {name}
-                        </p>
-
-                        {review.service ? (
-                          <p className="mt-1 text-xs text-muted-foreground">
-                            {review.service}
-                          </p>
-                        ) : null}
-                      </div>
+                      <p className="mt-4 text-sm font-semibold text-navy">
+                        {r.customer_name}
+                      </p>
                     </article>
                   </Reveal>
-                );
-              })}
+                ))
+              )}
             </div>
-          )}
+          </div>
 
-          <Reveal className="mt-16">
-            <div className="rounded-xl border border-border bg-card p-8 text-center">
-              <SectionHeading
-                eyebrow="Need help?"
-                title="Ready to discuss your travel plans?"
-              />
+          <aside className="rounded-xl border border-border bg-card p-7 lg:sticky lg:top-28 lg:self-start">
+            <h2 className="text-lg text-navy">
+              Share your experience
+            </h2>
 
-              <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-muted-foreground">
-                Whether you need visa guidance, study abroad assistance,
-                flight booking or a tour package, our team can discuss your
-                requirements and explain the next steps.
+            {done ? (
+              <p className="mt-4 text-sm text-muted-foreground">
+                Thank you. Your review is published immediately
+                unless our automatic checks flag it for review.
               </p>
-            </div>
-          </Reveal>
+            ) : (
+              <form
+                onSubmit={submit}
+                className="mt-5 space-y-5"
+              >
+                <div className="space-y-2">
+                  <Label htmlFor="customer_name">
+                    Your name
+                  </Label>
+
+                  <Input
+                    id="customer_name"
+                    name="customer_name"
+                    required
+                    maxLength={100}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="email">
+                    Email (optional)
+                  </Label>
+
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    maxLength={255}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="rating">
+                    Rating (1–5)
+                  </Label>
+
+                  <Input
+                    id="rating"
+                    name="rating"
+                    type="number"
+                    min={1}
+                    max={5}
+                    defaultValue={5}
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="content">
+                    Your review
+                  </Label>
+
+                  <Textarea
+                    id="content"
+                    name="content"
+                    rows={5}
+                    required
+                    maxLength={1500}
+                  />
+                </div>
+
+                <Button
+                  type="submit"
+                  variant="gold"
+                  size="lg"
+                  disabled={busy}
+                  className="w-full"
+                >
+                  Submit review
+                </Button>
+              </form>
+            )}
+          </aside>
         </div>
       </section>
-
-      <WhatsAppCta />
     </SiteLayout>
   );
 }
