@@ -47,7 +47,7 @@ export function About() {
                 ? homeTeam1
                 : imageOr(null, fallbackImages.consultation)
             }
-            alt="Brilliant Mind Travels and Tours"
+            alt="Brilliant Mind Travel and Tours"
             width={1200}
             height={912}
             loading="lazy"
