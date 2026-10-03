@@ -1,21 +1,7 @@
 User-agent: *
 Allow: /
-
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Google-Extended
-Allow: /
-
-User-agent: GPTBot
-Allow: /
-
 Disallow: /rbac
 Disallow: /rbac/
 Disallow: /dashboard
 Disallow: /dashboard/
-
 Sitemap: https://www.brilliantmindtravels.com/sitemap.xml
