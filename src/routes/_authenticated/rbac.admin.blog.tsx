@@ -59,7 +59,7 @@ function Page() {
         {
           name: "author_name",
           label: "Author",
-          placeholder: "Brilliant Mind Travel & Tours",
+          placeholder: "Brilliant Mind Travel and Tours",
         },
         {
           name: "excerpt",
@@ -96,7 +96,6 @@ function Page() {
           type: "gallery",
           help: "Add additional photos for events, activities, tours or other blog posts.",
         },
-
         {
           name: "tiktok_url",
           label: "TikTok Link",
@@ -145,7 +144,6 @@ function Page() {
           placeholder: "https://example.com/image.jpg",
           help: "Add an external image URL if the image is hosted elsewhere.",
         },
-
         {
           name: "published_at",
           label: "Publish date",
