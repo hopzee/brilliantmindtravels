@@ -100,10 +100,137 @@ export const Route = createFileRoute("/faq")({
         content: ogImageUrl,
       },
     ],
+
     links: [
       {
         rel: "canonical",
         href: canonicalUrl,
+      },
+    ],
+
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "@id": `${canonicalUrl}#faq`,
+          url: canonicalUrl,
+          name: title,
+          description,
+          mainEntity: [
+            {
+              "@type": "Question",
+              name:
+                "What services does Brilliant Mind Travel and Tours provide?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text:
+                  "Brilliant Mind Travel and Tours provides travel consultation, visa guidance, flight booking support, study abroad guidance, university admission support, tourism and tour packages, travel documentation assistance and personalized travel planning.",
+              },
+            },
+            {
+              "@type": "Question",
+              name:
+                "What other travel services do you provide?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text:
+                  "Our services also include travel consultation, flight booking support, visa guidance, study abroad and university admission support, tour planning, travel documentation assistance, tourism services and personalized travel planning. Contact our team to discuss the service you need.",
+              },
+            },
+            {
+              "@type": "Question",
+              name:
+                "Do you help with visa applications?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text:
+                  "Yes. We provide visa guidance and support throughout the application process. Our consultants help clients understand requirements, prepare documents and follow the appropriate application process.",
+              },
+            },
+            {
+              "@type": "Question",
+              name:
+                "Do you provide study abroad services?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text:
+                  "Yes. We assist students with study abroad planning, university and course selection, admission guidance, documentation and student visa preparation.",
+              },
+            },
+            {
+              "@type": "Question",
+              name:
+                "Can you help me choose a university abroad?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text:
+                  "Yes. We can help you explore suitable universities and courses based on your academic background, preferred destination, study level and available options.",
+              },
+            },
+            {
+              "@type": "Question",
+              name:
+                "Do you assist with flight booking?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text:
+                  "Yes. We provide flight booking support and help clients identify suitable travel options based on their destination, travel dates and requirements.",
+              },
+            },
+            {
+              "@type": "Question",
+              name:
+                "Do you offer tour packages?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text:
+                  "Yes. We provide planned tour packages for leisure, family and group travel. We can also discuss customized travel arrangements based on your preferred destination and itinerary.",
+              },
+            },
+            {
+              "@type": "Question",
+              name:
+                "Can you help me plan a complete trip?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text:
+                  "Yes. Our travel consultants can help you plan your trip by discussing your destination, travel dates, documentation, flight options, accommodation needs and other relevant travel arrangements.",
+              },
+            },
+            {
+              "@type": "Question",
+              name:
+                "Where is Brilliant Mind Travel and Tours located?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text:
+                  "Brilliant Mind Travel and Tours is located at Olayia's Complex, beside Eyiowu Awi Pharmacy, Ede 102213, Osun, Nigeria.",
+              },
+            },
+            {
+              "@type": "Question",
+              name:
+                "How can I speak with a travel consultant?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text:
+                  "You can contact Brilliant Mind Travel and Tours through WhatsApp, phone or our contact page to discuss your travel, visa, study abroad or tourism needs.",
+              },
+            },
+            {
+              "@type": "Question",
+              name:
+                "Do you guarantee visa approval?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text:
+                  "No. Visa decisions are made by the relevant embassy, consulate or immigration authority. We provide guidance and document preparation support, but the final decision is made by the appropriate authority.",
+              },
+            },
+          ],
+        }),
       },
     ],
   }),
