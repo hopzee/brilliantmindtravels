@@ -7,12 +7,15 @@ import { WhatsAppCta } from "@/components/home/WhatsAppCta";
 import { settingsQuery } from "@/lib/cms";
 
 const title =
-  "Travel, Visa & Study Abroad Services in Ede, Osun | Brilliant Mind Travels & Tours";
+  "Travel, Visa & Study Abroad Services in Ede, Osun | Brilliant Mind Travel and Tours";
 
 const description =
-  "Brilliant Mind Travels & Tours offers travel, visa guidance, study abroad, flight booking and tourism services in Ede, Osun State.";
+  "Brilliant Mind Travel and Tours offers travel, visa guidance, study abroad, flight booking and tourism services in Ede, Osun State.";
 
 const canonicalUrl = "https://www.brilliantmindtravels.com/services";
+
+const ogImageUrl =
+  "https://www.brilliantmindtravels.com/og-image.png";
 
 export const Route = createFileRoute("/services/")({
   head: () => ({
@@ -27,16 +30,41 @@ export const Route = createFileRoute("/services/")({
       { title },
       { name: "description", content: description },
       { name: "robots", content: "index, follow" },
-      { name: "author", content: "Brilliant Mind Travels & Tours" },
+      {
+        name: "author",
+        content: "Brilliant Mind Travel and Tours",
+      },
       { property: "og:title", content: title },
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
       { property: "og:url", content: canonicalUrl },
-      { property: "og:site_name", content: "Brilliant Mind Travels & Tours" },
+      {
+        property: "og:site_name",
+        content: "Brilliant Mind Travel and Tours",
+      },
       { property: "og:locale", content: "en_NG" },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: title },
-      { name: "twitter:description", content: description },
+      { property: "og:image", content: ogImageUrl },
+      {
+        property: "og:image:alt",
+        content:
+          "Brilliant Mind Travel and Tours - Travel, Visa and Study Abroad Services",
+      },
+      {
+        name: "twitter:card",
+        content: "summary_large_image",
+      },
+      {
+        name: "twitter:title",
+        content: title,
+      },
+      {
+        name: "twitter:description",
+        content: description,
+      },
+      {
+        name: "twitter:image",
+        content: ogImageUrl,
+      },
     ],
   }),
 
@@ -53,7 +81,7 @@ function ServicesPage() {
         title="Travel and Consultancy Services in Ede, Osun"
         intro={
           s?.promise ??
-          "Brilliant Mind Travels & Tours provides travel, visa guidance, study abroad and tourism support for individuals and families."
+          "Brilliant Mind Travel and Tours provides travel, visa guidance, study abroad and tourism support for individuals and families."
         }
         image={s?.hero_image_url}
       />
