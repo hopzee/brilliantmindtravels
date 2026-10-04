@@ -36,6 +36,7 @@ const businessSchema = {
   description,
   telephone: "+2348165900571",
   email: "brilliantmindtravels1@gmail.com",
+
   address: {
     "@type": "PostalAddress",
     streetAddress:
@@ -45,10 +46,12 @@ const businessSchema = {
     addressRegion: "Osun",
     addressCountry: "NG",
   },
+
   areaServed: {
     "@type": "Country",
     name: "Nigeria",
   },
+
   contactPoint: {
     "@type": "ContactPoint",
     telephone: "+2348165900571",
@@ -56,6 +59,12 @@ const businessSchema = {
     areaServed: "NG",
     availableLanguage: ["English"],
   },
+
+  sameAs: [
+    "https://www.instagram.com/brilliantmindtravel_tours/",
+    "https://www.tiktok.com/@brilliant_mindtravel",
+    "https://www.tiktok.com/@brilliantmind_travels",
+  ],
 };
 
 export const Route = createFileRoute("/")({
