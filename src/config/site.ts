@@ -6,7 +6,7 @@ export const site = {
   address:
     "Olayia's Complex, Beside Eyiowu Awi Pharmacy, Ede 102213, Osun, Nigeria",
   email: "brilliantmindtravels1@gmail.com",
-  // Fallbacks only — the live values are managed in Website Settings (CMS).
+  // Fallback values only. Live business details are managed in Website Settings (CMS).
   phone: "+234 816 590 0571",
   whatsapp: "2348165900571",
   vision:
