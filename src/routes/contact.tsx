@@ -31,10 +31,64 @@ const title =
 const description =
   "Contact Brilliant Mind Travel and Tours in Ede, Osun for travel services, visa guidance, study abroad, tourism and consultation. Call, WhatsApp or visit our office.";
 
-const canonicalUrl = "https://www.brilliantmindtravels.com/contact";
+const canonicalUrl =
+  "https://www.brilliantmindtravels.com/contact";
 
 const ogImageUrl =
   "https://www.brilliantmindtravels.com/og-image.png";
+
+const googleMapsUrl =
+  "https://www.google.com/maps/place/?q=place_id:ChIJ0YBCJmYrOBARFZkP66iEOTU";
+
+const contactSchema = {
+  "@context": "https://schema.org",
+  "@type": "TravelAgency",
+  "@id": `${canonicalUrl}#travel-agency-contact`,
+  name: "Brilliant Mind Travel and Tours",
+  url: "https://www.brilliantmindtravels.com/",
+  image: ogImageUrl,
+  description,
+  telephone: "+2348165900571",
+  email: "brilliantmindtravels1@gmail.com",
+
+  address: {
+    "@type": "PostalAddress",
+    streetAddress:
+      "Olayia's Complex, Beside Eyiowu Awi Pharmacy",
+    addressLocality: "Ede",
+    postalCode: "102213",
+    addressRegion: "Osun",
+    addressCountry: "NG",
+  },
+
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 7.7304641,
+    longitude: 4.4377573,
+  },
+
+  hasMap: googleMapsUrl,
+
+  areaServed: {
+    "@type": "Country",
+    name: "Nigeria",
+  },
+
+  contactPoint: {
+    "@type": "ContactPoint",
+    telephone: "+2348165900571",
+    contactType: "customer service",
+    areaServed: "NG",
+    availableLanguage: ["English"],
+  },
+
+  sameAs: [
+    googleMapsUrl,
+    "https://www.instagram.com/brilliantmindtravel_tours/",
+    "https://www.tiktok.com/@brilliant_mindtravel",
+    "https://www.tiktok.com/@brilliantmind_travels",
+  ],
+};
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -42,7 +96,10 @@ export const Route = createFileRoute("/contact")({
       { title },
       { name: "description", content: description },
       { name: "robots", content: "index, follow" },
-      { name: "author", content: "Brilliant Mind Travel and Tours" },
+      {
+        name: "author",
+        content: "Brilliant Mind Travel and Tours",
+      },
 
       { property: "og:title", content: title },
       { property: "og:description", content: description },
@@ -60,13 +117,39 @@ export const Route = createFileRoute("/contact")({
           "Brilliant Mind Travel and Tours - Contact and Travel Consultancy in Ede, Osun",
       },
 
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: title },
-      { name: "twitter:description", content: description },
-      { name: "twitter:image", content: ogImageUrl },
+      {
+        name: "twitter:card",
+        content: "summary_large_image",
+      },
+      {
+        name: "twitter:title",
+        content: title,
+      },
+      {
+        name: "twitter:description",
+        content: description,
+      },
+      {
+        name: "twitter:image",
+        content: ogImageUrl,
+      },
     ],
-    links: [{ rel: "canonical", href: canonicalUrl }],
+
+    links: [
+      {
+        rel: "canonical",
+        href: canonicalUrl,
+      },
+    ],
+
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify(contactSchema),
+      },
+    ],
   }),
+
   component: ContactPage,
 });
 
