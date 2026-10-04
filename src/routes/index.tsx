@@ -25,6 +25,9 @@ const absoluteLogoUrl = new URL(logoUrl, canonicalUrl).toString();
 const ogImageUrl =
   "https://www.brilliantmindtravels.com/og-image.png";
 
+const googleMapsUrl =
+  "https://www.google.com/maps/place/?q=place_id:ChIJ0YBCJmYrOBARFZkP66iEOTU";
+
 const businessSchema = {
   "@context": "https://schema.org",
   "@type": "TravelAgency",
@@ -47,6 +50,14 @@ const businessSchema = {
     addressCountry: "NG",
   },
 
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: 7.7304641,
+    longitude: 4.4377573,
+  },
+
+  hasMap: googleMapsUrl,
+
   areaServed: {
     "@type": "Country",
     name: "Nigeria",
@@ -60,7 +71,45 @@ const businessSchema = {
     availableLanguage: ["English"],
   },
 
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+      ],
+      opens: "08:00",
+      closes: "18:00",
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: "Saturday",
+      opens: "08:30",
+      closes: "17:30",
+    },
+  ],
+
+  makesOffer: [
+    "Study visa assistance",
+    "Work visa assistance",
+    "Visa guidance",
+    "Flight booking",
+    "Hotel booking",
+    "Tour packages",
+    "Airport pick up",
+  ].map((name) => ({
+    "@type": "Offer",
+    itemOffered: {
+      "@type": "Service",
+      name,
+    },
+  })),
+
   sameAs: [
+    googleMapsUrl,
     "https://www.instagram.com/brilliantmindtravel_tours/",
     "https://www.tiktok.com/@brilliant_mindtravel",
     "https://www.tiktok.com/@brilliantmind_travels",
