@@ -15,12 +15,16 @@ Brilliant Mind Travel and Tours is a travel and educational consultancy based in
 ## Services
 
 - Visa guidance and consultancy
+- Study visa assistance
+- Work visa assistance
 - Study abroad consultancy
 - University admission guidance
-- Flight booking support
-- Travel consultancy
-- Tourism and tour packages
+- Flight booking
+- Hotel booking
 - Travel documentation assistance
+- Tour packages
+- Airport pick up
+- Travel consultancy
 - Personalized travel planning
 
 ## Main Pages
@@ -44,7 +48,9 @@ Study abroad country pages are available through the website's Study Abroad sect
 
 ## Travel and Visa
 
-The website provides information and guidance relating to travel, visa applications, flight booking and travel preparation.
+Brilliant Mind Travel and Tours provides visa guidance and consultancy, including study visa assistance, work visa assistance, travel documentation support and general travel preparation.
+
+The company also provides flight booking, hotel booking and airport pick up support.
 
 Visa decisions are made by the relevant embassy, consulate or immigration authority. Brilliant Mind Travel and Tours provides consultancy and application support but does not guarantee visa approval.
 
