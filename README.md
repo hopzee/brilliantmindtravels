@@ -74,12 +74,7 @@ The architecture is ready to support:
 
 Requires [Node.js](https://nodejs.org) and npm.
 
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
-```
+
 
 ## Contact
 
